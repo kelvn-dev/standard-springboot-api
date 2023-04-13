@@ -1,8 +1,8 @@
 package com.kelvn.controller.api;
 
-import com.kelvn.dto.response.GroupResponseDTO;
+import com.kelvn.dto.response.extend.ExtGroupResponseDTO;
 import com.kelvn.dto.request.GroupRequestDTO;
-import com.kelvn.dto.response.GroupWithoutAccountDTO;
+import com.kelvn.dto.response.GroupResponseDTO;
 import com.kelvn.exception.NotFoundException;
 import com.kelvn.service.GroupService;
 import lombok.RequiredArgsConstructor;
@@ -19,23 +19,23 @@ public class GroupController {
   private final GroupService groupService;
 
   @PostMapping()
-  public ResponseEntity<GroupWithoutAccountDTO> create(@RequestBody GroupRequestDTO groupRequestDTO) {
-    GroupWithoutAccountDTO groupResponseDTO = groupService.create(groupRequestDTO);
+  public ResponseEntity<GroupResponseDTO> create(@RequestBody GroupRequestDTO groupRequestDTO) {
+    GroupResponseDTO groupResponseDTO = groupService.create(groupRequestDTO);
     return ResponseEntity.ok(groupResponseDTO);
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<GroupResponseDTO> getById(@PathVariable UUID id) throws NotFoundException {
-    GroupResponseDTO groupResponseDTO = groupService.getById(id, false);
-    return ResponseEntity.ok(groupResponseDTO);
+  public ResponseEntity<ExtGroupResponseDTO> getById(@PathVariable UUID id) throws NotFoundException {
+    ExtGroupResponseDTO extGroupResponseDTO = groupService.getById(id, false);
+    return ResponseEntity.ok(extGroupResponseDTO);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<GroupWithoutAccountDTO> updateById(
+  public ResponseEntity<GroupResponseDTO> updateById(
     @PathVariable UUID id,
     @RequestBody GroupRequestDTO groupRequestDTO
   ) throws NotFoundException {
-    GroupWithoutAccountDTO groupResponseDTO = groupService.updateById(id, groupRequestDTO);
+    GroupResponseDTO groupResponseDTO = groupService.updateById(id, groupRequestDTO);
     return ResponseEntity.ok(groupResponseDTO);
   }
 
