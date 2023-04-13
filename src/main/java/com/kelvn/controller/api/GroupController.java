@@ -5,12 +5,14 @@ import com.kelvn.dto.request.GroupRequestDTO;
 import com.kelvn.dto.response.GroupResponseDTO;
 import com.kelvn.exception.NotFoundException;
 import com.kelvn.service.GroupService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+@Tag(name = "Group")
 @RestController
 @RequestMapping("/api/v1/groups")
 @RequiredArgsConstructor
