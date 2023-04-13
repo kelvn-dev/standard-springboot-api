@@ -9,6 +9,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Set;
 
@@ -22,6 +23,7 @@ import java.util.Set;
 public class Group extends BaseModel {
 
   @Column(name = "name")
+  @NotNull
   private String name;
 
   @OneToMany(

@@ -8,6 +8,7 @@ import lombok.experimental.Accessors;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Entity
@@ -20,9 +21,11 @@ import java.util.UUID;
 public class Account extends BaseModel {
 
   @Column(name = "username")
+  @NotNull
   private String username;
 
   @Column(name = "email")
+  @NotNull
   private String email;
 
   @Column(name = "password")

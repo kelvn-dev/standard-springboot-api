@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,7 +26,7 @@ public class GroupResponseDTO implements BaseDTO {
 
   private UUID id;
   private String name;
-  private List<AccountWithoutGroupDTO> accounts;
+  private List<AccountWithoutGroupDTO> accounts = new LinkedList<>();
 
   @Override
   public ModelMapper updateModelMapper(ModelMapper mapper, MappingUtils utils) {
