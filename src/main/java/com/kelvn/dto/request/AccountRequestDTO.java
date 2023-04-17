@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Getter
@@ -14,9 +16,9 @@ import java.util.UUID;
 @Accessors(chain = true)
 public class AccountRequestDTO implements BaseDTO {
 
-  private String username;
-  private String email;
-  private String password;
+  @NotNull private String username;
+  @NotNull @Email private String email;
+  @NotNull private String password;
   private UUID groupId;
 
 }

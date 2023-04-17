@@ -40,7 +40,7 @@ import static java.lang.String.format;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-  @Value("key.location")
+  @Value("${key.location}")
   private RSAPublicKey publicKey;
 
 //  private final AccountRepository accountRepository;
@@ -83,7 +83,7 @@ public class SecurityConfig {
 
   private final String[] byPassPath = new String[] {
     "/v3/api-docs/**", "/configuration/ui", "/swagger-resources/**", "/configuration/security", "/swagger-ui/**",
-    "/api/v1/login"
+    "/api/v1/login", "/api/v1/webapp/account/signup"
   };
 
   /**

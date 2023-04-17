@@ -1,4 +1,4 @@
-package com.kelvn.controller.api;
+package com.kelvn.controller.admin;
 
 import com.kelvn.dto.response.extend.ExtGroupResponseDTO;
 import com.kelvn.dto.request.GroupRequestDTO;
