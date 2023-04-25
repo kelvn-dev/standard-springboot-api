@@ -1,11 +1,11 @@
 package com.kelvn.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -30,6 +30,9 @@ public class Account extends BaseModel {
 
   @Column(name = "password")
   private String password;
+
+  @Column(name = "birth_year")
+  private Integer birthYear;
 
   @Column(name="group_id", columnDefinition = "BINARY(16)")
   private UUID groupId;

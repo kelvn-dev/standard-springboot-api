@@ -11,7 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -32,11 +32,11 @@ public abstract class BaseModel implements Serializable {
 
   @CreationTimestamp
   @Column(name = "created_at", updatable = false)
-  private Date createdAt;
+  private LocalDateTime createdAt;
 
   @UpdateTimestamp
   @Column(name = "updated_at")
-  private Date updatedAt;
+  private LocalDateTime updatedAt;
 
   @Override
   public boolean equals(Object object) {

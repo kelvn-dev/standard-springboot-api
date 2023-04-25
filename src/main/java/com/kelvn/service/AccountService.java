@@ -8,7 +8,6 @@ import com.kelvn.model.Account;
 import com.kelvn.repository.AccountRepository;
 import com.kelvn.service.external.SendgridService;
 import com.kelvn.utils.MappingUtils;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +42,7 @@ public class AccountService extends BaseService<Account, AccountRequestDTO, Acco
     String token = UUID.randomUUID().toString(); // Need alternative approach
     String link = SERVER_URI.concat("/api/v1/webapp/verify?token=").concat(token);
     sendgridService.sendRegistrationEmail(account.getEmail(), account.getUsername(), link);
-
      return mappingUtils.mapToDTO(account, AccountResponseDTO.class);
   }
+
 }

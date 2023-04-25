@@ -1,24 +1,24 @@
 package com.kelvn.service;
 
 import com.kelvn.dto.BaseDTO;
-import com.kelvn.dto.response.AccountResponseDTO;
+import com.kelvn.dto.api.ApiPageableResponse;
 import com.kelvn.exception.NotFoundException;
-import com.kelvn.model.Account;
 import com.kelvn.model.BaseModel;
+import com.kelvn.utils.HelperUtils;
 import com.kelvn.utils.MappingUtils;
-import lombok.NoArgsConstructor;
+import com.kelvn.utils.PredicateUtils;
+import com.kelvn.utils.SearchCriteria;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.ParameterizedType;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -27,7 +27,7 @@ public abstract class BaseService <
     M extends BaseModel,
     REQ extends BaseDTO,
     RES extends BaseDTO,
-    R extends JpaRepository<M, UUID>
+    R extends JpaRepository<M, UUID> & QuerydslPredicateExecutor<M>
   > {
 
   protected final Class<M> modelClass = (Class<M>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -67,11 +67,18 @@ public abstract class BaseService <
     repository.delete(model);
   }
 
+  public ApiPageableResponse getList(String[] filter, Pageable pageable) {
+    List<SearchCriteria> criterias = HelperUtils.formatSearchCriteria(filter);
+    BooleanExpression expression = PredicateUtils.getBooleanExpression(criterias, modelClass);
+    Page<M> pagingModel = repository.findAll(expression, pageable);
+    return formatPagingResponse(pagingModel);
+  }
 
-//  public Page<P> getAll(int pageIndex, int pageSize) {
-//    Pageable pageable = PageRequest.of(pageIndex, pageSize);
-//    Page<P> paginatedData = repository.findAll(pageable);
-//    return paginatedData;
-//  }
+  public ApiPageableResponse formatPagingResponse(Page<M> page) {
+    return ApiPageableResponse.builder().currentPage(page.getNumber() + 1).pageSize(page.getSize())
+      .totalPages(page.getTotalPages()).totalElements(page.getTotalElements()).isFirst(page.isFirst()).isLast(page.isLast())
+      .data(mappingUtils.mapListToDTO(page.getContent(), responseDtoClass))
+      .build();
+  }
 
 }

@@ -6,6 +6,9 @@ import com.kelvn.exception.NotFoundException;
 import com.kelvn.service.AccountService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +48,14 @@ public class AccountController {
   public ResponseEntity<?> deleteById(@PathVariable UUID id) throws NotFoundException {
     accountService.deleteById(id);
     return ResponseEntity.ok(null);
+  }
+
+  @GetMapping
+  public ResponseEntity<?> getList(
+    @PageableDefault(sort = {"createdAt"}, direction = Sort.Direction.DESC) Pageable pageable,
+    @RequestParam(required = false) String[] filter
+  ) {
+    return ResponseEntity.ok(accountService.getList(filter, pageable));
   }
 
 }
