@@ -26,8 +26,6 @@ import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
-import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
-import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -40,6 +38,9 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+  @Value("${server.security.disabled}")
+  private String IS_SECURITY_DISABLED;
 
   @Value("${public.key.location}")
   private RSAPublicKey PUBLIC_KEY;
@@ -80,7 +81,7 @@ public class SecurityConfig {
 
   private final String[] byPassPath = new String[] {
     "/v3/api-docs/**", "/configuration/ui", "/swagger-resources/**", "/configuration/security", "/swagger-ui/**",
-    "/api/v1/login", "/api/v1/webapp/account/signup",
+    "/login", "/api/v1/webapp/account/signup",
   };
 
   /**
@@ -97,26 +98,25 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
     httpSecurity.cors().and().csrf().disable();
     httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    httpSecurity.exceptionHandling(
-      (exceptions) ->
-        exceptions
-          .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
-          .accessDeniedHandler(new BearerTokenAccessDeniedHandler()));
 
-    httpSecurity
-      .authorizeHttpRequests(authorize ->
-        authorize
-          .mvcMatchers(byPassPath).permitAll() // not authenticate these particular requests
-          .mvcMatchers("/read/**").hasAuthority("SCOPE_read")
-          .mvcMatchers("/write/**").hasAuthority("SCOPE_write")
+    if (Boolean.parseBoolean(IS_SECURITY_DISABLED)) {
+      httpSecurity.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll());
+    }
+    else {
+      httpSecurity
+        .authorizeHttpRequests(authorize ->
+            authorize
+              .mvcMatchers(byPassPath).permitAll() // not authenticate these particular requests
+              .mvcMatchers("/read/**").hasAuthority("SCOPE_read")
+              .mvcMatchers("/write/**").hasAuthority("SCOPE_write")
 //          .mvcMatchers("/token").hasAuthority("SCOPE_write") // test
-          .mvcMatchers("/user/**").hasAnyRole("user", "admin")
-          .mvcMatchers("/admin/**").hasRole("admin")
+              .mvcMatchers("/user/**").hasAnyRole("user", "admin")
+              .mvcMatchers("/admin/**").hasRole("admin")
 //          .mvcMatchers("/token").hasRole("admin") // test
-          .anyRequest().authenticated() // set authentication for all endpoints
-      )
-      .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt); // enable to accept JWTs
-
+              .anyRequest().authenticated() // set authentication for all endpoints
+        )
+        .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt); // enable to accept JWTs
+    }
     return httpSecurity.build();
   }
 
