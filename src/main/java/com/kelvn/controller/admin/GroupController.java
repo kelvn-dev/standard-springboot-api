@@ -1,8 +1,9 @@
 package com.kelvn.controller.admin;
 
-import com.kelvn.dto.response.extend.ExtGroupResponseDTO;
+import com.kelvn.controller.SecuredRestController;
 import com.kelvn.dto.request.GroupRequestDTO;
 import com.kelvn.dto.response.GroupResponseDTO;
+import com.kelvn.dto.response.extend.ExtGroupResponseDTO;
 import com.kelvn.exception.NotFoundException;
 import com.kelvn.service.GroupService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/groups")
 @RequiredArgsConstructor
-public class GroupController {
+public class GroupController implements SecuredRestController {
 
   private final GroupService groupService;
 

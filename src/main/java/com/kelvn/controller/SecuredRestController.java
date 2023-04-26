@@ -1,2 +1,7 @@
-package com.kelvn.controller;public class SecuredRestController {
+package com.kelvn.controller;
+
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
+@SecurityRequirement(name = "bearerAuth")
+public interface SecuredRestController {
 }

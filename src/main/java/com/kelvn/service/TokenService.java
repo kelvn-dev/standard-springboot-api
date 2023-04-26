@@ -1,6 +1,8 @@
 package com.kelvn.service;
 
+import com.kelvn.model.Account;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -15,21 +17,25 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class TokenService {
-  private final JwtEncoder encoder;
+  @Value("${jwt.validity.hours}")
+  private String JWT_VALIDITY_HOUR;
+  private final JwtEncoder jwtEncoder;
 
   public String generateToken(Authentication authentication) {
     Instant now = Instant.now();
+    Account account = (Account) authentication.getPrincipal();
     String scope = authentication.getAuthorities().stream()
       .map(GrantedAuthority::getAuthority)
       .collect(Collectors.joining(" "));
     JwtClaimsSet claims = JwtClaimsSet.builder()
       .issuer("http://foobar.com")
       .issuedAt(now)
-      .expiresAt(now.plus(1, ChronoUnit.HOURS))
-      .subject(authentication.getName())
+      .expiresAt(now.plus(Long.parseLong(JWT_VALIDITY_HOUR), ChronoUnit.HOURS))
+      .subject(account.getId().toString())
+      .claim("email", account.getEmail())
       .claim("scope", scope)
       .build();
-    return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+    return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
   }
 
 }

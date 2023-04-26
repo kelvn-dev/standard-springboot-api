@@ -1,23 +1,39 @@
 package com.kelvn.config;
 
+import com.kelvn.exception.NotFoundException;
+import com.kelvn.model.Account;
+import com.kelvn.repository.AccountRepository;
+import com.nimbusds.jose.jwk.JWK;
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.RSAKey;
+import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
+import com.nimbusds.jose.jwk.source.JWKSource;
+import com.nimbusds.jose.proc.SecurityContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenIntrospectionClaimNames;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
+import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
+import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.List;
 
@@ -25,50 +41,46 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-  @Value("${key.location}")
-  private RSAPublicKey publicKey;
+  @Value("${public.key.location}")
+  private RSAPublicKey PUBLIC_KEY;
 
-//  private final AccountRepository accountRepository;
-//
-//  @Value("${public.key.location}")
-//  private RSAPublicKey publicKey;
-//
-//  @Value("${private.key.location}")
-//  private RSAPrivateKey privateKey;
+  @Value("${private.key.location}")
+  private RSAPrivateKey PRIVATE_KEY;
 
-//  @Bean
-//  public BCryptPasswordEncoder bCryptPasswordEncoder() {
-//    return new BCryptPasswordEncoder();
-//  }
-//
-//  @Bean
-//  public AuthenticationManager authenticationManager(HttpSecurity httpSecurity, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
-//    return httpSecurity.getSharedObject(AuthenticationManagerBuilder.class)
-//      .userDetailsService(
-//        username ->
-//           accountRepository
-//            .findByUsername(username)
-//            .orElseThrow(() -> new UsernameNotFoundException(format("User: %s, not found", username))))
-//      .passwordEncoder(bCryptPasswordEncoder)
-//      .and()
-//      .build();
-//  }
-//
-//  @Bean
-//  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-//    return authenticationConfiguration.getAuthenticationManager();
-//  }
-//
-//  @Bean
-//  public JwtEncoder jwtEncoder() {
-//    RSAKey jwk = new RSAKey.Builder(this.publicKey).privateKey(this.privateKey).build();
-//    ImmutableJWKSet<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
-//    return new NimbusJwtEncoder(jwks);
-//  }
+  private final AccountRepository accountRepository;
+
+  @Bean
+  public BCryptPasswordEncoder bCryptPasswordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
+
+  @Bean
+  public AuthenticationManager authenticationManager(HttpSecurity httpSecurity, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
+    return httpSecurity.getSharedObject(AuthenticationManagerBuilder.class)
+      .parentAuthenticationManager(null) // Avoid infinite loop: https://stackoverflow.com/questions/27956378/infinte-loop-when-bad-credentials-are-entered-in-spring-security-form-login
+      .userDetailsService(
+        email -> accountRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(Account.class, "email", email.toString()))
+      )
+      .passwordEncoder(bCryptPasswordEncoder)
+      .and()
+      .build();
+  }
+
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    return authenticationConfiguration.getAuthenticationManager();
+  }
+
+  @Bean
+  public JwtEncoder jwtEncoder() {
+    JWK jwk = new RSAKey.Builder(PUBLIC_KEY).privateKey(PRIVATE_KEY).build();
+    JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
+    return new NimbusJwtEncoder(jwks);
+  }
 
   private final String[] byPassPath = new String[] {
     "/v3/api-docs/**", "/configuration/ui", "/swagger-resources/**", "/configuration/security", "/swagger-ui/**",
-    "/api/v1/login", "/api/v1/webapp/account/signup"
+    "/api/v1/login", "/api/v1/webapp/account/signup",
   };
 
   /**
@@ -85,6 +97,11 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
     httpSecurity.cors().and().csrf().disable();
     httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    httpSecurity.exceptionHandling(
+      (exceptions) ->
+        exceptions
+          .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
+          .accessDeniedHandler(new BearerTokenAccessDeniedHandler()));
 
     httpSecurity
       .authorizeHttpRequests(authorize ->
@@ -119,7 +136,7 @@ public class SecurityConfig {
    */
   @Bean
   public JwtDecoder jwtDecoder() {
-    final NimbusJwtDecoder decoder = NimbusJwtDecoder.withPublicKey(this.publicKey).build();
+    final NimbusJwtDecoder decoder = NimbusJwtDecoder.withPublicKey(PUBLIC_KEY).build();
     decoder.setJwtValidator(tokenValidator()); // hook in DelegatingOAuth2TokenValidator to JwtDecoder
     return decoder;
   }
@@ -142,9 +159,9 @@ public class SecurityConfig {
   public OAuth2TokenValidator<Jwt> tokenValidator() {
     final List<OAuth2TokenValidator<Jwt>> validators =
       List.of(
-        new JwtTimestampValidator(),
-        new JwtIssuerValidator("http://foobar.com"),
-        audienceValidator()
+        new JwtTimestampValidator()
+//        new JwtIssuerValidator("http://foobar.com"),
+//        audienceValidator()
       );
     return new DelegatingOAuth2TokenValidator<>(validators);
   }

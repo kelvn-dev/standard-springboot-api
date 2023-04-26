@@ -6,15 +6,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-public class NotFoundException extends RuntimeException {
+public class ConflictException extends RuntimeException {
 
-  public NotFoundException(Class clazz, String... searchParamsMap) {
-    super(NotFoundException.generateMessage(clazz.getSimpleName(), toMap(String.class, String.class, searchParamsMap)));
+  public ConflictException(Class clazz, String... searchParamsMap) {
+    super(ConflictException.generateMessage(clazz.getSimpleName(), toMap(String.class, String.class, searchParamsMap)));
   }
 
   private static String generateMessage(String entity, Map<String, String> searchParams) {
     return StringUtils.capitalize(entity)
-      .concat(" was not found for parameters ")
+      .concat(" already exists with parameters ")
       .concat(searchParams.toString());
   }
 

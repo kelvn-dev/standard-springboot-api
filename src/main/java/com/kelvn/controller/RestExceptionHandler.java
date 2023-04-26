@@ -1,6 +1,7 @@
 package com.kelvn.controller;
 
 import com.kelvn.dto.api.ApiError;
+import com.kelvn.exception.ConflictException;
 import com.kelvn.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -36,6 +37,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(NotFoundException.class)
   protected ResponseEntity<Object> handleNotFound(NotFoundException ex) {
     ApiError apiError = new ApiError(HttpStatus.NOT_FOUND);
+    apiError.setMessage(ex.getMessage());
+    return buildResponseEntity(apiError);
+  }
+
+  @ExceptionHandler(ConflictException.class)
+  protected ResponseEntity<Object> handleConflict(ConflictException ex) {
+    ApiError apiError = new ApiError(HttpStatus.CONFLICT);
     apiError.setMessage(ex.getMessage());
     return buildResponseEntity(apiError);
   }

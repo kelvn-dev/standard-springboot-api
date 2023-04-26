@@ -1,5 +1,6 @@
 package com.kelvn.controller.admin;
 
+import com.kelvn.controller.SecuredRestController;
 import com.kelvn.dto.request.AccountRequestDTO;
 import com.kelvn.dto.response.AccountResponseDTO;
 import com.kelvn.exception.NotFoundException;
@@ -19,7 +20,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/accounts")
 @RequiredArgsConstructor
-public class AccountController {
+public class AccountController implements SecuredRestController {
 
   private final AccountService accountService;
 

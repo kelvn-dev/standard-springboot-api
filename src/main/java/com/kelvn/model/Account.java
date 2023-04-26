@@ -6,9 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.UUID;
 
 @Entity
@@ -18,7 +22,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class Account extends BaseModel {
+public class Account extends BaseModel implements UserDetails {
 
   @Column(name = "username")
   @NotNull
@@ -41,4 +45,29 @@ public class Account extends BaseModel {
   @JoinColumn(name = "group_id", insertable = false, updatable = false)
   @JsonIgnoreProperties("accounts")
   private Group group;
+
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return new HashSet<>();
+  }
+
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
+
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return true;
+  }
 }
