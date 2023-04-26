@@ -1,5 +1,6 @@
 package com.kelvn.dto.response.extend;
 
+import com.kelvn.dto.response.AccountResponseDTO;
 import com.kelvn.dto.response.GroupResponseDTO;
 import com.kelvn.model.Group;
 import com.kelvn.utils.MappingUtils;
@@ -21,7 +22,7 @@ import java.util.List;
 @Accessors(chain = true)
 public class ExtGroupResponseDTO extends GroupResponseDTO {
 
-  private List<ExtAccountResponseDTO> accounts = new LinkedList<>();
+  private List<AccountResponseDTO> accounts = new LinkedList<>();
 
   @Override
   public ModelMapper updateModelMapper(ModelMapper mapper, MappingUtils utils) {
@@ -34,10 +35,10 @@ public class ExtGroupResponseDTO extends GroupResponseDTO {
       @Override
       protected void configure() {
 
-        Converter<Group, List<ExtAccountResponseDTO>> mapAccounts = new AbstractConverter<Group, List<ExtAccountResponseDTO>>() {
+        Converter<Group, List<AccountResponseDTO>> mapAccounts = new AbstractConverter<Group, List<AccountResponseDTO>>() {
           @Override
-          protected List<ExtAccountResponseDTO> convert(Group group) {
-            return utils.mapListToDTO(group.getAccounts(), ExtAccountResponseDTO.class);
+          protected List<AccountResponseDTO> convert(Group group) {
+            return utils.mapListToDTO(group.getAccounts(), AccountResponseDTO.class);
           }
         };
 
