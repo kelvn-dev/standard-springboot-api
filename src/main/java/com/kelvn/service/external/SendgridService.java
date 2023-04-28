@@ -8,13 +8,14 @@ import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.naming.ServiceUnavailableException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import static com.kelvn.enums.SendGridTemplate.REGISTRATION_TEMPLATE;
 
@@ -25,6 +26,7 @@ public class SendgridService {
   private String EMAIL_FROM;
   private final SendGrid sendGrid;
 
+  @SneakyThrows
   public void send(String emailTo, String templateId, Map<String, Object> templateData) {
     // Use Single Sender Verification configured in setting for Email from
     Email sender = new Email(EMAIL_FROM);
@@ -44,9 +46,8 @@ public class SendgridService {
       request.setEndpoint("mail/send");
       request.setBody(mail.build());
       response = sendGrid.api(request);
-      System.out.println(response.getStatusCode());
     } catch (IOException e) {
-      System.out.println(e);
+      throw new ServiceUnavailableException(e.getMessage());
     }
   }
 

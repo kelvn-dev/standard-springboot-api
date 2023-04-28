@@ -1,17 +1,16 @@
 package com.kelvn.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "app_group")
@@ -20,12 +19,14 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
+@Audited
 public class Group extends BaseModel {
 
   @Column(name = "name")
   @NotNull
   private String name;
 
+  @NotAudited
   @OneToMany(
     mappedBy = "group",
     cascade = CascadeType.ALL,

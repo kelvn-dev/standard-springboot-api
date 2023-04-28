@@ -35,8 +35,8 @@ public abstract class BaseService <
   protected final R repository;
   protected final MappingUtils mappingUtils;
 
-  public RES create(REQ requestDto) {
-    M model = mappingUtils.mapFromDTO(requestDto, modelClass);
+  public RES create(REQ requestDTO) {
+    M model = mappingUtils.mapFromDTO(requestDTO, modelClass);
     return mappingUtils.mapToDTO(repository.save(model), responseDtoClass);
   }
 
@@ -48,12 +48,12 @@ public abstract class BaseService <
     return mappingUtils.mapToDTO(model, responseDtoClass);
   }
 
-  public RES updateById(UUID id, REQ requestDto) {
+  public RES updateById(UUID id, REQ requestDTO) {
     M model = repository.findById(id).orElse(null);
     if (model == null) {
       throw new NotFoundException(modelClass, "id", id.toString());
     }
-    M payload = mappingUtils.mapFromDTO(requestDto, modelClass);
+    M payload = mappingUtils.mapFromDTO(requestDTO, modelClass);
     ModelMapper modelMapper = mappingUtils.getSimpleMapper();
     modelMapper.map(payload, model);
     return mappingUtils.mapToDTO(repository.save(model), responseDtoClass);

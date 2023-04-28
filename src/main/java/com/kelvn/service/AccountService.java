@@ -39,18 +39,23 @@ public class AccountService extends BaseService<Account, AccountRequestDTO, Acco
     return mappingUtils.mapToDTO(model, ExtAccountResponseDTO.class);
   }
 
-  public AccountResponseDTO signup(AccountRequestDTO requestDTO) {
+  @Override
+  public AccountResponseDTO create(AccountRequestDTO requestDTO) {
     if (repository.findByEmail(requestDTO.getEmail()).isPresent()) {
       throw new ConflictException(Account.class, "email", requestDTO.getEmail());
     }
-     Account account = mappingUtils.mapFromDTO(requestDTO, Account.class);
-    account.setPassword(passwordEncoder.encode(account.getPassword()));
-     account = repository.save(account);
+    requestDTO.setPassword(passwordEncoder.encode(requestDTO.getPassword()));
+    return super.create(requestDTO);
+  }
+
+  public AccountResponseDTO signup(AccountRequestDTO requestDTO) {
+    AccountResponseDTO responseDTO = this.create(requestDTO);
 
     String token = UUID.randomUUID().toString(); // Need alternative approach
     String link = SERVER_URI.concat("/api/v1/webapp/verify?token=").concat(token);
-    sendgridService.sendRegistrationEmail(account.getEmail(), account.getUsername(), link);
-     return mappingUtils.mapToDTO(account, AccountResponseDTO.class);
+    sendgridService.sendRegistrationEmail(requestDTO.getEmail(), requestDTO.getUsername(), link);
+
+    return responseDTO;
   }
 
 }

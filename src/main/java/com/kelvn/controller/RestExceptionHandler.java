@@ -23,6 +23,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.naming.ServiceUnavailableException;
 import javax.validation.ConstraintViolationException;
 
 @ControllerAdvice
@@ -44,6 +45,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(ConflictException.class)
   protected ResponseEntity<Object> handleConflict(ConflictException ex) {
     ApiError apiError = new ApiError(HttpStatus.CONFLICT);
+    apiError.setMessage(ex.getMessage());
+    return buildResponseEntity(apiError);
+  }
+
+  @ExceptionHandler(ServiceUnavailableException.class)
+  protected ResponseEntity<Object> handleServiceUnavailable(ServiceUnavailableException ex) {
+    ApiError apiError = new ApiError(HttpStatus.SERVICE_UNAVAILABLE);
     apiError.setMessage(ex.getMessage());
     return buildResponseEntity(apiError);
   }
