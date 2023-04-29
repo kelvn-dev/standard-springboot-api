@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
@@ -20,6 +22,8 @@ import java.util.List;
 @NoArgsConstructor
 @Accessors(chain = true)
 @Audited
+@SQLDelete(sql = "UPDATE app_group SET is_deleted = TRUE WHERE id = ?")
+@Where(clause = "is_deleted = false")
 public class Group extends BaseModel {
 
   @Column(name = "name")
@@ -30,7 +34,8 @@ public class Group extends BaseModel {
   @OneToMany(
     mappedBy = "group",
     cascade = CascadeType.ALL,
-    fetch = FetchType.EAGER
+    fetch = FetchType.EAGER,
+    orphanRemoval = true
   )
   private List<Account> accounts;
 
