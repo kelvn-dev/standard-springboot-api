@@ -18,7 +18,7 @@ import java.util.UUID;
 
 @Tag(name = "Account")
 @RestController
-@RequestMapping("/api/v1/accounts")
+@RequestMapping("/v1/accounts")
 @RequiredArgsConstructor
 public class AccountController implements SecuredRestController {
 

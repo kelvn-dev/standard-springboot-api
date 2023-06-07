@@ -18,7 +18,7 @@ import java.util.UUID;
 
 @Tag(name = "Group")
 @RestController
-@RequestMapping("/api/v1/groups")
+@RequestMapping("/v1/groups")
 @RequiredArgsConstructor
 public class GroupController implements SecuredRestController {
 
