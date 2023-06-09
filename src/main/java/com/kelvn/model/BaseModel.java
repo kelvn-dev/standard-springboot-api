@@ -47,8 +47,8 @@ public abstract class BaseModel implements Serializable {
   @Column(name = "updated_by")
   private String updatedBy;
 
-  @Column(name = "is_deleted")
-  private boolean isDeleted;
+//  @Column(name = "is_deleted")
+//  private boolean isDeleted;
 
   @Override
   public boolean equals(Object object) {

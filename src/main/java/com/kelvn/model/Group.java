@@ -5,9 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
-import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
@@ -21,9 +18,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-@Audited
-@SQLDelete(sql = "UPDATE app_group SET is_deleted = TRUE WHERE id = ?")
-@Where(clause = "is_deleted = false")
+//@Audited
+//@SQLDelete(sql = "UPDATE app_group SET is_deleted = TRUE WHERE id = ?")
+//@Where(clause = "is_deleted = false")
 public class Group extends BaseModel {
 
   @Column(name = "name")

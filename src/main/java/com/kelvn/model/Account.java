@@ -6,9 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
-import org.hibernate.envers.Audited;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -25,9 +22,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-@Audited
-@SQLDelete(sql = "UPDATE account SET is_deleted = TRUE WHERE id = ?")
-@Where(clause = "is_deleted = false")
+//@Audited
+//@SQLDelete(sql = "UPDATE account SET is_deleted = TRUE WHERE id = ?")
+//@Where(clause = "is_deleted = false")
 public class Account extends BaseModel implements UserDetails {
 
   @Column(name = "username")
@@ -51,6 +48,10 @@ public class Account extends BaseModel implements UserDetails {
   @JoinColumn(name = "group_id", insertable = false, updatable = false)
   @JsonIgnoreProperties("accounts")
   private Group group;
+
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinColumn(name = "meta_account_id", referencedColumnName = "id")
+  private MetaAccount metaAccount;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
