@@ -1,7 +1,7 @@
 package com.kelvn.dto.external.response;
 
 import com.kelvn.dto.BaseDTO;
-import com.kelvn.model.FBAccount;
+import com.kelvn.model.MetaAccount;
 import com.kelvn.utils.MappingUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @Accessors(chain = true)
-public class FBProfileResDTO implements BaseDTO {
+public class MetaAccountResDTO implements BaseDTO {
   private String id;
   private String name;
   private String email;
@@ -27,30 +27,30 @@ public class FBProfileResDTO implements BaseDTO {
 
   @Override
   public ModelMapper updateModelMapper(ModelMapper mapper, MappingUtils utils) {
-    mapper.addMappings(FBAccountMap(utils));
+    mapper.addMappings(MetaAccountMap(utils));
     return mapper;
   }
 
-  public PropertyMap<FBProfileResDTO, FBAccount> FBAccountMap(MappingUtils utils) {
-    return new PropertyMap<FBProfileResDTO, FBAccount>() {
+  public PropertyMap<MetaAccountResDTO, MetaAccount> MetaAccountMap(MappingUtils utils) {
+    return new PropertyMap<MetaAccountResDTO, MetaAccount>() {
       @Override
       protected void configure() {
-        Converter<FBProfileResDTO, String> mapFBAccountId = new AbstractConverter<FBProfileResDTO, String>() {
+        Converter<MetaAccountResDTO, String> mapMetaAccountId = new AbstractConverter<MetaAccountResDTO, String>() {
           @Override
-          protected String convert(FBProfileResDTO fbProfileResDTO) {
+          protected String convert(MetaAccountResDTO fbProfileResDTO) {
             return fbProfileResDTO.getId();
           }
         };
 
-        Converter<FBProfileResDTO, UUID> mapId = new AbstractConverter<FBProfileResDTO, UUID>() {
+        Converter<MetaAccountResDTO, UUID> mapId = new AbstractConverter<MetaAccountResDTO, UUID>() {
           @Override
-          protected UUID convert(FBProfileResDTO fbProfileResDTO) {
+          protected UUID convert(MetaAccountResDTO fbProfileResDTO) {
             return null;
           }
         };
 
         using(mapId).map(source, destination.getId());
-        using(mapFBAccountId).map(source, destination.getFBAccountId());
+        using(mapMetaAccountId).map(source, destination.getMetaAccountId());
       }
     };
   }

@@ -52,6 +52,10 @@ public class Account extends BaseModel implements UserDetails {
   @JsonIgnoreProperties("accounts")
   private Group group;
 
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinColumn(name = "meta_account_id", referencedColumnName = "id")
+  private MetaAccount metaAccount;
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return new HashSet<>();

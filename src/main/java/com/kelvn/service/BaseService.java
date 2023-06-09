@@ -40,6 +40,10 @@ public abstract class BaseService <
     return mappingUtils.mapToDTO(repository.save(model), responseDtoClass);
   }
 
+  public RES create(M model) {
+    return mappingUtils.mapToDTO(repository.save(model), responseDtoClass);
+  }
+
   public RES getById(UUID id, boolean noException) {
     M model = repository.findById(id).orElse(null);
     if (model == null && !noException) {

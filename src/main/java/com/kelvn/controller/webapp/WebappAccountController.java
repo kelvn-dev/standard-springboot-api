@@ -1,13 +1,9 @@
 package com.kelvn.controller.webapp;
 
-import com.kelvn.dto.external.response.FBProfileResDTO;
 import com.kelvn.dto.request.AccountRequestDTO;
 import com.kelvn.dto.request.FacebookAuthRequestDTO;
 import com.kelvn.dto.response.AccountResponseDTO;
-import com.kelvn.model.FBAccount;
 import com.kelvn.service.AccountService;
-import com.kelvn.service.external.Facebook;
-import com.kelvn.utils.MappingUtils;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +21,6 @@ import javax.validation.Valid;
 public class WebappAccountController {
 
   private final AccountService accountService;
-  private final MappingUtils mappingUtils;
 
   @PostMapping("/signup")
   public ResponseEntity<AccountResponseDTO> signup(@RequestBody @Valid AccountRequestDTO requestDTO) {
@@ -34,11 +29,9 @@ public class WebappAccountController {
   }
 
   @PostMapping("/facebook/signup")
-  public ResponseEntity<?> signupByFacebook(@RequestBody @Valid FacebookAuthRequestDTO requestDTO) {
-    Facebook facebook = new Facebook(requestDTO.getAccessToken());
-    FBProfileResDTO profile = facebook.getProfile();
-    FBAccount fbAccount = mappingUtils.mapFromDTO(profile, FBAccount.class);
-    return ResponseEntity.ok(fbAccount);
+  public ResponseEntity<?> signupWithFacebook(@RequestBody @Valid FacebookAuthRequestDTO requestDTO) {
+    AccountResponseDTO responseDTO = accountService.signupWithFacebook(requestDTO);
+    return ResponseEntity.ok(responseDTO);
   }
 
 }
