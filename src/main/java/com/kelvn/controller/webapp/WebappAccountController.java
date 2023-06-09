@@ -1,16 +1,16 @@
 package com.kelvn.controller.webapp;
 
+import com.kelvn.dto.external.response.FBProfileResDTO;
 import com.kelvn.dto.request.AccountRequestDTO;
 import com.kelvn.dto.request.FacebookAuthRequestDTO;
 import com.kelvn.dto.response.AccountResponseDTO;
-import com.kelvn.model.FacebookAccount;
+import com.kelvn.model.FBAccount;
 import com.kelvn.service.AccountService;
-import com.kelvn.utils.constant.FB;
+import com.kelvn.service.external.Facebook;
+import com.kelvn.utils.MappingUtils;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.social.facebook.api.Facebook;
-import org.springframework.social.facebook.api.impl.FacebookTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +25,7 @@ import javax.validation.Valid;
 public class WebappAccountController {
 
   private final AccountService accountService;
-//  private final FacebookService facebookService;
+  private final MappingUtils mappingUtils;
 
   @PostMapping("/signup")
   public ResponseEntity<AccountResponseDTO> signup(@RequestBody @Valid AccountRequestDTO requestDTO) {
@@ -35,11 +35,10 @@ public class WebappAccountController {
 
   @PostMapping("/facebook/signup")
   public ResponseEntity<?> signupByFacebook(@RequestBody @Valid FacebookAuthRequestDTO requestDTO) {
-//    FacebookAuthRequestDTO responseDTO = accountService.signup(requestDTO);
-//    Profile profile = facebookService.getProfile();
-    Facebook facebook = new FacebookTemplate(requestDTO.getAccessToken());
-    return ResponseEntity.ok(facebook.fetchObject(FB.LOGGED_USER_ID, FacebookAccount.class, FB.USER_FIELD_ID, FB.USER_FIELD_EMAIL,
-      FB.USER_FIELD_FIRST_NAME, FB.USER_FIELD_LAST_NAME));
+    Facebook facebook = new Facebook(requestDTO.getAccessToken());
+    FBProfileResDTO profile = facebook.getProfile();
+    FBAccount fbAccount = mappingUtils.mapFromDTO(profile, FBAccount.class);
+    return ResponseEntity.ok(fbAccount);
   }
 
 }
