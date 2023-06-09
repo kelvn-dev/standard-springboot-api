@@ -1,7 +1,7 @@
 package com.kelvn.controller.webapp;
 
 import com.kelvn.dto.request.AccountRequestDTO;
-import com.kelvn.dto.request.FacebookAuthRequestDTO;
+import com.kelvn.dto.request.MetaAuthReqDTO;
 import com.kelvn.dto.response.AccountResponseDTO;
 import com.kelvn.service.AccountService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,9 +28,9 @@ public class WebappAccountController {
     return ResponseEntity.ok(responseDTO);
   }
 
-  @PostMapping("/facebook/signup")
-  public ResponseEntity<?> signupWithFacebook(@RequestBody @Valid FacebookAuthRequestDTO requestDTO) {
-    AccountResponseDTO responseDTO = accountService.signupWithFacebook(requestDTO);
+  @PostMapping("/meta/signup")
+  public ResponseEntity<?> signupWithMeta(@RequestBody @Valid MetaAuthReqDTO requestDTO) {
+    AccountResponseDTO responseDTO = accountService.signupWithMeta(requestDTO);
     return ResponseEntity.ok(responseDTO);
   }
 

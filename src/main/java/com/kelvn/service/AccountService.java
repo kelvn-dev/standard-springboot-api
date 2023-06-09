@@ -2,7 +2,7 @@ package com.kelvn.service;
 
 import com.kelvn.dto.external.response.MetaAccountResDTO;
 import com.kelvn.dto.request.AccountRequestDTO;
-import com.kelvn.dto.request.FacebookAuthRequestDTO;
+import com.kelvn.dto.request.MetaAuthReqDTO;
 import com.kelvn.dto.response.AccountResponseDTO;
 import com.kelvn.dto.response.extend.ExtAccountResponseDTO;
 import com.kelvn.exception.ConflictException;
@@ -65,7 +65,7 @@ public class AccountService extends BaseService<Account, AccountRequestDTO, Acco
     return responseDTO;
   }
 
-  public AccountResponseDTO signupWithFacebook(FacebookAuthRequestDTO requestDTO) {
+  public AccountResponseDTO signupWithMeta(MetaAuthReqDTO requestDTO) {
     MetaService metaService = new MetaService(requestDTO.getAccessToken());
     MetaAccountResDTO metaAccountResDTO = metaService.getProfile();
     MetaAccount metaAccount = metaAccountRepository.findByMetaAccountId(metaAccountResDTO.getId()).orElse(null);
@@ -77,6 +77,7 @@ public class AccountService extends BaseService<Account, AccountRequestDTO, Acco
     Account account = new Account();
     account.setEmail(metaAccount.getEmail());
     account.setUsername(metaAccount.getFirst_name().concat(metaAccount.getLast_name()));
+    account.setPassword(passwordEncoder.encode(metaAccount.getMetaAccountId()));
     account.setMetaAccount(metaAccount);
 
 //    String token = UUID.randomUUID().toString(); // Need alternative approach

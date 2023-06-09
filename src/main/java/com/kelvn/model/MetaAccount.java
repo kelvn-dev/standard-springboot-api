@@ -1,9 +1,10 @@
 package com.kelvn.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,10 +17,12 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-@Audited
+//@Audited
+//@SQLDelete(sql = "UPDATE account SET is_deleted = TRUE WHERE id = ?")
+//@Where(clause = "is_deleted = false")
 public class MetaAccount extends BaseModel {
 
-  @Column(name = "meta_account_id", unique = true)
+@Column(name = "meta_account_id", unique = true)
   @NotNull
   private String metaAccountId;
 
@@ -39,12 +42,12 @@ public class MetaAccount extends BaseModel {
   @NotNull
   private String last_name;
 
-  @NotAudited
   @OneToOne(
     mappedBy = "metaAccount",
     cascade = CascadeType.ALL,
-    fetch = FetchType.EAGER,
-    orphanRemoval = true
+    orphanRemoval = true,
+    fetch = FetchType.LAZY
   )
   private Account account;
+
 }
