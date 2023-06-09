@@ -1,6 +1,6 @@
 package com.kelvn.service.external;
 
-import com.kelvn.dto.external.response.MetaAccountResDTO;
+import com.kelvn.dto.external.response.MetaAccountResponseDTO;
 
 public class MetaService extends ApiBinding {
   private static final String GRAPH_API_BASE_URL = "https://graph.facebook.com";
@@ -9,7 +9,7 @@ public class MetaService extends ApiBinding {
     super(accessToken);
   }
 
-  public MetaAccountResDTO getProfile() {
-    return restTemplate.getForObject(GRAPH_API_BASE_URL + "/me?fields=id,last_name,link,email,first_name,name", MetaAccountResDTO.class);
+  public MetaAccountResponseDTO getProfile() {
+    return restTemplate.getForObject(GRAPH_API_BASE_URL + "/me?fields=id,last_name,link,email,first_name,name", MetaAccountResponseDTO.class);
   }
 }

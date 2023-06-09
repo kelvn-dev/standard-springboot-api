@@ -1,7 +1,7 @@
 package com.kelvn.controller.webapp;
 
 import com.kelvn.dto.request.AccountRequestDTO;
-import com.kelvn.dto.request.MetaAuthReqDTO;
+import com.kelvn.dto.request.MetaAuthRequestDTO;
 import com.kelvn.dto.response.AccountResponseDTO;
 import com.kelvn.service.AccountService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,7 +29,7 @@ public class WebappAccountController {
   }
 
   @PostMapping("/meta/signup")
-  public ResponseEntity<?> signupWithMeta(@RequestBody @Valid MetaAuthReqDTO requestDTO) {
+  public ResponseEntity<?> signupWithMeta(@RequestBody @Valid MetaAuthRequestDTO requestDTO) {
     AccountResponseDTO responseDTO = accountService.signupWithMeta(requestDTO);
     return ResponseEntity.ok(responseDTO);
   }

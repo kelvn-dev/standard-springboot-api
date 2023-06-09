@@ -1,6 +1,6 @@
 package com.kelvn.service;
 
-import com.kelvn.dto.external.response.MetaAccountResDTO;
+import com.kelvn.dto.external.response.MetaAccountResponseDTO;
 import com.kelvn.model.MetaAccount;
 import com.kelvn.repository.MetaAccountRepository;
 import com.kelvn.service.external.MetaService;
@@ -26,8 +26,8 @@ public class AuthService {
 
   public String loginWithMeta(String accessToken) {
     MetaService metaService = new MetaService(accessToken);
-    MetaAccountResDTO metaAccountResDTO = metaService.getProfile();
-    MetaAccount metaAccount = metaAccountRepository.findByMetaAccountId(metaAccountResDTO.getId()).orElse(null);
+    MetaAccountResponseDTO metaAccountResponseDTO = metaService.getProfile();
+    MetaAccount metaAccount = metaAccountRepository.findByMetaAccountId(metaAccountResponseDTO.getId()).orElse(null);
     if (metaAccount == null) {
       System.out.println("COMEEEEEEE");
       throw new BadCredentialsException(null);

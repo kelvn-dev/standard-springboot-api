@@ -2,7 +2,7 @@ package com.kelvn.controller;
 
 import com.kelvn.dto.Token;
 import com.kelvn.dto.request.AuthRequestDTO;
-import com.kelvn.dto.request.MetaAuthReqDTO;
+import com.kelvn.dto.request.MetaAuthRequestDTO;
 import com.kelvn.dto.response.AuthResponseDTO;
 import com.kelvn.service.AuthService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -42,7 +42,7 @@ public class TokenController {
   }
 
   @PostMapping("/meta/token")
-  public ResponseEntity<?> loginWithMeta(@RequestBody @Valid MetaAuthReqDTO request) {
+  public ResponseEntity<?> loginWithMeta(@RequestBody @Valid MetaAuthRequestDTO request) {
     try {
       String token = authService.loginWithMeta(request.getAccessToken());
       return ResponseEntity.ok(new AuthResponseDTO(token));

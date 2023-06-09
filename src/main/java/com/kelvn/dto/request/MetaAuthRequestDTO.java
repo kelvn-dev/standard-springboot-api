@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @NoArgsConstructor
 @Accessors(chain = true)
-public class MetaAuthReqDTO implements BaseDTO {
+public class MetaAuthRequestDTO implements BaseDTO {
   @NotNull
   private String accessToken;
 }

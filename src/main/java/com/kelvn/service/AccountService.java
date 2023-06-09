@@ -1,8 +1,8 @@
 package com.kelvn.service;
 
-import com.kelvn.dto.external.response.MetaAccountResDTO;
+import com.kelvn.dto.external.response.MetaAccountResponseDTO;
 import com.kelvn.dto.request.AccountRequestDTO;
-import com.kelvn.dto.request.MetaAuthReqDTO;
+import com.kelvn.dto.request.MetaAuthRequestDTO;
 import com.kelvn.dto.response.AccountResponseDTO;
 import com.kelvn.dto.response.extend.ExtAccountResponseDTO;
 import com.kelvn.exception.ConflictException;
@@ -65,14 +65,14 @@ public class AccountService extends BaseService<Account, AccountRequestDTO, Acco
     return responseDTO;
   }
 
-  public AccountResponseDTO signupWithMeta(MetaAuthReqDTO requestDTO) {
+  public AccountResponseDTO signupWithMeta(MetaAuthRequestDTO requestDTO) {
     MetaService metaService = new MetaService(requestDTO.getAccessToken());
-    MetaAccountResDTO metaAccountResDTO = metaService.getProfile();
-    MetaAccount metaAccount = metaAccountRepository.findByMetaAccountId(metaAccountResDTO.getId()).orElse(null);
+    MetaAccountResponseDTO metaAccountResponseDTO = metaService.getProfile();
+    MetaAccount metaAccount = metaAccountRepository.findByMetaAccountId(metaAccountResponseDTO.getId()).orElse(null);
     if (metaAccount != null) {
       throw new ConflictException(MetaAccount.class, "email", metaAccount.getEmail());
     }
-    metaAccount = mappingUtils.mapFromDTO(metaAccountResDTO, MetaAccount.class);
+    metaAccount = mappingUtils.mapFromDTO(metaAccountResponseDTO, MetaAccount.class);
 
     Account account = new Account();
     account.setEmail(metaAccount.getEmail());

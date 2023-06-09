@@ -18,7 +18,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @Accessors(chain = true)
-public class MetaAccountResDTO implements BaseDTO {
+public class MetaAccountResponseDTO implements BaseDTO {
   private String id;
   private String name;
   private String email;
@@ -31,20 +31,20 @@ public class MetaAccountResDTO implements BaseDTO {
     return mapper;
   }
 
-  public PropertyMap<MetaAccountResDTO, MetaAccount> MetaAccountMap(MappingUtils utils) {
-    return new PropertyMap<MetaAccountResDTO, MetaAccount>() {
+  public PropertyMap<MetaAccountResponseDTO, MetaAccount> MetaAccountMap(MappingUtils utils) {
+    return new PropertyMap<MetaAccountResponseDTO, MetaAccount>() {
       @Override
       protected void configure() {
-        Converter<MetaAccountResDTO, String> mapMetaAccountId = new AbstractConverter<MetaAccountResDTO, String>() {
+        Converter<MetaAccountResponseDTO, String> mapMetaAccountId = new AbstractConverter<MetaAccountResponseDTO, String>() {
           @Override
-          protected String convert(MetaAccountResDTO fbProfileResDTO) {
+          protected String convert(MetaAccountResponseDTO fbProfileResDTO) {
             return fbProfileResDTO.getId();
           }
         };
 
-        Converter<MetaAccountResDTO, UUID> mapId = new AbstractConverter<MetaAccountResDTO, UUID>() {
+        Converter<MetaAccountResponseDTO, UUID> mapId = new AbstractConverter<MetaAccountResponseDTO, UUID>() {
           @Override
-          protected UUID convert(MetaAccountResDTO fbProfileResDTO) {
+          protected UUID convert(MetaAccountResponseDTO fbProfileResDTO) {
             return null;
           }
         };
