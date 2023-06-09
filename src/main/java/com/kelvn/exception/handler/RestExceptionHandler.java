@@ -1,8 +1,10 @@
-package com.kelvn.controller;
+package com.kelvn.exception.handler;
 
 import com.kelvn.dto.api.ApiError;
 import com.kelvn.exception.ConflictException;
 import com.kelvn.exception.NotFoundException;
+import com.kelvn.exception.ServiceUnAvailableException;
+import com.kelvn.exception.UnauthorizedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -23,7 +25,6 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import javax.naming.ServiceUnavailableException;
 import javax.validation.ConstraintViolationException;
 
 @ControllerAdvice
@@ -49,9 +50,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     return buildResponseEntity(apiError);
   }
 
-  @ExceptionHandler(ServiceUnavailableException.class)
-  protected ResponseEntity<Object> handleServiceUnavailable(ServiceUnavailableException ex) {
+  @ExceptionHandler(ServiceUnAvailableException.class)
+  protected ResponseEntity<Object> handleServiceUnavailable(ServiceUnAvailableException ex) {
     ApiError apiError = new ApiError(HttpStatus.SERVICE_UNAVAILABLE);
+    apiError.setMessage(ex.getMessage());
+    return buildResponseEntity(apiError);
+  }
+
+  @ExceptionHandler(UnauthorizedException.class)
+  protected ResponseEntity<Object> handleServiceUnavailable(UnauthorizedException ex) {
+    ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED);
     apiError.setMessage(ex.getMessage());
     return buildResponseEntity(apiError);
   }

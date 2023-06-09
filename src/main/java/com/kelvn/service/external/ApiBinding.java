@@ -1,5 +1,6 @@
 package com.kelvn.service.external;
 
+import com.kelvn.exception.handler.RestTemplateErrorHandler;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -14,6 +15,8 @@ public abstract class ApiBinding {
 
   public ApiBinding(String accessToken) {
     this.restTemplate = new RestTemplate();
+    // TODO: need to use different HttpClient than default SDK, to get response body for errors
+    this.restTemplate.setErrorHandler(new RestTemplateErrorHandler());
     if (accessToken != null) {
       this.restTemplate.getInterceptors().add(getBearerTokenInterceptor(accessToken));
     } else {
