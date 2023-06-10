@@ -2,6 +2,7 @@ package com.kelvn.controller;
 
 import com.kelvn.dto.Token;
 import com.kelvn.dto.request.AuthRequestDTO;
+import com.kelvn.dto.request.GoogleAuthRequestDTO;
 import com.kelvn.dto.request.MetaAuthRequestDTO;
 import com.kelvn.dto.response.AuthResponseDTO;
 import com.kelvn.service.AuthService;
@@ -31,9 +32,9 @@ public class TokenController {
   }
 
   @PostMapping("/token")
-  public ResponseEntity<?> login(@RequestBody @Valid AuthRequestDTO request) {
+  public ResponseEntity<?> login(@RequestBody @Valid AuthRequestDTO requestDTO) {
     try {
-      String token = authService.login(request.getEmail(), request.getPassword());
+      String token = authService.login(requestDTO.getEmail(), requestDTO.getPassword());
       return ResponseEntity.ok(new AuthResponseDTO(token));
     }
     catch (BadCredentialsException exception) {
@@ -42,9 +43,20 @@ public class TokenController {
   }
 
   @PostMapping("/meta/token")
-  public ResponseEntity<?> loginWithMeta(@RequestBody @Valid MetaAuthRequestDTO request) {
+  public ResponseEntity<?> loginWithMeta(@RequestBody @Valid MetaAuthRequestDTO requestDTO) {
     try {
-      String token = authService.loginWithMeta(request.getAccessToken());
+      String token = authService.loginWithMeta(requestDTO.getAccessToken());
+      return ResponseEntity.ok(new AuthResponseDTO(token));
+    }
+    catch (BadCredentialsException exception) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+  }
+
+  @PostMapping("/google/token")
+  public ResponseEntity<?> loginWithGoogle(@RequestBody @Valid GoogleAuthRequestDTO requestDTO) {
+    try {
+      String token = authService.loginWithGoogle(requestDTO.getIdToken());
       return ResponseEntity.ok(new AuthResponseDTO(token));
     }
     catch (BadCredentialsException exception) {
