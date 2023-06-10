@@ -53,6 +53,10 @@ public class Account extends BaseModel implements UserDetails {
   @JoinColumn(name = "meta_account_id", referencedColumnName = "id")
   private MetaAccount metaAccount;
 
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinColumn(name = "google_account_id", referencedColumnName = "id")
+  private GoogleAccount googleAccount;
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return new HashSet<>();

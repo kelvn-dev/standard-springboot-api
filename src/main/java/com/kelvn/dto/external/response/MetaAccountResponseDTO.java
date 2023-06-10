@@ -37,14 +37,14 @@ public class MetaAccountResponseDTO implements BaseDTO {
       protected void configure() {
         Converter<MetaAccountResponseDTO, String> mapMetaAccountId = new AbstractConverter<MetaAccountResponseDTO, String>() {
           @Override
-          protected String convert(MetaAccountResponseDTO fbProfileResDTO) {
-            return fbProfileResDTO.getId();
+          protected String convert(MetaAccountResponseDTO metaAccountResponseDTO) {
+            return metaAccountResponseDTO.getId();
           }
         };
 
         Converter<MetaAccountResponseDTO, UUID> mapId = new AbstractConverter<MetaAccountResponseDTO, UUID>() {
           @Override
-          protected UUID convert(MetaAccountResponseDTO fbProfileResDTO) {
+          protected UUID convert(MetaAccountResponseDTO metaAccountResponseDTO) {
             return null;
           }
         };

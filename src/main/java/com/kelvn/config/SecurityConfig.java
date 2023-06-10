@@ -81,8 +81,8 @@ public class SecurityConfig {
 
   private final String[] byPassPath = new String[] {
     "api/v3/api-docs/**", "/configuration/ui", "/swagger-resources/**", "/configuration/security", "/swagger-ui/**",
-    "/api/token", "/api/meta/token",
-    "/api/v1/webapp/account/signup", "/api/v1/webapp/account/meta/signup"
+    "/api/token", "/api/meta/token", "/api/google/token",
+    "/api/v1/webapp/account/signup", "/api/v1/webapp/account/meta/signup", "/api/v1/webapp/account/google/signup"
   };
 
   /**

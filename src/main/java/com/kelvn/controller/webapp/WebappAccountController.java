@@ -1,6 +1,7 @@
 package com.kelvn.controller.webapp;
 
 import com.kelvn.dto.request.AccountRequestDTO;
+import com.kelvn.dto.request.GoogleAuthRequestDTO;
 import com.kelvn.dto.request.MetaAuthRequestDTO;
 import com.kelvn.dto.response.AccountResponseDTO;
 import com.kelvn.service.AccountService;
@@ -31,6 +32,12 @@ public class WebappAccountController {
   @PostMapping("/meta/signup")
   public ResponseEntity<?> signupWithMeta(@RequestBody @Valid MetaAuthRequestDTO requestDTO) {
     AccountResponseDTO responseDTO = accountService.signupWithMeta(requestDTO);
+    return ResponseEntity.ok(responseDTO);
+  }
+
+  @PostMapping("/google/signup")
+  public ResponseEntity<?> signupWithGoogle(@RequestBody @Valid GoogleAuthRequestDTO requestDTO) {
+    AccountResponseDTO responseDTO = accountService.signupWithGoogle(requestDTO);
     return ResponseEntity.ok(responseDTO);
   }
 

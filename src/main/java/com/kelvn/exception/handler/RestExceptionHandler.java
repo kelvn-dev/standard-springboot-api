@@ -4,7 +4,7 @@ import com.kelvn.dto.api.ApiError;
 import com.kelvn.exception.ConflictException;
 import com.kelvn.exception.NotFoundException;
 import com.kelvn.exception.ServiceUnAvailableException;
-import com.kelvn.exception.UnauthorizedException;
+import com.kelvn.exception.UnAuthorizedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -36,6 +36,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     return new ResponseEntity<Object>(apiError, apiError.getStatus());
   }
 
+  private ResponseEntity<Object> buildResponseEntity(HttpStatus httpStatus) {
+    return new ResponseEntity<Object>(httpStatus);
+  }
+
   @ExceptionHandler(NotFoundException.class)
   protected ResponseEntity<Object> handleNotFound(NotFoundException ex) {
     ApiError apiError = new ApiError(HttpStatus.NOT_FOUND);
@@ -57,8 +61,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     return buildResponseEntity(apiError);
   }
 
-  @ExceptionHandler(UnauthorizedException.class)
-  protected ResponseEntity<Object> handleServiceUnavailable(UnauthorizedException ex) {
+  @ExceptionHandler(UnAuthorizedException.class)
+  protected ResponseEntity<Object> handleServiceUnavailable(UnAuthorizedException ex) {
+    if (ex.getMessage() == null) {
+      return buildResponseEntity(HttpStatus.UNAUTHORIZED);
+    }
     ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED);
     apiError.setMessage(ex.getMessage());
     return buildResponseEntity(apiError);
