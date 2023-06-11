@@ -29,7 +29,7 @@ public class RestTemplateErrorHandler implements ResponseErrorHandler {
     else {
       switch (response.getStatusCode()) {
         case UNAUTHORIZED:
-          throw new UnAuthorizedException(response.getStatusText());
+          throw new UnAuthorizedException();
         default:
           throw new RuntimeException(response.getBody().toString());
       }

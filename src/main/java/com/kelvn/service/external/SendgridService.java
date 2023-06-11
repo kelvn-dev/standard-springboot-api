@@ -1,5 +1,6 @@
 package com.kelvn.service.external;
 
+import com.kelvn.enums.SendGridTemplate;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -17,17 +18,17 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.kelvn.enums.SendGridTemplate.REGISTRATION_TEMPLATE;
-
 @Service
 @RequiredArgsConstructor
 public class SendgridService {
   @Value("${spring.sendgrid.email.from}")
   private String EMAIL_FROM;
+  @Value("${server.uri}")
+  private String SERVER_URI;
   private final SendGrid sendGrid;
 
   @SneakyThrows
-  public void send(String emailTo, String templateId, Map<String, Object> templateData) {
+  public void send(String emailTo, String templateId, Map<String, String> templateData) {
     // Use Single Sender Verification configured in setting for Email from
     Email sender = new Email(EMAIL_FROM);
     Email receiver = new Email(emailTo);
@@ -46,16 +47,20 @@ public class SendgridService {
       request.setEndpoint("mail/send");
       request.setBody(mail.build());
       response = sendGrid.api(request);
+      System.out.println(response.getStatusCode());
+      System.out.println(response.getBody());
     } catch (IOException e) {
       throw new ServiceUnavailableException(e.getMessage());
     }
   }
 
-  public void sendRegistrationEmail(String email, Object username, String link) {
-    Map<String, Object> templateData = new HashMap<>();
+  public void sendEmailVerification(String email, String username, String password, String source, String token) {
+    Map<String, String> templateData = new HashMap<>();
     templateData.put("username", username);
-    templateData.put("link", link);
-    send(email, REGISTRATION_TEMPLATE.getTemplateId(), templateData);
+    templateData.put("password", password);
+    templateData.put("source", source);
+    templateData.put("verificationUrl", SERVER_URI.concat("/verify?token=").concat(token));
+    send(email, SendGridTemplate.SIGNUP_TEMPLATE.getTemplateId(), templateData);
   }
 
 }
