@@ -1,30 +1,20 @@
 package com.kelvn.service;
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.kelvn.dto.external.response.GoogleAccountResponseDTO;
-import com.kelvn.dto.external.response.MetaAccountResponseDTO;
 import com.kelvn.dto.request.AccountRequestDTO;
-import com.kelvn.dto.request.GoogleAuthRequestDTO;
-import com.kelvn.dto.request.MetaAuthRequestDTO;
 import com.kelvn.dto.response.AccountResponseDTO;
 import com.kelvn.dto.response.extend.ExtAccountResponseDTO;
-import com.kelvn.enums.Source;
 import com.kelvn.exception.ConflictException;
 import com.kelvn.exception.NotFoundException;
 import com.kelvn.model.Account;
-import com.kelvn.model.GoogleAccount;
-import com.kelvn.model.MetaAccount;
 import com.kelvn.repository.AccountRepository;
 import com.kelvn.repository.GoogleAccountRepository;
 import com.kelvn.repository.MetaAccountRepository;
 import com.kelvn.service.external.GoogleService;
-import com.kelvn.service.external.MetaService;
 import com.kelvn.service.external.SendgridService;
 import com.kelvn.utils.MappingUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -70,65 +60,65 @@ public class AccountService extends BaseService<Account, AccountRequestDTO, Acco
   public AccountResponseDTO signup(AccountRequestDTO requestDTO) {
     AccountResponseDTO responseDTO = this.create(requestDTO);
 
-    String token = UUID.randomUUID().toString(); // Need alternative approach
-    String link = SERVER_URI.concat("/api/v1/webapp/verify?token=").concat(token);
+//    String token = UUID.randomUUID().toString(); // Need alternative approach
+//    String link = SERVER_URI.concat("/api/v1/webapp/verify?token=").concat(token);
 //    sendgridService.sendRegistrationEmail(requestDTO.getEmail(), requestDTO.getUsername(), link);
 
     return responseDTO;
   }
 
-  @Transactional
-  public AccountResponseDTO signupWithMeta(MetaAuthRequestDTO requestDTO) {
-    MetaService metaService = new MetaService(requestDTO.getAccessToken());
-    MetaAccountResponseDTO metaAccountResponseDTO = metaService.getProfile();
-
-    MetaAccount metaAccount = metaAccountRepository.findByMetaAccountId(metaAccountResponseDTO.getId()).orElse(null);
-    if (metaAccount != null) {
-      throw new ConflictException(MetaAccount.class, "email", metaAccount.getEmail());
-    }
-    metaAccount = mappingUtils.mapFromDTO(metaAccountResponseDTO, MetaAccount.class);
-
-    Account account = repository.findByEmail(metaAccount.getEmail()).orElse(null);
-    if (account == null) {
-      account = new Account();
-      account.setEmail(metaAccount.getEmail());
-      account.setUsername(metaAccount.getFirst_name().concat(metaAccount.getLast_name()));
-      account.setPassword(passwordEncoder.encode(metaAccount.getMetaAccountId()));
-      account.setMetaAccount(metaAccount);
-      String token = UUID.randomUUID().toString(); // Need alternative approach
-      sendgridService.sendEmailVerification(account.getEmail(), account.getUsername(), metaAccount.getMetaAccountId(), Source.META.getLabel(), token);
-      return super.create(account);
-    }
-    account.setMetaAccount(metaAccount);
-    return mappingUtils.mapToDTO(account, AccountResponseDTO.class);
-  }
-
-  @Transactional
-  public AccountResponseDTO signupWithGoogle(GoogleAuthRequestDTO requestDTO) {
-    GoogleIdToken.Payload payload = googleService.verifyToken(requestDTO.getIdToken());
-    GoogleAccountResponseDTO googleAccountResponseDTO = mappingUtils.mapToDTO(payload, GoogleAccountResponseDTO.class);
-
-    GoogleAccount googleAccount = googleAccountRepository.findBySub(googleAccountResponseDTO.getSub()).orElse(null);
-    if (googleAccount != null) {
-      throw new ConflictException(GoogleAccount.class, "email", googleAccount.getEmail());
-    }
-    googleAccount = mappingUtils.mapFromDTO(googleAccountResponseDTO, GoogleAccount.class);
-
-    Account account = repository.findByEmail(googleAccount.getEmail()).orElse(null);
-    if (account == null) {
-      account = new Account();
-      account.setEmail(googleAccount.getEmail());
-      account.setUsername(googleAccount.getName());
-      account.setPassword(passwordEncoder.encode(googleAccount.getSub()));
-      account.setGoogleAccount(googleAccount);
-      String token = UUID.randomUUID().toString(); // Need alternative approach
-      sendgridService.sendEmailVerification(account.getEmail(), account.getUsername(), googleAccount.getSub(), Source.GOOGLE.getLabel(), token);
-      return super.create(account);
-    }
-    String token = UUID.randomUUID().toString(); // Need alternative approach
-    sendgridService.sendEmailVerification(account.getEmail(), account.getUsername(), googleAccount.getSub(), Source.GOOGLE.getLabel(), token);
-    account.setGoogleAccount(googleAccount);
-    return mappingUtils.mapToDTO(account, AccountResponseDTO.class);
-  }
+//  @Transactional
+//  public AccountResponseDTO signupWithMeta(MetaAuthRequestDTO requestDTO) {
+//    MetaService metaService = new MetaService(requestDTO.getAccessToken());
+//    MetaAccountResponseDTO metaAccountResponseDTO = metaService.getProfile();
+//
+//    MetaAccount metaAccount = metaAccountRepository.findByMetaAccountId(metaAccountResponseDTO.getId()).orElse(null);
+//    if (metaAccount != null) {
+//      throw new ConflictException(MetaAccount.class, "email", metaAccount.getEmail());
+//    }
+//    metaAccount = mappingUtils.mapFromDTO(metaAccountResponseDTO, MetaAccount.class);
+//
+//    Account account = repository.findByEmail(metaAccount.getEmail()).orElse(null);
+//    if (account == null) {
+//      account = new Account();
+//      account.setEmail(metaAccount.getEmail());
+//      account.setUsername(metaAccount.getFirst_name().concat(metaAccount.getLast_name()));
+//      account.setPassword(passwordEncoder.encode(metaAccount.getMetaAccountId()));
+//      account.setMetaAccount(metaAccount);
+//      String token = UUID.randomUUID().toString(); // Need alternative approach
+//      sendgridService.sendEmailVerification(account.getEmail(), account.getUsername(), metaAccount.getMetaAccountId(), Source.META.getLabel(), token);
+//      return super.create(account);
+//    }
+//    account.setMetaAccount(metaAccount);
+//    return mappingUtils.mapToDTO(account, AccountResponseDTO.class);
+//  }
+//
+//  @Transactional
+//  public AccountResponseDTO signupWithGoogle(GoogleAuthRequestDTO requestDTO) {
+//    GoogleIdToken.Payload payload = googleService.verifyToken(requestDTO.getIdToken());
+//    GoogleAccountResponseDTO googleAccountResponseDTO = mappingUtils.mapToDTO(payload, GoogleAccountResponseDTO.class);
+//
+//    GoogleAccount googleAccount = googleAccountRepository.findBySub(googleAccountResponseDTO.getSub()).orElse(null);
+//    if (googleAccount != null) {
+//      throw new ConflictException(GoogleAccount.class, "email", googleAccount.getEmail());
+//    }
+//    googleAccount = mappingUtils.mapFromDTO(googleAccountResponseDTO, GoogleAccount.class);
+//
+//    Account account = repository.findByEmail(googleAccount.getEmail()).orElse(null);
+//    if (account == null) {
+//      account = new Account();
+//      account.setEmail(googleAccount.getEmail());
+//      account.setUsername(googleAccount.getName());
+//      account.setPassword(passwordEncoder.encode(googleAccount.getSub()));
+//      account.setGoogleAccount(googleAccount);
+//      String token = UUID.randomUUID().toString(); // Need alternative approach
+//      sendgridService.sendEmailVerification(account.getEmail(), account.getUsername(), googleAccount.getSub(), Source.GOOGLE.getLabel(), token);
+//      return super.create(account);
+//    }
+//    String token = UUID.randomUUID().toString(); // Need alternative approach
+//    sendgridService.sendEmailVerification(account.getEmail(), account.getUsername(), googleAccount.getSub(), Source.GOOGLE.getLabel(), token);
+//    account.setGoogleAccount(googleAccount);
+//    return mappingUtils.mapToDTO(account, AccountResponseDTO.class);
+//  }
 
 }
