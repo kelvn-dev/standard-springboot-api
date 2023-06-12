@@ -3,6 +3,7 @@ package com.kelvn.dto.external.response;
 import com.kelvn.dto.BaseDTO;
 import com.kelvn.model.GoogleAccount;
 import com.kelvn.utils.MappingUtils;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,8 +12,6 @@ import org.modelmapper.AbstractConverter;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
-
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -37,19 +36,21 @@ public class GoogleAccountResponseDTO implements BaseDTO {
     return new PropertyMap<GoogleAccountResponseDTO, GoogleAccount>() {
       @Override
       protected void configure() {
-        Converter<GoogleAccountResponseDTO, String> mapGoogleAccountId = new AbstractConverter<GoogleAccountResponseDTO, String>() {
-          @Override
-          protected String convert(GoogleAccountResponseDTO googleAccountResponseDTO) {
-            return googleAccountResponseDTO.getSub();
-          }
-        };
+        Converter<GoogleAccountResponseDTO, String> mapGoogleAccountId =
+            new AbstractConverter<GoogleAccountResponseDTO, String>() {
+              @Override
+              protected String convert(GoogleAccountResponseDTO googleAccountResponseDTO) {
+                return googleAccountResponseDTO.getSub();
+              }
+            };
 
-        Converter<GoogleAccountResponseDTO, UUID> mapId = new AbstractConverter<GoogleAccountResponseDTO, UUID>() {
-          @Override
-          protected UUID convert(GoogleAccountResponseDTO fbProfileResDTO) {
-            return null;
-          }
-        };
+        Converter<GoogleAccountResponseDTO, UUID> mapId =
+            new AbstractConverter<GoogleAccountResponseDTO, UUID>() {
+              @Override
+              protected UUID convert(GoogleAccountResponseDTO fbProfileResDTO) {
+                return null;
+              }
+            };
 
         using(mapId).map(source, destination.getId());
         using(mapGoogleAccountId).map(source, destination.getSub());

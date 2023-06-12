@@ -3,6 +3,7 @@ package com.kelvn.dto.external.response;
 import com.kelvn.dto.BaseDTO;
 import com.kelvn.model.MetaAccount;
 import com.kelvn.utils.MappingUtils;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,8 +12,6 @@ import org.modelmapper.AbstractConverter;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
-
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -35,19 +34,21 @@ public class MetaAccountResponseDTO implements BaseDTO {
     return new PropertyMap<MetaAccountResponseDTO, MetaAccount>() {
       @Override
       protected void configure() {
-        Converter<MetaAccountResponseDTO, String> mapMetaAccountId = new AbstractConverter<MetaAccountResponseDTO, String>() {
-          @Override
-          protected String convert(MetaAccountResponseDTO metaAccountResponseDTO) {
-            return metaAccountResponseDTO.getId();
-          }
-        };
+        Converter<MetaAccountResponseDTO, String> mapMetaAccountId =
+            new AbstractConverter<MetaAccountResponseDTO, String>() {
+              @Override
+              protected String convert(MetaAccountResponseDTO metaAccountResponseDTO) {
+                return metaAccountResponseDTO.getId();
+              }
+            };
 
-        Converter<MetaAccountResponseDTO, UUID> mapId = new AbstractConverter<MetaAccountResponseDTO, UUID>() {
-          @Override
-          protected UUID convert(MetaAccountResponseDTO metaAccountResponseDTO) {
-            return null;
-          }
-        };
+        Converter<MetaAccountResponseDTO, UUID> mapId =
+            new AbstractConverter<MetaAccountResponseDTO, UUID>() {
+              @Override
+              protected UUID convert(MetaAccountResponseDTO metaAccountResponseDTO) {
+                return null;
+              }
+            };
 
         using(mapId).map(source, destination.getId());
         using(mapMetaAccountId).map(source, destination.getMetaAccountId());

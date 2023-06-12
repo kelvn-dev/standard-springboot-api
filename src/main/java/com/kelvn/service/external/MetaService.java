@@ -10,6 +10,8 @@ public class MetaService extends ApiBinding {
   }
 
   public MetaAccountResponseDTO getProfile() {
-    return restTemplate.getForObject(GRAPH_API_BASE_URL + "/me?fields=id,last_name,link,email,first_name,name", MetaAccountResponseDTO.class);
+    return restTemplate.getForObject(
+        GRAPH_API_BASE_URL + "/me?fields=id,last_name,link,email,first_name,name",
+        MetaAccountResponseDTO.class);
   }
 }

@@ -8,23 +8,24 @@ import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import javax.naming.ServiceUnavailableException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import javax.naming.ServiceUnavailableException;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class SendgridService {
   @Value("${spring.sendgrid.email.from}")
   private String EMAIL_FROM;
+
   @Value("${server.uri}")
   private String SERVER_URI;
+
   private final SendGrid sendGrid;
 
   @SneakyThrows
@@ -38,7 +39,8 @@ public class SendgridService {
     Mail mail = new Mail(sender, null, receiver, content);
     mail.setReplyTo(sender);
     mail.setTemplateId(templateId);
-    templateData.forEach((key, value) -> mail.personalization.get(0).addDynamicTemplateData(key, value));
+    templateData.forEach(
+        (key, value) -> mail.personalization.get(0).addDynamicTemplateData(key, value));
 
     Request request = new Request();
     Response response;
@@ -54,7 +56,8 @@ public class SendgridService {
     }
   }
 
-  public void sendEmailVerification(String email, String username, String password, String source, String token) {
+  public void sendEmailVerification(
+      String email, String username, String password, String source, String token) {
     Map<String, String> templateData = new HashMap<>();
     templateData.put("username", username);
     templateData.put("password", password);
@@ -62,5 +65,4 @@ public class SendgridService {
     templateData.put("verificationUrl", SERVER_URI.concat("/verify?token=").concat(token));
     send(email, SendGridTemplate.SIGNUP_TEMPLATE.getTemplateId(), templateData);
   }
-
 }

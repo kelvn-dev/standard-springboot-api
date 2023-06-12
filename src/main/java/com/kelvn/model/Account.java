@@ -1,6 +1,11 @@
 package com.kelvn.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.UUID;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,12 +14,6 @@ import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.UUID;
-
 @Entity
 @Table(name = "account")
 @Getter
@@ -22,18 +21,16 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-//@Audited
-//@SQLDelete(sql = "UPDATE account SET is_deleted = TRUE WHERE id = ?")
-//@Where(clause = "is_deleted = false")
+// @Audited
+// @SQLDelete(sql = "UPDATE account SET is_deleted = TRUE WHERE id = ?")
+// @Where(clause = "is_deleted = false")
 public class Account extends BaseModel implements UserDetails {
 
   @Column(name = "username")
-  @NotNull
-  private String username;
+  @NotNull private String username;
 
   @Column(name = "email")
-  @NotNull
-  private String email;
+  @NotNull private String email;
 
   @Column(name = "password")
   private String password;
@@ -41,7 +38,7 @@ public class Account extends BaseModel implements UserDetails {
   @Column(name = "birth_year")
   private Integer birthYear;
 
-  @Column(name="group_id", columnDefinition = "BINARY(16)")
+  @Column(name = "group_id", columnDefinition = "BINARY(16)")
   private UUID groupId;
 
   @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

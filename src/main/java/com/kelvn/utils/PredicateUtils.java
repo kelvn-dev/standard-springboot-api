@@ -1,7 +1,6 @@
 package com.kelvn.utils;
 
 import com.querydsl.core.types.dsl.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,16 +9,22 @@ import java.util.stream.Stream;
 
 public class PredicateUtils {
 
-  public static BooleanExpression getBooleanExpression(List<SearchCriteria> criterias, Class<?> classType) {
+  public static BooleanExpression getBooleanExpression(
+      List<SearchCriteria> criterias, Class<?> classType) {
     BooleanExpression exp = Expressions.asBoolean(true).isTrue();
     for (SearchCriteria criteria : criterias) {
-      exp = exp.and(PredicateUtils.getPredicate(criteria.getKey(), criteria.getOperator(), criteria.getValue(), classType));
+      exp =
+          exp.and(
+              PredicateUtils.getPredicate(
+                  criteria.getKey(), criteria.getOperator(), criteria.getValue(), classType));
     }
     return exp;
   }
 
-  public static BooleanExpression getPredicate(String key, String operator, String value, Class<?> classType) {
-    PathBuilder<?> entityPath = new PathBuilder<>(classType, HelperUtils.getEntityVariable(classType.getSimpleName()));
+  public static BooleanExpression getPredicate(
+      String key, String operator, String value, Class<?> classType) {
+    PathBuilder<?> entityPath =
+        new PathBuilder<>(classType, HelperUtils.getEntityVariable(classType.getSimpleName()));
     Class<?> propertyType = HelperUtils.getPropertyType(classType, key);
     switch (propertyType.getSimpleName()) {
       case "String":
@@ -37,7 +42,8 @@ public class PredicateUtils {
     }
   }
 
-  public static BooleanExpression getStringPredicate(String key, String operator, String value, PathBuilder<?> entityPath) {
+  public static BooleanExpression getStringPredicate(
+      String key, String operator, String value, PathBuilder<?> entityPath) {
     StringPath path = entityPath.getString(key);
     switch (operator) {
       case "=":
@@ -51,7 +57,8 @@ public class PredicateUtils {
     }
   }
 
-  public static BooleanExpression getIntegerPredicate(String key, String operator, String value, PathBuilder<?> entityPath) {
+  public static BooleanExpression getIntegerPredicate(
+      String key, String operator, String value, PathBuilder<?> entityPath) {
     NumberPath<Integer> path = entityPath.getNumber(key, Integer.class);
     switch (operator) {
       case "=":
@@ -70,13 +77,16 @@ public class PredicateUtils {
         return path.in(Stream.of(value.split(";")).map(Integer::parseInt).toArray(Integer[]::new));
       case "()":
         String[] valueRange = HelperUtils.getValueRange(value);
-        return path.between(valueRange[0].equals(" ") ? null : Integer.parseInt(valueRange[0]), valueRange[1].equals(" ") ? null : Integer.parseInt(valueRange[1]));
+        return path.between(
+            valueRange[0].equals(" ") ? null : Integer.parseInt(valueRange[0]),
+            valueRange[1].equals(" ") ? null : Integer.parseInt(valueRange[1]));
       default:
         return null;
     }
   }
 
-  public static BooleanExpression getDoublePredicate(String key, String operator, String value, PathBuilder<?> entityPath) {
+  public static BooleanExpression getDoublePredicate(
+      String key, String operator, String value, PathBuilder<?> entityPath) {
     NumberPath<Double> path = entityPath.getNumber(key, Double.class);
     switch (operator) {
       case "=":
@@ -95,13 +105,16 @@ public class PredicateUtils {
         return path.in(Stream.of(value.split(";")).map(Double::parseDouble).toArray(Double[]::new));
       case "()":
         String[] valueRange = HelperUtils.getValueRange(value);
-        return path.between(valueRange[0].equals(" ") ? null : Double.parseDouble(valueRange[0]), valueRange[1].equals(" ") ? null : Double.parseDouble(valueRange[1]));
+        return path.between(
+            valueRange[0].equals(" ") ? null : Double.parseDouble(valueRange[0]),
+            valueRange[1].equals(" ") ? null : Double.parseDouble(valueRange[1]));
       default:
         return null;
     }
   }
 
-  public static BooleanExpression getDatePredicate(String key, String operator, String value, PathBuilder<?> entityPath) {
+  public static BooleanExpression getDatePredicate(
+      String key, String operator, String value, PathBuilder<?> entityPath) {
     DatePath<LocalDate> path = entityPath.getDate(key, LocalDate.class);
     switch (operator) {
       case "=":
@@ -116,13 +129,16 @@ public class PredicateUtils {
         return path.loe(LocalDate.parse(value));
       case "()":
         String[] valueRange = HelperUtils.getValueRange(value);
-        return path.between(valueRange[0].equals(" ") ? null : LocalDate.parse(valueRange[0]), valueRange[1].equals(" ") ? null : LocalDate.parse(valueRange[1]));
+        return path.between(
+            valueRange[0].equals(" ") ? null : LocalDate.parse(valueRange[0]),
+            valueRange[1].equals(" ") ? null : LocalDate.parse(valueRange[1]));
       default:
         return null;
     }
   }
 
-  public static BooleanExpression getDateTimePredicate(String key, String operator, String value, PathBuilder<?> entityPath) {
+  public static BooleanExpression getDateTimePredicate(
+      String key, String operator, String value, PathBuilder<?> entityPath) {
     DatePath<LocalDateTime> path = entityPath.getDate(key, LocalDateTime.class);
     switch (operator) {
       case "=":
@@ -137,10 +153,11 @@ public class PredicateUtils {
         return path.loe(LocalDateTime.parse(value));
       case "()":
         String[] valueRange = HelperUtils.getValueRange(value);
-        return path.between(valueRange[0].equals(" ") ? null : LocalDateTime.parse(valueRange[0]), valueRange[1].equals(" ") ? null : LocalDateTime.parse(valueRange[1]));
+        return path.between(
+            valueRange[0].equals(" ") ? null : LocalDateTime.parse(valueRange[0]),
+            valueRange[1].equals(" ") ? null : LocalDateTime.parse(valueRange[1]));
       default:
         return null;
     }
   }
-
 }

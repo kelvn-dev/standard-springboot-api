@@ -1,30 +1,36 @@
 package com.kelvn.utils;
 
-import lombok.SneakyThrows;
-
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import lombok.SneakyThrows;
 
 public class HelperUtils {
 
   public static List<SearchCriteria> formatSearchCriteria(String[] filter) {
     List<SearchCriteria> criterias = new ArrayList<>();
     if (null != filter) {
-      Collection<SearchCriteria> collect = Arrays.asList(filter).parallelStream().map(HelperUtils::validateFilterPattern)
-        .collect(Collectors.toList());
+      Collection<SearchCriteria> collect =
+          Arrays.asList(filter).parallelStream()
+              .map(HelperUtils::validateFilterPattern)
+              .collect(Collectors.toList());
       criterias.addAll(collect);
     }
     return criterias;
   }
 
   public static SearchCriteria validateFilterPattern(String filter) {
-    final Pattern pattern = Pattern.compile("([\\w.]+?)(:|<|>|=|!=|<=|>=|%|\\(\\))([\\w\\s\\(\\):@;,._-]+?)\\|");
+    final Pattern pattern =
+        Pattern.compile("([\\w.]+?)(:|<|>|=|!=|<=|>=|%|\\(\\))([\\w\\s\\(\\):@;,._-]+?)\\|");
     Matcher m = pattern.matcher(filter + "|");
     if (m.find()) {
-      return SearchCriteria.builder().key(m.group(1)).operator(m.group(2)).value(m.group(3)).build();
+      return SearchCriteria.builder()
+          .key(m.group(1))
+          .operator(m.group(2))
+          .value(m.group(3))
+          .build();
     } else {
       throw new RuntimeException("Invalid Filter format");
     }
@@ -43,14 +49,15 @@ public class HelperUtils {
       propertyList.remove(propertyList.get(0));
       if ("List".equals(child.getSimpleName())) {
         return child;
-//				ParameterizedType type = (ParameterizedType) field.getGenericType();
-//				return getRecursiveType((Class<?>) type.getActualTypeArguments()[0], propertyList);
+        // ParameterizedType type = (ParameterizedType) field.getGenericType();
+        // return getRecursiveType((Class<?>) type.getActualTypeArguments()[0],
+        // propertyList);
       }
       return getRecursiveType(child, propertyList);
     } else {
       if (parent.getSuperclass() != null) {
         for (Field field : parent.getSuperclass().getDeclaredFields()) {
-          if(field.getName().equals(propertyList.get(0))) {
+          if (field.getName().equals(propertyList.get(0))) {
             return field.getType();
           }
         }
@@ -68,8 +75,7 @@ public class HelperUtils {
   public static String[] getValueRange(String value) {
     if (value.startsWith(";")) {
       value = " ".concat(value);
-    }
-    else if (value.endsWith(";")) {
+    } else if (value.endsWith(";")) {
       value = value.concat(" ");
     }
     String[] valueRange = value.split(";");
@@ -78,5 +84,4 @@ public class HelperUtils {
     }
     return valueRange;
   }
-
 }

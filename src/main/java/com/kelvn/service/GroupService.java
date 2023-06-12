@@ -1,18 +1,18 @@
 package com.kelvn.service;
 
-import com.kelvn.dto.response.extend.ExtGroupResponseDTO;
 import com.kelvn.dto.request.GroupRequestDTO;
 import com.kelvn.dto.response.GroupResponseDTO;
+import com.kelvn.dto.response.extend.ExtGroupResponseDTO;
 import com.kelvn.exception.NotFoundException;
 import com.kelvn.model.Group;
 import com.kelvn.repository.GroupRepository;
 import com.kelvn.utils.MappingUtils;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
-public class GroupService extends BaseService<Group, GroupRequestDTO, GroupResponseDTO, GroupRepository> {
+public class GroupService
+    extends BaseService<Group, GroupRequestDTO, GroupResponseDTO, GroupRepository> {
 
   public GroupService(GroupRepository repository, MappingUtils mappingUtils) {
     super(repository, mappingUtils);

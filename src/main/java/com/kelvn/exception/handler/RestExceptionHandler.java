@@ -5,6 +5,7 @@ import com.kelvn.exception.ConflictException;
 import com.kelvn.exception.NotFoundException;
 import com.kelvn.exception.ServiceUnAvailableException;
 import com.kelvn.exception.UnAuthorizedException;
+import javax.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -24,8 +25,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import javax.validation.ConstraintViolationException;
 
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -100,11 +99,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
    */
   @ExceptionHandler(DataIntegrityViolationException.class)
   protected ResponseEntity<Object> handleDataIntegrityViolation(
-    DataIntegrityViolationException ex,
-    WebRequest request
-  ) {
+      DataIntegrityViolationException ex, WebRequest request) {
     if (ex.getCause() instanceof ConstraintViolationException) {
-      return buildResponseEntity(new ApiError(HttpStatus.CONFLICT, ex.getCause(), "Database error"));
+      return buildResponseEntity(
+          new ApiError(HttpStatus.CONFLICT, ex.getCause(), "Database error"));
     }
     return buildResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex));
   }
@@ -117,33 +115,32 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
    */
   @ExceptionHandler(MethodArgumentTypeMismatchException.class)
   protected ResponseEntity<Object> handleMethodArgumentTypeMismatch(
-    MethodArgumentTypeMismatchException ex,
-    WebRequest request
-  ) {
+      MethodArgumentTypeMismatchException ex, WebRequest request) {
     ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
-    apiError.setMessage(String.format("The parameter '%s' of value '%s' could not be converted to type '%s'", ex.getName(), ex.getValue(), ex.getRequiredType().getSimpleName()));
+    apiError.setMessage(
+        String.format(
+            "The parameter '%s' of value '%s' could not be converted to type '%s'",
+            ex.getName(), ex.getValue(), ex.getRequiredType().getSimpleName()));
     apiError.setDebugMessage(ex.getMessage());
     return buildResponseEntity(apiError);
   }
 
-
-
   /**
-   * Handle MissingServletRequestParameterException. Triggered when a 'required' request parameter is missing.
+   * Handle MissingServletRequestParameterException. Triggered when a 'required' request parameter
+   * is missing.
    *
-   * @param ex      MissingServletRequestParameterException
+   * @param ex MissingServletRequestParameterException
    * @param headers HttpHeaders
-   * @param status  HttpStatus
+   * @param status HttpStatus
    * @param request WebRequest
    * @return the ApiError object
    */
   @Override
   protected ResponseEntity<Object> handleMissingServletRequestParameter(
-    MissingServletRequestParameterException ex,
-    HttpHeaders headers,
-    HttpStatus status,
-    WebRequest request
-  ) {
+      MissingServletRequestParameterException ex,
+      HttpHeaders headers,
+      HttpStatus status,
+      WebRequest request) {
     String message = ex.getParameterName().concat(" parameter is missing");
     return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, ex, message));
   }
@@ -151,40 +148,43 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
   /**
    * Handle HttpMediaTypeNotSupportedException. This one triggers when JSON is invalid as well.
    *
-   * @param ex      HttpMediaTypeNotSupportedException
+   * @param ex HttpMediaTypeNotSupportedException
    * @param headers HttpHeaders
-   * @param status  HttpStatus
+   * @param status HttpStatus
    * @param request WebRequest
    * @return the ApiError object
    */
   @Override
   protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(
-    HttpMediaTypeNotSupportedException ex,
-    HttpHeaders headers,
-    HttpStatus status,
-    WebRequest request
-  ) {
-    String message =  ex.getContentType().toString().concat(" media type is not supported. Supported media types are ");
+      HttpMediaTypeNotSupportedException ex,
+      HttpHeaders headers,
+      HttpStatus status,
+      WebRequest request) {
+    String message =
+        ex.getContentType()
+            .toString()
+            .concat(" media type is not supported. Supported media types are ");
     ex.getSupportedMediaTypes().forEach(type -> message.concat(type.toString()).concat(", "));
-    return buildResponseEntity(new ApiError(HttpStatus.UNSUPPORTED_MEDIA_TYPE, ex, message.substring(0, message.length() - 2)));
+    return buildResponseEntity(
+        new ApiError(
+            HttpStatus.UNSUPPORTED_MEDIA_TYPE, ex, message.substring(0, message.length() - 2)));
   }
 
   /**
    * Handle MethodArgumentNotValidException. Triggered when an object fails @Valid validation.
    *
-   * @param ex      the MethodArgumentNotValidException that is thrown when @Valid validation fails
+   * @param ex the MethodArgumentNotValidException that is thrown when @Valid validation fails
    * @param headers HttpHeaders
-   * @param status  HttpStatus
+   * @param status HttpStatus
    * @param request WebRequest
    * @return the ApiError object
    */
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(
-    MethodArgumentNotValidException ex,
-    HttpHeaders headers,
-    HttpStatus status,
-    WebRequest request
-  ) {
+      MethodArgumentNotValidException ex,
+      HttpHeaders headers,
+      HttpStatus status,
+      WebRequest request) {
     ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
     apiError.setMessage("Validation error");
     apiError.addValidationErrors(ex.getBindingResult().getFieldErrors());
@@ -195,21 +195,23 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
   /**
    * Handle HttpMessageNotReadableException. Happens when request JSON is malformed.
    *
-   * @param ex      HttpMessageNotReadableException
+   * @param ex HttpMessageNotReadableException
    * @param headers HttpHeaders
-   * @param status  HttpStatus
+   * @param status HttpStatus
    * @param request WebRequest
    * @return the ApiError object
    */
   @Override
   protected ResponseEntity<Object> handleHttpMessageNotReadable(
-    HttpMessageNotReadableException ex,
-    HttpHeaders headers,
-    HttpStatus status,
-    WebRequest request
-  ) {
+      HttpMessageNotReadableException ex,
+      HttpHeaders headers,
+      HttpStatus status,
+      WebRequest request) {
     ServletWebRequest servletWebRequest = (ServletWebRequest) request;
-    log.info("{} to {}", servletWebRequest.getHttpMethod(), servletWebRequest.getRequest().getServletPath());
+    log.info(
+        "{} to {}",
+        servletWebRequest.getHttpMethod(),
+        servletWebRequest.getRequest().getServletPath());
     String error = "Malformed JSON request";
     return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, ex, error));
   }
@@ -217,19 +219,18 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
   /**
    * Handle HttpMessageNotWritableException.
    *
-   * @param ex      HttpMessageNotWritableException
+   * @param ex HttpMessageNotWritableException
    * @param headers HttpHeaders
-   * @param status  HttpStatus
+   * @param status HttpStatus
    * @param request WebRequest
    * @return the ApiError object
    */
   @Override
   protected ResponseEntity<Object> handleHttpMessageNotWritable(
-    HttpMessageNotWritableException ex,
-    HttpHeaders headers,
-    HttpStatus status,
-    WebRequest request
-  ) {
+      HttpMessageNotWritableException ex,
+      HttpHeaders headers,
+      HttpStatus status,
+      WebRequest request) {
     String error = "Error writing JSON output";
     return buildResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex, error));
   }
@@ -237,24 +238,20 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
   /**
    * Handle NoHandlerFoundException.
    *
-   * @param ex      NoHandlerFoundException
+   * @param ex NoHandlerFoundException
    * @param headers HttpHeaders
-   * @param status  HttpStatus
+   * @param status HttpStatus
    * @param request WebRequest
    * @return
    */
   @Override
   protected ResponseEntity<Object> handleNoHandlerFoundException(
-    NoHandlerFoundException ex,
-    HttpHeaders headers,
-    HttpStatus status,
-    WebRequest request
-  ) {
+      NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
     ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
-    apiError.setMessage(String.format("Could not find the %s method for URL %s", ex.getHttpMethod(), ex.getRequestURL()));
+    apiError.setMessage(
+        String.format(
+            "Could not find the %s method for URL %s", ex.getHttpMethod(), ex.getRequestURL()));
     apiError.setDebugMessage(ex.getMessage());
     return buildResponseEntity(apiError);
   }
-
-
 }
