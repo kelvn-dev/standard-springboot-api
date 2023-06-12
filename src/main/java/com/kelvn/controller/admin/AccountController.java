@@ -35,7 +35,7 @@ public class AccountController implements SecuredRestController {
     AccountResponseDTO accountResponseDTO = accountService.getById(id, false);
     return ResponseEntity.ok(accountResponseDTO);
   }
-//
+
   @PutMapping("/{id}")
   public ResponseEntity<AccountResponseDTO> updateById(
     @PathVariable UUID id,
