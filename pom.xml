@@ -182,10 +182,6 @@
             <!--                        <includes>-->
             <!--                            <include>src/*/java/**/*.java</include>-->
             <!--                        </includes>-->
-            <indent>
-              <tabs>true</tabs>
-              <spacesPerTab>2</spacesPerTab>
-            </indent>
             <googleJavaFormat>
               <style>GOOGLE</style>
               <reflowLongStrings>false</reflowLongStrings>

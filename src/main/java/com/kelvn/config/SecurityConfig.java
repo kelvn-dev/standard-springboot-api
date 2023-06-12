@@ -135,12 +135,12 @@ public class SecurityConfig {
                       .hasAuthority("SCOPE_read")
                       .mvcMatchers("/write/**")
                       .hasAuthority("SCOPE_write")
-                      // .mvcMatchers("/token").hasAuthority("SCOPE_write") // test
+                      // .mvcMatchers("/token").hasAuthority("SCOPE_write")
                       .mvcMatchers("/user/**")
                       .hasAnyRole("user", "admin")
                       .mvcMatchers("/admin/**")
                       .hasRole("admin")
-                      // .mvcMatchers("/token").hasRole("admin") // test
+                      // .mvcMatchers("/token").hasRole("admin")
                       .anyRequest()
                       .authenticated() // set authentication for all endpoints
               )

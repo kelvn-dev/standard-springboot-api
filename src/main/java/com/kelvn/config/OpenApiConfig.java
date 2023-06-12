@@ -5,9 +5,6 @@ import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.OpenAPI;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 // Swagger-ui endpoint: http://localhost:8080/swagger-ui/index.html#
@@ -26,27 +23,22 @@ import org.springframework.context.annotation.Configuration;
     type = SecuritySchemeType.HTTP,
     bearerFormat = "JWT",
     scheme = "bearer")
-// @SecurityScheme(
-//    name = "bearerAuth",
-//    type = SecuritySchemeType.HTTP,
-//    bearerFormat = "JWT",
-//    scheme = "bearer")
 public class OpenApiConfig {
 
   // Another way to config
 
-  @Bean
-  public OpenAPI customOpenAPI() {
-    return new OpenAPI()
-        .components(new Components())
-        .info(
-            new io.swagger.v3.oas.models.info.Info()
-                .title("Standard Springboot API")
-                .description(
-                    "A project implemented with Spring Boot to be reused as standard template")
-                .contact(
-                    new io.swagger.v3.oas.models.info.Contact()
-                        .name("Kelvin Vu")
-                        .url("https://github.com/kelvn-dev")));
-  }
+  //  @Bean
+  //  public OpenAPI customOpenAPI() {
+  //    return new OpenAPI()
+  //        .components(new Components())
+  //        .info(
+  //            new io.swagger.v3.oas.models.info.Info()
+  //                .title("Standard Springboot API")
+  //                .description(
+  //                    "A project implemented with Spring Boot to be reused as standard template")
+  //                .contact(
+  //                    new io.swagger.v3.oas.models.info.Contact()
+  //                        .name("Kelvin Vu")
+  //                        .url("https://github.com/kelvn-dev")));
+  //  }
 }
