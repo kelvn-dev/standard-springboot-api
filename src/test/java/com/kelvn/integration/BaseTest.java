@@ -21,14 +21,17 @@ import java.util.List;
 import java.util.UUID;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS) // 1 instance of the test class to run all the tests instead of creating an instance for each method
-@DirtiesContext //create a totally new application context after finish running the test class
+// 1 instance of the test class to run all the tests instead of creating an instance for each method
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+// create a totally new application context after finish running the test class
+@DirtiesContext
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public abstract class BaseTest <REQ extends BaseDTO, RES extends BaseDTO> {
+public abstract class BaseTest<REQ extends BaseDTO, RES extends BaseDTO> {
   @LocalServerPort // read the current port
   private int port;
 
-  ClientHttpRequestFactory factory = new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory());
+  ClientHttpRequestFactory factory =
+    new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory());
   RestTemplate restTemplate = new RestTemplate(factory);
   HttpHeaders headers = new HttpHeaders();
   ObjectMapper mapper = new ObjectMapper();

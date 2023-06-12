@@ -6,10 +6,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum Source {
+	META("third-party identity (meta)"),
+	GOOGLE("third-party identity (google)"),
+	LOCAL("built-in system");
 
-  META("third-party identity (meta)"),
-  GOOGLE("third-party identity (google)"),
-  LOCAL("built-in system");
-
-  private String label;
+	private String label;
 }

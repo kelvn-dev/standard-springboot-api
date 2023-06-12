@@ -1,50 +1,51 @@
 package com.kelvn.service.external;
 
 import com.kelvn.exception.handler.RestTemplateErrorHandler;
+import java.io.IOException;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
-
 public abstract class ApiBinding {
 
-  protected RestTemplate restTemplate;
+	protected RestTemplate restTemplate;
 
-  public ApiBinding(String accessToken) {
-    this.restTemplate = new RestTemplate();
-    // TODO: need to use different HttpClient than default SDK, to get response body for errors
-    this.restTemplate.setErrorHandler(new RestTemplateErrorHandler());
-    if (accessToken != null) {
-      this.restTemplate.getInterceptors().add(getBearerTokenInterceptor(accessToken));
-    } else {
-      this.restTemplate.getInterceptors().add(getNoTokenInterceptor());
-    }
-  }
+	public ApiBinding(String accessToken) {
+		this.restTemplate = new RestTemplate();
+		// TODO: need to use different HttpClient than default SDK, to get response body
+		// for errors
+		this.restTemplate.setErrorHandler(new RestTemplateErrorHandler());
+		if (accessToken != null) {
+			this.restTemplate.getInterceptors().add(getBearerTokenInterceptor(accessToken));
+		} else {
+			this.restTemplate.getInterceptors().add(getNoTokenInterceptor());
+		}
+	}
 
-  private ClientHttpRequestInterceptor getBearerTokenInterceptor(String accessToken) {
-    ClientHttpRequestInterceptor interceptor =
-      new ClientHttpRequestInterceptor() {
-        @Override
-        public ClientHttpResponse intercept(HttpRequest request, byte[] bytes, ClientHttpRequestExecution execution) throws IOException {
-          request.getHeaders().add("Authorization", "Bearer " + accessToken);
-          return execution.execute(request, bytes);
-        }
-      };
-    return interceptor;
-  }
+	private ClientHttpRequestInterceptor getBearerTokenInterceptor(String accessToken) {
+		ClientHttpRequestInterceptor interceptor =
+				new ClientHttpRequestInterceptor() {
+					@Override
+					public ClientHttpResponse intercept(
+							HttpRequest request, byte[] bytes, ClientHttpRequestExecution execution)
+							throws IOException {
+						request.getHeaders().add("Authorization", "Bearer " + accessToken);
+						return execution.execute(request, bytes);
+					}
+				};
+		return interceptor;
+	}
 
-  private ClientHttpRequestInterceptor getNoTokenInterceptor() {
-    return new ClientHttpRequestInterceptor() {
-      @Override
-      public ClientHttpResponse intercept(HttpRequest request, byte[] bytes,
-                                          ClientHttpRequestExecution execution) throws IOException {
-        throw new IllegalStateException(
-          "Can't access the API without an access token");
-      }
-    };
-  }
-
+	private ClientHttpRequestInterceptor getNoTokenInterceptor() {
+		return new ClientHttpRequestInterceptor() {
+			@Override
+			public ClientHttpResponse intercept(
+					HttpRequest request, byte[] bytes, ClientHttpRequestExecution execution)
+					throws IOException {
+				throw new IllegalStateException("Can't access the API without an access token");
+			}
+		};
+	}
 }

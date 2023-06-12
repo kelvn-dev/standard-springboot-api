@@ -1,18 +1,16 @@
 package com.kelvn.dto.response;
 
 import com.kelvn.dto.BaseDTO;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.UUID;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class GroupResponseDTO implements BaseDTO {
 
-  private UUID id;
-  private String name;
-
+	private UUID id;
+	private String name;
 }

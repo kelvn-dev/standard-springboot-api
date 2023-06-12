@@ -5,8 +5,7 @@ import org.modelmapper.ModelMapper;
 
 public interface BaseDTO {
 
-  default ModelMapper updateModelMapper(ModelMapper mapper, MappingUtils utils){
-    return mapper;
-  }
-
+	default ModelMapper updateModelMapper(ModelMapper mapper, MappingUtils utils) {
+		return mapper;
+	}
 }

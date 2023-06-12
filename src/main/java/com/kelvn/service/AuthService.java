@@ -18,38 +18,48 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-  private final TokenService tokenService;
-  private final AuthenticationManager authenticationManager;
-  private final MetaAccountRepository metaAccountRepository;
-  private final GoogleAccountRepository googleAccountRepository;
-  private final GoogleService googleService;
+	private final TokenService tokenService;
+	private final AuthenticationManager authenticationManager;
+	private final MetaAccountRepository metaAccountRepository;
+	private final GoogleAccountRepository googleAccountRepository;
+	private final GoogleService googleService;
 
-  public String login(String email, String password) {
-    Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-    String token = tokenService.generateToken(authentication);
-    return token;
-  }
+	public String login(String email, String password) {
+		Authentication authentication =
+				authenticationManager.authenticate(
+						new UsernamePasswordAuthenticationToken(email, password));
+		String token = tokenService.generateToken(authentication);
+		return token;
+	}
 
-  public String loginWithMeta(String accessToken) {
-    MetaService metaService = new MetaService(accessToken);
-    MetaAccountResponseDTO metaAccountResponseDTO = metaService.getProfile();
-    MetaAccount metaAccount = metaAccountRepository.findByMetaAccountId(metaAccountResponseDTO.getId()).orElse(null);
-    if (metaAccount == null) {
-      throw new BadCredentialsException(null);
-    }
-    Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(metaAccount.getEmail(), metaAccount.getMetaAccountId()));
-    String token = tokenService.generateToken(authentication);
-    return token;
-  }
+	public String loginWithMeta(String accessToken) {
+		MetaService metaService = new MetaService(accessToken);
+		MetaAccountResponseDTO metaAccountResponseDTO = metaService.getProfile();
+		MetaAccount metaAccount =
+				metaAccountRepository.findByMetaAccountId(metaAccountResponseDTO.getId()).orElse(null);
+		if (metaAccount == null) {
+			throw new BadCredentialsException(null);
+		}
+		Authentication authentication =
+				authenticationManager.authenticate(
+						new UsernamePasswordAuthenticationToken(
+								metaAccount.getEmail(), metaAccount.getMetaAccountId()));
+		String token = tokenService.generateToken(authentication);
+		return token;
+	}
 
-  public String loginWithGoogle(String idToken) {
-    GoogleIdToken.Payload payload = googleService.verifyToken(idToken);
-    GoogleAccount googleAccount = googleAccountRepository.findBySub(payload.getSubject()).orElse(null);
-    if (googleAccount == null) {
-      throw new BadCredentialsException(null);
-    }
-    Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(googleAccount.getEmail(), googleAccount.getSub()));
-    String token = tokenService.generateToken(authentication);
-    return token;
-  }
+	public String loginWithGoogle(String idToken) {
+		GoogleIdToken.Payload payload = googleService.verifyToken(idToken);
+		GoogleAccount googleAccount =
+				googleAccountRepository.findBySub(payload.getSubject()).orElse(null);
+		if (googleAccount == null) {
+			throw new BadCredentialsException(null);
+		}
+		Authentication authentication =
+				authenticationManager.authenticate(
+						new UsernamePasswordAuthenticationToken(
+								googleAccount.getEmail(), googleAccount.getSub()));
+		String token = tokenService.generateToken(authentication);
+		return token;
+	}
 }

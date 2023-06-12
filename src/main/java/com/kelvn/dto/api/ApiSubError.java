@@ -1,4 +1,3 @@
 package com.kelvn.dto.api;
 
-public abstract class ApiSubError {
-}
+public abstract class ApiSubError {}

@@ -1,15 +1,14 @@
 package com.kelvn.model;
 
+import java.util.List;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.envers.NotAudited;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Entity
 @Table(name = "app_group")
@@ -18,26 +17,23 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-//@Audited
-//@SQLDelete(sql = "UPDATE app_group SET is_deleted = TRUE WHERE id = ?")
-//@Where(clause = "is_deleted = false")
+// @Audited
+// @SQLDelete(sql = "UPDATE app_group SET is_deleted = TRUE WHERE id = ?")
+// @Where(clause = "is_deleted = false")
 public class Group extends BaseModel {
 
-  @Column(name = "name")
-  @NotNull
-  private String name;
+	@Column(name = "name")
+	@NotNull private String name;
 
-  @NotAudited
-  @OneToMany(
-    mappedBy = "group",
-    cascade = CascadeType.ALL,
-    fetch = FetchType.EAGER,
-    orphanRemoval = true
-  )
-  private List<Account> accounts;
+	@NotAudited
+	@OneToMany(
+			mappedBy = "group",
+			cascade = CascadeType.ALL,
+			fetch = FetchType.EAGER,
+			orphanRemoval = true)
+	private List<Account> accounts;
 
-  public void updateRelations(){
-    accounts.forEach(account -> account.setGroup(this));
-  }
-
+	public void updateRelations() {
+		accounts.forEach(account -> account.setGroup(this));
+	}
 }

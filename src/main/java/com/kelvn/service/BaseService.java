@@ -23,15 +23,18 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public abstract class BaseService <
-    M extends BaseModel,
-    REQ extends BaseDTO,
-    RES extends BaseDTO,
-    R extends JpaRepository<M, UUID> & QuerydslPredicateExecutor<M>
-  > {
+public abstract class BaseService<
+  M extends BaseModel,
+  REQ extends BaseDTO,
+  RES extends BaseDTO,
+  R extends JpaRepository<M, UUID> & QuerydslPredicateExecutor<M>> {
 
-  protected final Class<M> modelClass = (Class<M>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-  protected final Class<RES> responseDtoClass = (Class<RES>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[2];
+  protected final Class<M> modelClass =
+    (Class<M>)
+      ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+  protected final Class<RES> responseDtoClass =
+    (Class<RES>)
+      ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[2];
   protected final R repository;
   protected final MappingUtils mappingUtils;
 
@@ -79,10 +82,14 @@ public abstract class BaseService <
   }
 
   public ApiPageableResponse formatPagingResponse(Page<M> page) {
-    return ApiPageableResponse.builder().currentPage(page.getNumber() + 1).pageSize(page.getSize())
-      .totalPages(page.getTotalPages()).totalElements(page.getTotalElements()).isFirst(page.isFirst()).isLast(page.isLast())
+    return ApiPageableResponse.builder()
+      .currentPage(page.getNumber() + 1)
+      .pageSize(page.getSize())
+      .totalPages(page.getTotalPages())
+      .totalElements(page.getTotalElements())
+      .isFirst(page.isFirst())
+      .isLast(page.isLast())
       .data(mappingUtils.mapListToDTO(page.getContent(), responseDtoClass))
       .build();
   }
-
 }

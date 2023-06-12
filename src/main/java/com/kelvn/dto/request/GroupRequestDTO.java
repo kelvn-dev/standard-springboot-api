@@ -1,49 +1,42 @@
 package com.kelvn.dto.request;
 
 import com.kelvn.dto.BaseDTO;
-import com.kelvn.model.Account;
-import com.kelvn.model.Group;
-import com.kelvn.utils.MappingUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.modelmapper.AbstractConverter;
-import org.modelmapper.Converter;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
-
-import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Accessors(chain = true)
 public class GroupRequestDTO implements BaseDTO {
-  private String name;
+	private String name;
 
-//  @Override
-//  public ModelMapper updateModelMapper(ModelMapper mapper, MappingUtils utils) {
-//    mapper.addMappings(accountMapping(utils));
-//    return mapper;
-//  }
+	// @Override
+	// public ModelMapper updateModelMapper(ModelMapper mapper, MappingUtils utils)
+	// {
+	// mapper.addMappings(accountMapping(utils));
+	// return mapper;
+	// }
 
-//  public PropertyMap<GroupRequestDTO, Group> accountMapping(MappingUtils utils) {
-//    return new PropertyMap<GroupRequestDTO, Group>() {
-//      @Override
-//      protected void configure() {
-//
-//        Converter<GroupRequestDTO, List<Account>> mapAccounts = new AbstractConverter<GroupRequestDTO, List<Account>>() {
-//          @Override
-//          protected List<Account> convert(GroupRequestDTO groupRequestDTO) {
-//            return utils.mapListFromDTO(groupRequestDTO.getAccounts(), Account.class);
-//          }
-//        };
-//
-//        using(mapAccounts).map(source, destination.getAccounts());
-//      }
-//    };
-//  }
-
+	// public PropertyMap<GroupRequestDTO, Group> accountMapping(MappingUtils utils)
+	// {
+	// return new PropertyMap<GroupRequestDTO, Group>() {
+	// @Override
+	// protected void configure() {
+	//
+	// Converter<GroupRequestDTO, List<Account>> mapAccounts = new
+	// AbstractConverter<GroupRequestDTO, List<Account>>() {
+	// @Override
+	// protected List<Account> convert(GroupRequestDTO groupRequestDTO) {
+	// return utils.mapListFromDTO(groupRequestDTO.getAccounts(), Account.class);
+	// }
+	// };
+	//
+	// using(mapAccounts).map(source, destination.getAccounts());
+	// }
+	// };
+	// }
 
 }
