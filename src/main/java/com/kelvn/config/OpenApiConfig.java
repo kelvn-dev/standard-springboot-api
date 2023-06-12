@@ -23,6 +23,11 @@ import org.springframework.context.annotation.Configuration;
     type = SecuritySchemeType.HTTP,
     bearerFormat = "JWT",
     scheme = "bearer")
+// @SecurityScheme(
+//    name = "bearerAuth",
+//    type = SecuritySchemeType.HTTP,
+//    bearerFormat = "JWT",
+//    scheme = "bearer")
 public class OpenApiConfig {
 
   // Another way to config
