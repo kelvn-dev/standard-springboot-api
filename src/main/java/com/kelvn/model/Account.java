@@ -1,6 +1,11 @@
 package com.kelvn.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.UUID;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,12 +13,6 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.UUID;
 
 @Entity
 @Table(name = "account")
@@ -28,12 +27,10 @@ import java.util.UUID;
 public class Account extends BaseModel implements UserDetails {
 
   @Column(name = "username")
-  @NotNull
-  private String username;
+  @NotNull private String username;
 
   @Column(name = "email")
-  @NotNull
-  private String email;
+  @NotNull private String email;
 
   @Column(name = "password")
   private String password;
