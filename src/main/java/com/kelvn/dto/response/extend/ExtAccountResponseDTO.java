@@ -11,5 +11,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ExtAccountResponseDTO extends AccountResponseDTO {
 
-	private GroupResponseDTO group;
+  private GroupResponseDTO group;
 }

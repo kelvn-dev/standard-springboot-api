@@ -15,11 +15,11 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class AccountRequestDTO implements BaseDTO {
 
-	@NotNull private String username;
+  @NotNull private String username;
 
-	@NotNull @Email private String email;
+  @NotNull @Email private String email;
 
-	@NotNull private String password;
+  @NotNull private String password;
 
-	private UUID groupId;
+  private UUID groupId;
 }

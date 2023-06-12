@@ -18,28 +18,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class WebappAccountController {
 
-	private final AccountService accountService;
+  private final AccountService accountService;
 
-	@PostMapping("/signup")
-	public ResponseEntity<AccountResponseDTO> signup(
-			@RequestBody @Valid AccountRequestDTO requestDTO) {
-		AccountResponseDTO responseDTO = accountService.signup(requestDTO);
-		return ResponseEntity.ok(responseDTO);
-	}
+  @PostMapping("/signup")
+  public ResponseEntity<AccountResponseDTO> signup(
+      @RequestBody @Valid AccountRequestDTO requestDTO) {
+    AccountResponseDTO responseDTO = accountService.signup(requestDTO);
+    return ResponseEntity.ok(responseDTO);
+  }
 
-	// @PostMapping("/meta/signup")
-	// public ResponseEntity<?> signupWithMeta(@RequestBody @Valid
-	// MetaAuthRequestDTO requestDTO) {
-	// AccountResponseDTO responseDTO = accountService.signupWithMeta(requestDTO);
-	// return ResponseEntity.ok(responseDTO);
-	// }
+  // @PostMapping("/meta/signup")
+  // public ResponseEntity<?> signupWithMeta(@RequestBody @Valid
+  // MetaAuthRequestDTO requestDTO) {
+  // AccountResponseDTO responseDTO = accountService.signupWithMeta(requestDTO);
+  // return ResponseEntity.ok(responseDTO);
+  // }
 
-	// @PostMapping("/google/signup")
-	// public ResponseEntity<?> signupWithGoogle(@RequestBody @Valid
-	// GoogleAuthRequestDTO requestDTO)
-	// {
-	// AccountResponseDTO responseDTO = accountService.signupWithGoogle(requestDTO);
-	// return ResponseEntity.ok(responseDTO);
-	// }
+  // @PostMapping("/google/signup")
+  // public ResponseEntity<?> signupWithGoogle(@RequestBody @Valid
+  // GoogleAuthRequestDTO requestDTO)
+  // {
+  // AccountResponseDTO responseDTO = accountService.signupWithGoogle(requestDTO);
+  // return ResponseEntity.ok(responseDTO);
+  // }
 
 }

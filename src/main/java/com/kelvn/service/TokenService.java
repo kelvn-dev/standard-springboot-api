@@ -16,27 +16,27 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class TokenService {
-	@Value("${jwt.validity.hours}")
-	private String JWT_VALIDITY_HOUR;
+  @Value("${jwt.validity.hours}")
+  private String JWT_VALIDITY_HOUR;
 
-	private final JwtEncoder jwtEncoder;
+  private final JwtEncoder jwtEncoder;
 
-	public String generateToken(Authentication authentication) {
-		Instant now = Instant.now();
-		Account account = (Account) authentication.getPrincipal();
-		String scope =
-				authentication.getAuthorities().stream()
-						.map(GrantedAuthority::getAuthority)
-						.collect(Collectors.joining(" "));
-		JwtClaimsSet claims =
-				JwtClaimsSet.builder()
-						.issuer("http://foobar.com")
-						.issuedAt(now)
-						.expiresAt(now.plus(Long.parseLong(JWT_VALIDITY_HOUR), ChronoUnit.HOURS))
-						.subject(account.getId().toString())
-						.claim("email", account.getEmail())
-						.claim("scope", scope)
-						.build();
-		return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
-	}
+  public String generateToken(Authentication authentication) {
+    Instant now = Instant.now();
+    Account account = (Account) authentication.getPrincipal();
+    String scope =
+        authentication.getAuthorities().stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.joining(" "));
+    JwtClaimsSet claims =
+        JwtClaimsSet.builder()
+            .issuer("http://foobar.com")
+            .issuedAt(now)
+            .expiresAt(now.plus(Long.parseLong(JWT_VALIDITY_HOUR), ChronoUnit.HOURS))
+            .subject(account.getId().toString())
+            .claim("email", account.getEmail())
+            .claim("scope", scope)
+            .build();
+    return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+  }
 }

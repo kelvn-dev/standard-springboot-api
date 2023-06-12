@@ -12,20 +12,20 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class GoogleService {
 
-	private final GoogleIdTokenVerifier googleIdTokenVerifier;
+  private final GoogleIdTokenVerifier googleIdTokenVerifier;
 
-	public GoogleIdToken.Payload verifyToken(String idTokenString) {
-		GoogleIdToken idToken;
-		try {
-			idToken = googleIdTokenVerifier.verify(idTokenString);
-		} catch (GeneralSecurityException | IOException | IllegalArgumentException e) {
-			throw new UnAuthorizedException(e.getMessage());
-		}
+  public GoogleIdToken.Payload verifyToken(String idTokenString) {
+    GoogleIdToken idToken;
+    try {
+      idToken = googleIdTokenVerifier.verify(idTokenString);
+    } catch (GeneralSecurityException | IOException | IllegalArgumentException e) {
+      throw new UnAuthorizedException(e.getMessage());
+    }
 
-		if (idToken != null) {
-			GoogleIdToken.Payload payload = idToken.getPayload();
-			return payload;
-		}
-		throw new UnAuthorizedException();
-	}
+    if (idToken != null) {
+      GoogleIdToken.Payload payload = idToken.getPayload();
+      return payload;
+    }
+    throw new UnAuthorizedException();
+  }
 }

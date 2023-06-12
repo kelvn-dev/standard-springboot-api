@@ -183,23 +183,15 @@
                         <!--                        <includes>-->
                         <!--                            <include>src/*/java/**/*.java</include>-->
                         <!--                        </includes>-->
-
-                        <!-- apply a specific flavor of google-java-format and reflow long strings -->
-                        <!--                        <googleJavaFormat>-->
-                        <!--                            <version>1.8</version>-->
-                        <!--                            <style>GOOGLE</style>-->
-                        <!--                            <reflowLongStrings>true</reflowLongStrings>-->
-                        <!--                        </googleJavaFormat>-->
-
+                        <indent>
+                            <tabs>true</tabs>
+                            <spacesPerTab>2</spacesPerTab>
+                        </indent>
                         <googleJavaFormat>
                             <style>GOOGLE</style>
                             <reflowLongStrings>false</reflowLongStrings>
                         </googleJavaFormat>
 
-                        <indent>
-                            <tabs>true</tabs>
-                            <spacesPerTab>2</spacesPerTab>
-                        </indent>
                         <importOrder/>
                         <removeUnusedImports/>
                         <trimTrailingWhitespace/>
@@ -207,6 +199,19 @@
                         <formatAnnotations/>
 
                     </java>
+                    <pom>
+                        <sortPom>
+                            <expandEmptyElements>true</expandEmptyElements> <!-- Should empty elements be expanded-->
+                            <spaceBeforeCloseEmptyElement>false
+                            </spaceBeforeCloseEmptyElement> <!-- Should a space be added inside self-closing elements-->
+                            <keepBlankLines>false</keepBlankLines> <!-- Keep empty lines -->
+                            <nrOfIndentSpace>2</nrOfIndentSpace> <!-- Indentation -->
+                            <indentBlankLines>false</indentBlankLines> <!-- Should empty lines be indented -->
+                            <sortProperties>true</sortProperties> <!-- Sort properties -->
+                            <sortModules>true</sortModules> <!-- Sort modules -->
+                            <sortExecutions>true</sortExecutions> <!-- Sort plugin executions -->
+                        </sortPom>
+                    </pom>
                 </configuration>
                 <executions>
                     <execution>

@@ -22,18 +22,18 @@ import org.hibernate.envers.NotAudited;
 // @Where(clause = "is_deleted = false")
 public class Group extends BaseModel {
 
-	@Column(name = "name")
-	@NotNull private String name;
+  @Column(name = "name")
+  @NotNull private String name;
 
-	@NotAudited
-	@OneToMany(
-			mappedBy = "group",
-			cascade = CascadeType.ALL,
-			fetch = FetchType.EAGER,
-			orphanRemoval = true)
-	private List<Account> accounts;
+  @NotAudited
+  @OneToMany(
+      mappedBy = "group",
+      cascade = CascadeType.ALL,
+      fetch = FetchType.EAGER,
+      orphanRemoval = true)
+  private List<Account> accounts;
 
-	public void updateRelations() {
-		accounts.forEach(account -> account.setGroup(this));
-	}
+  public void updateRelations() {
+    accounts.forEach(account -> account.setGroup(this));
+  }
 }

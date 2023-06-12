@@ -12,5 +12,5 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class GoogleAuthRequestDTO implements BaseDTO {
-	@NotNull private String idToken;
+  @NotNull private String idToken;
 }

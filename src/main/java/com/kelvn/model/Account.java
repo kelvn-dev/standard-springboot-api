@@ -1,11 +1,6 @@
 package com.kelvn.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.UUID;
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +8,12 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.UUID;
 
 @Entity
 @Table(name = "account")
@@ -26,56 +27,58 @@ import org.springframework.security.core.userdetails.UserDetails;
 // @Where(clause = "is_deleted = false")
 public class Account extends BaseModel implements UserDetails {
 
-	@Column(name = "username")
-	@NotNull private String username;
+  @Column(name = "username")
+  @NotNull
+  private String username;
 
-	@Column(name = "email")
-	@NotNull private String email;
+  @Column(name = "email")
+  @NotNull
+  private String email;
 
-	@Column(name = "password")
-	private String password;
+  @Column(name = "password")
+  private String password;
 
-	@Column(name = "birth_year")
-	private Integer birthYear;
+  @Column(name = "birth_year")
+  private Integer birthYear;
 
-	@Column(name = "group_id", columnDefinition = "BINARY(16)")
-	private UUID groupId;
+  @Column(name = "group_id", columnDefinition = "BINARY(16)")
+  private UUID groupId;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "group_id", insertable = false, updatable = false)
-	@JsonIgnoreProperties("accounts")
-	private Group group;
+  @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @JoinColumn(name = "group_id", insertable = false, updatable = false)
+  @JsonIgnoreProperties("accounts")
+  private Group group;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "meta_account_id", referencedColumnName = "id")
-	private MetaAccount metaAccount;
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinColumn(name = "meta_account_id", referencedColumnName = "id")
+  private MetaAccount metaAccount;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "google_account_id", referencedColumnName = "id")
-	private GoogleAccount googleAccount;
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinColumn(name = "google_account_id", referencedColumnName = "id")
+  private GoogleAccount googleAccount;
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return new HashSet<>();
-	}
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return new HashSet<>();
+  }
 
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
 
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
 
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
 
-	@Override
-	public boolean isEnabled() {
-		return true;
-	}
+  @Override
+  public boolean isEnabled() {
+    return true;
+  }
 }

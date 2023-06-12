@@ -21,29 +21,29 @@ import org.modelmapper.PropertyMap;
 @Accessors(chain = true)
 public class ExtGroupResponseDTO extends GroupResponseDTO {
 
-	private List<AccountResponseDTO> accounts = new LinkedList<>();
+  private List<AccountResponseDTO> accounts = new LinkedList<>();
 
-	@Override
-	public ModelMapper updateModelMapper(ModelMapper mapper, MappingUtils utils) {
-		mapper.addMappings(groupMap(utils));
-		return mapper;
-	}
+  @Override
+  public ModelMapper updateModelMapper(ModelMapper mapper, MappingUtils utils) {
+    mapper.addMappings(groupMap(utils));
+    return mapper;
+  }
 
-	public PropertyMap<Group, ExtGroupResponseDTO> groupMap(MappingUtils utils) {
-		return new PropertyMap<Group, ExtGroupResponseDTO>() {
-			@Override
-			protected void configure() {
+  public PropertyMap<Group, ExtGroupResponseDTO> groupMap(MappingUtils utils) {
+    return new PropertyMap<Group, ExtGroupResponseDTO>() {
+      @Override
+      protected void configure() {
 
-				Converter<Group, List<AccountResponseDTO>> mapAccounts =
-						new AbstractConverter<Group, List<AccountResponseDTO>>() {
-							@Override
-							protected List<AccountResponseDTO> convert(Group group) {
-								return utils.mapListToDTO(group.getAccounts(), AccountResponseDTO.class);
-							}
-						};
+        Converter<Group, List<AccountResponseDTO>> mapAccounts =
+            new AbstractConverter<Group, List<AccountResponseDTO>>() {
+              @Override
+              protected List<AccountResponseDTO> convert(Group group) {
+                return utils.mapListToDTO(group.getAccounts(), AccountResponseDTO.class);
+              }
+            };
 
-				using(mapAccounts).map(source, destination.getAccounts());
-			}
-		};
-	}
+        using(mapAccounts).map(source, destination.getAccounts());
+      }
+    };
+  }
 }

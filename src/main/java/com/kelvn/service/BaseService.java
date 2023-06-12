@@ -9,6 +9,9 @@ import com.kelvn.utils.MappingUtils;
 import com.kelvn.utils.PredicateUtils;
 import com.kelvn.utils.SearchCriteria;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import java.lang.reflect.ParameterizedType;
+import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -17,24 +20,20 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.ParameterizedType;
-import java.util.List;
-import java.util.UUID;
-
 @Service
 @RequiredArgsConstructor
 public abstract class BaseService<
-  M extends BaseModel,
-  REQ extends BaseDTO,
-  RES extends BaseDTO,
-  R extends JpaRepository<M, UUID> & QuerydslPredicateExecutor<M>> {
+    M extends BaseModel,
+    REQ extends BaseDTO,
+    RES extends BaseDTO,
+    R extends JpaRepository<M, UUID> & QuerydslPredicateExecutor<M>> {
 
   protected final Class<M> modelClass =
-    (Class<M>)
-      ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+      (Class<M>)
+          ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0];
   protected final Class<RES> responseDtoClass =
-    (Class<RES>)
-      ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[2];
+      (Class<RES>)
+          ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[2];
   protected final R repository;
   protected final MappingUtils mappingUtils;
 
@@ -83,13 +82,13 @@ public abstract class BaseService<
 
   public ApiPageableResponse formatPagingResponse(Page<M> page) {
     return ApiPageableResponse.builder()
-      .currentPage(page.getNumber() + 1)
-      .pageSize(page.getSize())
-      .totalPages(page.getTotalPages())
-      .totalElements(page.getTotalElements())
-      .isFirst(page.isFirst())
-      .isLast(page.isLast())
-      .data(mappingUtils.mapListToDTO(page.getContent(), responseDtoClass))
-      .build();
+        .currentPage(page.getNumber() + 1)
+        .pageSize(page.getSize())
+        .totalPages(page.getTotalPages())
+        .totalElements(page.getTotalElements())
+        .isFirst(page.isFirst())
+        .isLast(page.isLast())
+        .data(mappingUtils.mapListToDTO(page.getContent(), responseDtoClass))
+        .build();
   }
 }

@@ -6,5 +6,5 @@ import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface GoogleAccountRepository extends JpaRepository<GoogleAccount, UUID> {
-	Optional<GoogleAccount> findBySub(String sub);
+  Optional<GoogleAccount> findBySub(String sub);
 }

@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ApiPageableResponse {
-	private int currentPage;
-	private int pageSize;
-	private int totalPages;
-	private long totalElements;
-	private boolean isLast;
-	private boolean isFirst;
-	private List<?> data;
+  private int currentPage;
+  private int pageSize;
+  private int totalPages;
+  private long totalElements;
+  private boolean isLast;
+  private boolean isFirst;
+  private List<?> data;
 }

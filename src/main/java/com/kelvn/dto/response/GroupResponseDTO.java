@@ -11,6 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class GroupResponseDTO implements BaseDTO {
 
-	private UUID id;
-	private String name;
+  private UUID id;
+  private String name;
 }

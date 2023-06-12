@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AccountResponseDTO implements BaseDTO {
 
-	private UUID id;
-	private String username;
-	private String email;
+  private UUID id;
+  private String username;
+  private String email;
 }

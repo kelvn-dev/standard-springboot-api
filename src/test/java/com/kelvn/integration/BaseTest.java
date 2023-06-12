@@ -3,6 +3,8 @@ package com.kelvn.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kelvn.dto.BaseDTO;
 import com.kelvn.dto.api.ApiPageableResponse;
+import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -17,9 +19,6 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
-import java.util.UUID;
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 // 1 instance of the test class to run all the tests instead of creating an instance for each method
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -31,7 +30,7 @@ public abstract class BaseTest<REQ extends BaseDTO, RES extends BaseDTO> {
   private int port;
 
   ClientHttpRequestFactory factory =
-    new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory());
+      new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory());
   RestTemplate restTemplate = new RestTemplate(factory);
   HttpHeaders headers = new HttpHeaders();
   ObjectMapper mapper = new ObjectMapper();

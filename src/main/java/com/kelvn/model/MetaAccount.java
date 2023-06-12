@@ -10,8 +10,8 @@ import lombok.experimental.Accessors;
 
 @Entity
 @Table(
-		name = "meta_account",
-		indexes = {@Index(columnList = "meta_account_id")})
+    name = "meta_account",
+    indexes = {@Index(columnList = "meta_account_id")})
 @Getter
 @Setter
 @AllArgsConstructor
@@ -22,25 +22,25 @@ import lombok.experimental.Accessors;
 // @Where(clause = "is_deleted = false")
 public class MetaAccount extends BaseModel {
 
-	@Column(name = "meta_account_id", unique = true)
-	@NotNull private String metaAccountId;
+  @Column(name = "meta_account_id", unique = true)
+  @NotNull private String metaAccountId;
 
-	@Column(name = "name")
-	@NotNull private String name;
+  @Column(name = "name")
+  @NotNull private String name;
 
-	@Column(name = "email")
-	@NotNull private String email;
+  @Column(name = "email")
+  @NotNull private String email;
 
-	@Column(name = "first_name")
-	@NotNull private String first_name;
+  @Column(name = "first_name")
+  @NotNull private String first_name;
 
-	@Column(name = "last_name")
-	@NotNull private String last_name;
+  @Column(name = "last_name")
+  @NotNull private String last_name;
 
-	@OneToOne(
-			mappedBy = "metaAccount",
-			cascade = CascadeType.ALL,
-			orphanRemoval = true,
-			fetch = FetchType.LAZY)
-	private Account account;
+  @OneToOne(
+      mappedBy = "metaAccount",
+      cascade = CascadeType.ALL,
+      orphanRemoval = true,
+      fetch = FetchType.LAZY)
+  private Account account;
 }

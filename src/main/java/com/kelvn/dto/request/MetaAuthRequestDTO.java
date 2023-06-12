@@ -12,5 +12,5 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class MetaAuthRequestDTO implements BaseDTO {
-	@NotNull private String accessToken;
+  @NotNull private String accessToken;
 }

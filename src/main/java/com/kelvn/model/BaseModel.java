@@ -20,44 +20,44 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseModel implements Serializable {
 
-	@Id
-	@GeneratedValue(generator = "uuid2")
-	@Column(
-			name = "id",
-			columnDefinition = "BINARY(16)", // make the value of UUID more readable
-			updatable = false,
-			nullable = false)
-	private UUID id;
+  @Id
+  @GeneratedValue(generator = "uuid2")
+  @Column(
+      name = "id",
+      columnDefinition = "BINARY(16)", // make the value of UUID more readable
+      updatable = false,
+      nullable = false)
+  private UUID id;
 
-	@CreationTimestamp
-	@Column(name = "created_at", updatable = false)
-	private LocalDateTime createdAt;
+  @CreationTimestamp
+  @Column(name = "created_at", updatable = false)
+  private LocalDateTime createdAt;
 
-	@UpdateTimestamp
-	@Column(name = "updated_at")
-	private LocalDateTime updatedAt;
+  @UpdateTimestamp
+  @Column(name = "updated_at")
+  private LocalDateTime updatedAt;
 
-	@CreatedBy
-	@Column(name = "created_by", updatable = false)
-	private String createdBy;
+  @CreatedBy
+  @Column(name = "created_by", updatable = false)
+  private String createdBy;
 
-	@LastModifiedBy
-	@Column(name = "updated_by")
-	private String updatedBy;
+  @LastModifiedBy
+  @Column(name = "updated_by")
+  private String updatedBy;
 
-	// @Column(name = "is_deleted")
-	// private boolean isDeleted;
+  // @Column(name = "is_deleted")
+  // private boolean isDeleted;
 
-	@Override
-	public boolean equals(Object object) {
-		if (this == object) return true;
-		if (!(object instanceof BaseModel)) return false;
-		BaseModel that = (BaseModel) object;
-		return this.id.equals(that.id);
-	}
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) return true;
+    if (!(object instanceof BaseModel)) return false;
+    BaseModel that = (BaseModel) object;
+    return this.id.equals(that.id);
+  }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  }
 }

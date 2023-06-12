@@ -18,43 +18,43 @@ import org.modelmapper.PropertyMap;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class GoogleAccountResponseDTO implements BaseDTO {
-	private String sub;
-	private String name;
-	private String email;
-	private String email_verified;
-	private String family_name;
-	private String given_name;
-	private String picture;
+  private String sub;
+  private String name;
+  private String email;
+  private String email_verified;
+  private String family_name;
+  private String given_name;
+  private String picture;
 
-	@Override
-	public ModelMapper updateModelMapper(ModelMapper mapper, MappingUtils utils) {
-		mapper.addMappings(GoogleAccountMap(utils));
-		return mapper;
-	}
+  @Override
+  public ModelMapper updateModelMapper(ModelMapper mapper, MappingUtils utils) {
+    mapper.addMappings(GoogleAccountMap(utils));
+    return mapper;
+  }
 
-	public PropertyMap<GoogleAccountResponseDTO, GoogleAccount> GoogleAccountMap(MappingUtils utils) {
-		return new PropertyMap<GoogleAccountResponseDTO, GoogleAccount>() {
-			@Override
-			protected void configure() {
-				Converter<GoogleAccountResponseDTO, String> mapGoogleAccountId =
-						new AbstractConverter<GoogleAccountResponseDTO, String>() {
-							@Override
-							protected String convert(GoogleAccountResponseDTO googleAccountResponseDTO) {
-								return googleAccountResponseDTO.getSub();
-							}
-						};
+  public PropertyMap<GoogleAccountResponseDTO, GoogleAccount> GoogleAccountMap(MappingUtils utils) {
+    return new PropertyMap<GoogleAccountResponseDTO, GoogleAccount>() {
+      @Override
+      protected void configure() {
+        Converter<GoogleAccountResponseDTO, String> mapGoogleAccountId =
+            new AbstractConverter<GoogleAccountResponseDTO, String>() {
+              @Override
+              protected String convert(GoogleAccountResponseDTO googleAccountResponseDTO) {
+                return googleAccountResponseDTO.getSub();
+              }
+            };
 
-				Converter<GoogleAccountResponseDTO, UUID> mapId =
-						new AbstractConverter<GoogleAccountResponseDTO, UUID>() {
-							@Override
-							protected UUID convert(GoogleAccountResponseDTO fbProfileResDTO) {
-								return null;
-							}
-						};
+        Converter<GoogleAccountResponseDTO, UUID> mapId =
+            new AbstractConverter<GoogleAccountResponseDTO, UUID>() {
+              @Override
+              protected UUID convert(GoogleAccountResponseDTO fbProfileResDTO) {
+                return null;
+              }
+            };
 
-				using(mapId).map(source, destination.getId());
-				using(mapGoogleAccountId).map(source, destination.getSub());
-			}
-		};
-	}
+        using(mapId).map(source, destination.getId());
+        using(mapGoogleAccountId).map(source, destination.getSub());
+      }
+    };
+  }
 }

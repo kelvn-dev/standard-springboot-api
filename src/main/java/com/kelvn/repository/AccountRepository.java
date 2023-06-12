@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AccountRepository
-		extends JpaRepository<Account, UUID>, QuerydslPredicateExecutor<Account> {
+    extends JpaRepository<Account, UUID>, QuerydslPredicateExecutor<Account> {
 
-	Optional<Account> findByUsername(String username);
+  Optional<Account> findByUsername(String username);
 
-	Optional<Account> findByEmail(String email);
+  Optional<Account> findByEmail(String email);
 }

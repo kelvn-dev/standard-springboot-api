@@ -12,27 +12,27 @@ import javax.annotation.processing.Generated;
 @Generated("com.querydsl.codegen.DefaultSupertypeSerializer")
 public class QBaseModel extends EntityPathBase<BaseModel> {
 
-	private static final long serialVersionUID = -2091754462L;
+  private static final long serialVersionUID = -2091754462L;
 
-	public static final QBaseModel baseModel = new QBaseModel("baseModel");
+  public static final QBaseModel baseModel = new QBaseModel("baseModel");
 
-	public final DateTimePath<java.time.LocalDateTime> createdAt =
-			createDateTime("createdAt", java.time.LocalDateTime.class);
+  public final DateTimePath<java.time.LocalDateTime> createdAt =
+      createDateTime("createdAt", java.time.LocalDateTime.class);
 
-	public final ComparablePath<java.util.UUID> id = createComparable("id", java.util.UUID.class);
+  public final ComparablePath<java.util.UUID> id = createComparable("id", java.util.UUID.class);
 
-	public final DateTimePath<java.time.LocalDateTime> updatedAt =
-			createDateTime("updatedAt", java.time.LocalDateTime.class);
+  public final DateTimePath<java.time.LocalDateTime> updatedAt =
+      createDateTime("updatedAt", java.time.LocalDateTime.class);
 
-	public QBaseModel(String variable) {
-		super(BaseModel.class, forVariable(variable));
-	}
+  public QBaseModel(String variable) {
+    super(BaseModel.class, forVariable(variable));
+  }
 
-	public QBaseModel(Path<? extends BaseModel> path) {
-		super(path.getType(), path.getMetadata());
-	}
+  public QBaseModel(Path<? extends BaseModel> path) {
+    super(path.getType(), path.getMetadata());
+  }
 
-	public QBaseModel(PathMetadata metadata) {
-		super(BaseModel.class, metadata);
-	}
+  public QBaseModel(PathMetadata metadata) {
+    super(BaseModel.class, metadata);
+  }
 }

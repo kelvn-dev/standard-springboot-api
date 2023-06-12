@@ -7,6 +7,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 
 @Data
 public class Token {
-	private final Jwt token;
-	private final Collection<GrantedAuthority> authorities;
+  private final Jwt token;
+  private final Collection<GrantedAuthority> authorities;
 }
