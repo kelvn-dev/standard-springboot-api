@@ -90,6 +90,11 @@ A modern boilerplate or project structure for **Springboot API** with common too
     ```shell
     cp scripts/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
     ```
+    > **Note**: To not run pre-commit
+    ```shell
+    git commit -m ${message} --no-verify
+    ```
+> 
   
 
 ## References
