@@ -54,7 +54,7 @@ A modern boilerplate or project structure for **Springboot API** with common too
 
 - [JDK](https://www.oracle.com/fr/java/technologies/javase/jdk11-archive-downloads.html)
 
-  > :warning **Version**: `11`
+  > **Warning** **Version**: `11`
 
 - [Apache Maven](https://maven.apache.org/download.cgi)
 
