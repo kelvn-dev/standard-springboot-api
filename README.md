@@ -122,18 +122,18 @@ A modern boilerplate or project structure for **Springboot API** with common too
 
 ## References
 
-- Visit [here](https://medium.com/thefreshwrites/best-practices-in-spring-boot-project-structure-2986adb290) to understand Best Practices in Spring Boot Project Structure
-- Visit [here](https://medium.com/@miguelangelperezdiaz444/dependency-injection-in-spring-constructor-property-or-setter-which-one-should-i-choose-d38be824c8c1) to understand 💉Dependency Injection
-- Visit [here](https://medium.com/@kouomeukevin/create-a-base-entity-with-jpa-8adb35d2b7a3) to understand Base Entity or [AbstractPersistable](https://www.springbyexample.org/examples/spring-data-jpa-auditing-code-example.html) for alternatives
-- Visit [here](https://medium.com/javarevisited/what-is-database-audit-and-how-to-audit-a-database-using-a-spring-boot-application-11a08170e687) to understand Database Audit
-- Visit [here](https://levelup.gitconnected.com/spring-boot-soft-delete-functionality-with-hibernate-f5ee8c24c99f) to understand Soft Delete functionality
-- Visit [here](https://medium.com/javarevisited/dynamic-query-predicate-generation-using-springboot-and-querydsl-fdb0d5d3555b) to understand production-grade dynamic filters using QueryDSL
-- Visit [here](https://thomasandolf.medium.com/spring-security-jwts-getting-started-ebdb4e4f1dd1) to understand Spring Security + JWTs
-- Visit [here](https://medium.com/@ankithahjpgowda/log-request-and-responses-of-rest-apis-in-springboot-c13f9bc7903f) to understand Log request and responses of REST APIs
-- Visit [here](https://www.toptal.com/java/spring-boot-rest-api-error-handling) to understand Spring Boot REST API Error Handling
-- Visit [here](https://ultimate.systems/web/blog/how-to-use-modelmapper-with-more-complex-objects-in-spring-boot-java) to understand ModelMapper with more complex objects
-- Visit [here](https://medium.com/@mmessell/apply-spotless-formatting-with-git-pre-commit-hook-1c484ea68c34) to understand Spotless formatting with Git pre-commit hook
-- Visit [Google](https://developers.google.com/identity/sign-in/web/backend-auth), [Spring blog](https://spring.io/blog/2018/03/06/using-spring-security-5-to-integrate-with-oauth-2-secured-services-such-as-facebook-and-github) to understand OAuth 2.0 for Client-side and [OAuth 2.0 Playground](https://developers.google.com/oauthplayground/), [Graph API Explorer](https://developers.facebook.com/tools/explorer) for testing purpose
+- Visit [here](https://medium.com/thefreshwrites/best-practices-in-spring-boot-project-structure-2986adb290) to learn more about Best Practices in Spring Boot Project Structure
+- Visit [here](https://medium.com/@miguelangelperezdiaz444/dependency-injection-in-spring-constructor-property-or-setter-which-one-should-i-choose-d38be824c8c1) to learn more about 💉Dependency Injection
+- Visit [here](https://medium.com/@kouomeukevin/create-a-base-entity-with-jpa-8adb35d2b7a3) to learn more about Base Entity or [AbstractPersistable](https://www.springbyexample.org/examples/spring-data-jpa-auditing-code-example.html) for alternatives
+- Visit [here](https://medium.com/javarevisited/what-is-database-audit-and-how-to-audit-a-database-using-a-spring-boot-application-11a08170e687) to learn more about Database Audit
+- Visit [here](https://levelup.gitconnected.com/spring-boot-soft-delete-functionality-with-hibernate-f5ee8c24c99f) to learn more about Soft Delete functionality
+- Visit [here](https://medium.com/javarevisited/dynamic-query-predicate-generation-using-springboot-and-querydsl-fdb0d5d3555b) to learn more about production-grade dynamic filters using QueryDSL
+- Visit [here](https://thomasandolf.medium.com/spring-security-jwts-getting-started-ebdb4e4f1dd1) to learn more about Spring Security + JWTs
+- Visit [here](https://medium.com/@ankithahjpgowda/log-request-and-responses-of-rest-apis-in-springboot-c13f9bc7903f) to learn more about Log request and responses of REST APIs
+- Visit [here](https://www.toptal.com/java/spring-boot-rest-api-error-handling) to learn more about Spring Boot REST API Error Handling
+- Visit [here](https://ultimate.systems/web/blog/how-to-use-modelmapper-with-more-complex-objects-in-spring-boot-java) to learn more about ModelMapper with more complex objects
+- Visit [here](https://medium.com/@mmessell/apply-spotless-formatting-with-git-pre-commit-hook-1c484ea68c34) to learn more about Spotless formatting with Git pre-commit hook
+- Visit [Google](https://developers.google.com/identity/sign-in/web/backend-auth), [Spring blog](https://spring.io/blog/2018/03/06/using-spring-security-5-to-integrate-with-oauth-2-secured-services-such-as-facebook-and-github) to learn more about OAuth 2.0 for Client-side and [OAuth 2.0 Playground](https://developers.google.com/oauthplayground/), [Graph API Explorer](https://developers.facebook.com/tools/explorer) for testing purpose
 
 ## License
 
