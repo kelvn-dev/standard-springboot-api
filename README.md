@@ -62,12 +62,35 @@ A modern boilerplate or project structure for **Springboot API** with common too
 
 ## Usage
 
-- **Generating Qmodel by QueryDsl**
+- **Generating Qmodel (QueryDsl)**
 
     ```shell
     mvn clean install
     ```
   > **Note**: Model classes will be generated into folder target/generated-sources/**/model, copy it to src for using purpose
+
+- **Generating cryptographic keys**
+
+  > **Warning**: The openssl extension is required
+  ```shell
+  openssl version
+  ```
+
+  - To generates a new RSA private key with a length of 2048 bits
+
+    ```shell
+    openssl genrsa -out keypair.pem 2048
+    ```
+
+  - To extracts the public key
+    ```shell
+    openssl rsa -in keypair.pem -pubout -out public.pem
+    ```
+
+  - To converts the private key into the PKCS#8 format
+    ```shell
+    openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out private.pem
+    ```
   
 - **💅 Formatting**
 
