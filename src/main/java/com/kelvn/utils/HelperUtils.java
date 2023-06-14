@@ -84,4 +84,29 @@ public class HelperUtils {
     }
     return valueRange;
   }
+
+  public static List<Class<?>> getSuperClasses(Object object) {
+    List<Class<?>> superClassList = new ArrayList<>();
+    Class<?> superClass = object.getClass().getSuperclass();
+    while (superClass != null) {
+      superClassList.add(0, superClass);
+      superClass = superClass.getSuperclass();
+    }
+    return superClassList;
+  }
+
+  @SneakyThrows(IllegalAccessException.class)
+  public static Map<String, Object> inspect(Object object) {
+    Map<String, Object> map = new HashMap<>();
+    List<Class<?>> superClassList = getSuperClasses(object);
+    superClassList.add(object.getClass());
+    for (Class<?> clazz : superClassList) {
+      Field[] fields = clazz.getDeclaredFields();
+      for (Field field : fields) {
+        field.setAccessible(true);
+        map.put(field.getName(), field.get(object));
+      }
+    }
+    return map;
+  }
 }
