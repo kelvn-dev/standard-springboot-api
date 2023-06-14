@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  # https://geshan.com.np/blog/2022/02/mysql-docker-compose/
+  db:
+    image: mysql:8.0
+    container_name: mysql
+    ports:
+      - 3307:3306
+    volumes:
+      - ./volumes/mysql_db:/var/lib/mysql
+    # hide some not useful error messages
+    cap_add:
+      - SYS_NICE
+    environment:
+      MYSQL_DATABASE: standard_springboot_api
+      # Superuser root
+      MYSQL_ROOT_PASSWORD: root
+      # Create additional superuser (optional)
+      MYSQL_USER: kelvin
+      MYSQL_PASSWORD: kelvin
