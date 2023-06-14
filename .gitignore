@@ -35,6 +35,3 @@ build/
 ### Secret ###
 *.properties
 **/certs
-
-### Docker ###
-/docker/volumes/**
