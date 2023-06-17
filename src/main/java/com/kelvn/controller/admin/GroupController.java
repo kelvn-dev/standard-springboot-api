@@ -1,6 +1,7 @@
 package com.kelvn.controller.admin;
 
 import com.kelvn.controller.SecuredRestController;
+import com.kelvn.dto.api.ApiPageableResponse;
 import com.kelvn.dto.request.GroupRequestDTO;
 import com.kelvn.dto.response.GroupResponseDTO;
 import com.kelvn.dto.response.extend.ExtGroupResponseDTO;
@@ -45,13 +46,13 @@ public class GroupController implements SecuredRestController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<?> deleteById(@PathVariable UUID id) {
+  public ResponseEntity<Void> deleteById(@PathVariable UUID id) {
     groupService.deleteById(id);
     return ResponseEntity.ok(null);
   }
 
   @GetMapping
-  public ResponseEntity<?> getList(
+  public ResponseEntity<ApiPageableResponse> getList(
       @PageableDefault(
               sort = {"createdAt"},
               direction = Sort.Direction.DESC)

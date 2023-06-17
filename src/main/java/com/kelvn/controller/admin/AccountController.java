@@ -1,6 +1,7 @@
 package com.kelvn.controller.admin;
 
 import com.kelvn.controller.SecuredRestController;
+import com.kelvn.dto.api.ApiPageableResponse;
 import com.kelvn.dto.request.AccountRequestDTO;
 import com.kelvn.dto.response.AccountResponseDTO;
 import com.kelvn.exception.NotFoundException;
@@ -46,13 +47,13 @@ public class AccountController implements SecuredRestController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<?> deleteById(@PathVariable UUID id) throws NotFoundException {
+  public ResponseEntity<Void> deleteById(@PathVariable UUID id) throws NotFoundException {
     accountService.deleteById(id);
     return ResponseEntity.ok(null);
   }
 
   @GetMapping
-  public ResponseEntity<?> getList(
+  public ResponseEntity<ApiPageableResponse> getList(
       @PageableDefault(
               sort = {"createdAt"},
               direction = Sort.Direction.DESC)

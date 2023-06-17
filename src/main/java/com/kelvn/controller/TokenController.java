@@ -7,9 +7,7 @@ import com.kelvn.service.AuthService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,12 +28,8 @@ public class TokenController {
 
   @PostMapping("/token")
   public ResponseEntity<?> login(@RequestBody @Valid AuthRequestDTO requestDTO) {
-    try {
-      String token = authService.login(requestDTO.getEmail(), requestDTO.getPassword());
-      return ResponseEntity.ok(new AuthResponseDTO(token));
-    } catch (BadCredentialsException exception) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-    }
+    String token = authService.login(requestDTO.getEmail(), requestDTO.getPassword());
+    return ResponseEntity.ok(new AuthResponseDTO(token));
   }
 
   //  @PostMapping("/meta/token")
