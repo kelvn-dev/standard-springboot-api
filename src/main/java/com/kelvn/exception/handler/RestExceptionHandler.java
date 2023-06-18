@@ -1,10 +1,7 @@
 package com.kelvn.exception.handler;
 
 import com.kelvn.dto.api.ApiError;
-import com.kelvn.exception.ConflictException;
-import com.kelvn.exception.NotFoundException;
-import com.kelvn.exception.ServiceUnAvailableException;
-import com.kelvn.exception.UnAuthorizedException;
+import com.kelvn.exception.*;
 import javax.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -58,6 +55,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(ServiceUnAvailableException.class)
   protected ResponseEntity<Object> handleServiceUnavailable(ServiceUnAvailableException ex) {
     ApiError apiError = new ApiError(HttpStatus.SERVICE_UNAVAILABLE);
+    apiError.setMessage(ex.getMessage());
+    return buildResponseEntity(apiError);
+  }
+
+  @ExceptionHandler(BadRequestException.class)
+  protected ResponseEntity<Object> handleServiceUnavailable(BadRequestException ex) {
+    if (ex.getMessage() == null) {
+      return buildResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+    ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
     apiError.setMessage(ex.getMessage());
     return buildResponseEntity(apiError);
   }
