@@ -1,7 +1,7 @@
 package com.kelvn.config;
 
 import com.kelvn.interceptor.LoggingInterceptor;
-import com.kelvn.interceptor.ResponseInterceptor;
+import com.kelvn.interceptor.ResponseHeaderInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
   private final LoggingInterceptor loggingInterceptor;
-  private final ResponseInterceptor responseInterceptor;
+  private final ResponseHeaderInterceptor responseHeaderInterceptor;
 
   @Override
   public void configurePathMatch(PathMatchConfigurer configurer) {
@@ -24,7 +24,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
     registry.addInterceptor(loggingInterceptor);
-    registry.addInterceptor(responseInterceptor);
+    registry.addInterceptor(responseHeaderInterceptor);
     WebMvcConfigurer.super.addInterceptors(registry);
   }
 }
