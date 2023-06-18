@@ -25,10 +25,13 @@ public class ResponseBodyInterceptor implements ResponseBodyAdvice<Object> {
       Class<? extends HttpMessageConverter<?>> selectedConverterType,
       ServerHttpRequest request,
       ServerHttpResponse response) {
-    loggingService.logResponse(
-        ((ServletServerHttpRequest) request).getServletRequest(),
-        ((ServletServerHttpResponse) response).getServletResponse(),
-        body);
+    String requestURI = request.getURI().toString();
+    if (requestURI.contains("/api/v1")) {
+      loggingService.logResponse(
+          ((ServletServerHttpRequest) request).getServletRequest(),
+          ((ServletServerHttpResponse) response).getServletResponse(),
+          body);
+    }
     return body;
   }
 

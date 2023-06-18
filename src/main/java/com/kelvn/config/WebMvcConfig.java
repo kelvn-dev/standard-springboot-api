@@ -23,8 +23,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
-    registry.addInterceptor(loggingInterceptor);
-    registry.addInterceptor(responseHeaderInterceptor);
+    registry.addInterceptor(loggingInterceptor).addPathPatterns("/api/v1/**").order(1);
+    registry.addInterceptor(responseHeaderInterceptor).addPathPatterns("/api/v1/**").order(2);
     WebMvcConfigurer.super.addInterceptors(registry);
   }
 }

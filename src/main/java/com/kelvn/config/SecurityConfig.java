@@ -1,7 +1,5 @@
 package com.kelvn.config;
 
-import com.kelvn.exception.NotFoundException;
-import com.kelvn.model.Account;
 import com.kelvn.repository.AccountRepository;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
@@ -17,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -67,8 +66,7 @@ public class SecurityConfig {
             email ->
                 accountRepository
                     .findByEmail(email)
-                    .orElseThrow(
-                        () -> new NotFoundException(Account.class, "email", email.toString())))
+                    .orElseThrow(() -> new BadCredentialsException(null)))
         .passwordEncoder(bCryptPasswordEncoder)
         .and()
         .build();
@@ -89,17 +87,7 @@ public class SecurityConfig {
 
   private final String[] byPassPath =
       new String[] {
-        "api/v3/api-docs/**",
-        "/configuration/ui",
-        "/swagger-resources/**",
-        "/configuration/security",
-        "/swagger-ui/**",
-        "/api/token",
-        "/api/meta/token",
-        "/api/google/token",
-        "/api/v1/webapp/account/signup",
-        "/api/v1/webapp/account/meta/signup",
-        "/api/v1/webapp/account/google/signup"
+        "**/api-docs/**", "/swagger-resources/**", "/swagger-ui/**", "**/token", "**/signup"
       };
 
   /**

@@ -23,7 +23,10 @@ public class RequestBodyInterceptor extends RequestBodyAdviceAdapter {
       MethodParameter parameter,
       Type targetType,
       Class<? extends HttpMessageConverter<?>> converterType) {
-    loggingService.logRequest(request, body);
+    String requestURI = request.getRequestURI();
+    if (requestURI.startsWith("/api/v1")) {
+      loggingService.logRequest(request, body);
+    }
     return super.afterBodyRead(body, inputMessage, parameter, targetType, converterType);
   }
 
