@@ -5,11 +5,12 @@ import com.kelvn.utils.TenantContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.AsyncHandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 @Component
-public class TenantInterceptor implements HandlerInterceptor {
+public class TenantInterceptor implements AsyncHandlerInterceptor {
+
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
       throws Exception {
@@ -18,6 +19,7 @@ public class TenantInterceptor implements HandlerInterceptor {
       throw new BadRequestException("X-Tenant-Id is required");
     }
     TenantContext.setCurrentTenant(tenantID);
+    System.out.println(TenantContext.getCurrentTenant());
     return true;
   }
 

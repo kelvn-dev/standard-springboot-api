@@ -5,9 +5,13 @@ import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.models.parameters.HeaderParameter;
+import org.springdoc.core.GroupedOpenApi;
+import org.springdoc.core.customizers.OperationCustomizer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-// Swagger-ui endpoint: http://localhost:8080/swagger-ui/index.html#
+// Default Swagger-ui endpoint: http://localhost:8080/swagger-ui/index.html#
 @Configuration
 @OpenAPIDefinition(
     info =
@@ -25,20 +29,21 @@ import org.springframework.context.annotation.Configuration;
     scheme = "bearer")
 public class OpenApiConfig {
 
-  // Another way to config
+  private OperationCustomizer tenantHeaderOperationCustomizer() {
+    return (operation, handlerMethod) -> {
+      HeaderParameter tenantHeaderParam = new HeaderParameter();
+      tenantHeaderParam.setName("X-Tenant-Id");
+      tenantHeaderParam.setRequired(true);
+      operation.addParametersItem(tenantHeaderParam);
+      return operation;
+    };
+  }
 
-  //  @Bean
-  //  public OpenAPI customOpenAPI() {
-  //    return new OpenAPI()
-  //        .components(new Components())
-  //        .info(
-  //            new io.swagger.v3.oas.models.info.Info()
-  //                .title("Standard Springboot API")
-  //                .description(
-  //                    "A project implemented with Spring Boot to be reused as standard template")
-  //                .contact(
-  //                    new io.swagger.v3.oas.models.info.Contact()
-  //                        .name("Kelvin Vu")
-  //                        .url("https://github.com/kelvn-dev")));
-  //  }
+  @Bean
+  public GroupedOpenApi publicApi() {
+    return GroupedOpenApi.builder()
+        .group("add-tenant-header")
+        .addOperationCustomizer(tenantHeaderOperationCustomizer())
+        .build();
+  }
 }
