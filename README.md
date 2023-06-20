@@ -91,6 +91,11 @@ A modern boilerplate or project structure for **Springboot API** with common too
     ```shell
     openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out private.pem
     ```
+
+  > **Note**: Or simply
+   ```shell
+    sh bin/setup-jwt-key.sh
+  ```
   
 - **💅 Formatting**
 
@@ -108,14 +113,20 @@ A modern boilerplate or project structure for **Springboot API** with common too
       
 - **Githooks**
 
-  - pre-commit
+  - To setup pre-commit
 
     ```shell
     cp scripts/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
     ```
+    
+    > **Note**: Or simply
+    ```shell
+    sh bin/setup-pre-commit.sh
+    ```
+    
     > **Note**: To not run pre-commit
     ```shell
-    git commit -m ${message} --no-verify
+    git commit -m "${message}" --no-verify
     ```
 > 
   
