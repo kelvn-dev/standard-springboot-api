@@ -11,7 +11,7 @@
   <groupId>com.kelvn</groupId>
   <artifactId>standard-api</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
   <name>standard-api</name>
   <description>standard-api</description>
   <properties>
