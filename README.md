@@ -28,6 +28,8 @@ A modern boilerplate or project structure for **Springboot API** with common too
 
 ```shell
 .
+├── bin/
+├── docker/
 ├── scripts/
 ├── src
     ├── main
