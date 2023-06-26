@@ -8,6 +8,7 @@ import com.kelvn.repository.GoogleAccountRepository;
 import com.kelvn.repository.MetaAccountRepository;
 import com.kelvn.service.external.GoogleService;
 import com.kelvn.service.external.MetaService;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -37,7 +38,7 @@ public class AuthService {
     MetaAccountResponseDTO metaAccountResponseDTO = metaService.getProfile();
     MetaAccount metaAccount =
         metaAccountRepository.findByMetaAccountId(metaAccountResponseDTO.getId()).orElse(null);
-    if (metaAccount == null) {
+    if (Objects.isNull(metaAccount)) {
       throw new BadCredentialsException(null);
     }
     Authentication authentication =
@@ -52,7 +53,7 @@ public class AuthService {
     GoogleIdToken.Payload payload = googleService.verifyToken(idToken);
     GoogleAccount googleAccount =
         googleAccountRepository.findBySub(payload.getSubject()).orElse(null);
-    if (googleAccount == null) {
+    if (Objects.isNull(googleAccount)) {
       throw new BadCredentialsException(null);
     }
     Authentication authentication =

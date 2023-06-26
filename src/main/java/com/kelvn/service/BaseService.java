@@ -11,6 +11,7 @@ import com.kelvn.utils.SearchCriteria;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -48,7 +49,7 @@ public abstract class BaseService<
 
   public RES getById(UUID id, boolean noException) {
     M model = repository.findById(id).orElse(null);
-    if (model == null && !noException) {
+    if (Objects.isNull(model) && !noException) {
       throw new NotFoundException(modelClass, "id", id.toString());
     }
     return mappingUtils.mapToDTO(model, responseDtoClass);
@@ -56,7 +57,7 @@ public abstract class BaseService<
 
   public RES updateById(UUID id, REQ requestDTO) {
     M model = repository.findById(id).orElse(null);
-    if (model == null) {
+    if (Objects.isNull(model)) {
       throw new NotFoundException(modelClass, "id", id.toString());
     }
     M payload = mappingUtils.mapFromDTO(requestDTO, modelClass);
@@ -67,7 +68,7 @@ public abstract class BaseService<
 
   public void deleteById(UUID id) {
     M model = repository.findById(id).orElse(null);
-    if (model == null) {
+    if (Objects.isNull(model)) {
       throw new NotFoundException(modelClass, "id", id.toString());
     }
     repository.delete(model);

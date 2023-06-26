@@ -17,6 +17,7 @@ import com.kelvn.service.external.GoogleService;
 import com.kelvn.service.external.MetaService;
 import com.kelvn.service.external.SendgridService;
 import com.kelvn.utils.MappingUtils;
+import java.util.Objects;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -55,7 +56,7 @@ public class AccountService
   @Override
   public ExtAccountResponseDTO getById(UUID id, boolean noException) {
     Account model = repository.findById(id).orElse(null);
-    if (model == null && !noException) {
+    if (Objects.isNull(model) && !noException) {
       throw new NotFoundException(modelClass, "id", id.toString());
     }
     return mappingUtils.mapToDTO(model, ExtAccountResponseDTO.class);
@@ -96,7 +97,7 @@ public class AccountService
     metaAccount = mappingUtils.mapFromDTO(metaAccountResponseDTO, MetaAccount.class);
 
     Account account = repository.findByEmail(metaAccount.getEmail()).orElse(null);
-    if (account == null) {
+    if (Objects.isNull(account)) {
       account = new Account();
       account.setEmail(metaAccount.getEmail());
       account.setUsername(metaAccount.getFirst_name().concat(metaAccount.getLast_name()));
@@ -134,7 +135,7 @@ public class AccountService
   //
   // Account account =
   // repository.findByEmail(googleAccount.getEmail()).orElse(null);
-  // if (account == null) {
+  // if (Objects.isNull(account) ) {
   // account = new Account();
   // account.setEmail(googleAccount.getEmail());
   // account.setUsername(googleAccount.getName());

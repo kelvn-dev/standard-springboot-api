@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import lombok.Getter;
@@ -54,7 +55,7 @@ public class ApiError {
   }
 
   private void addSubError(ApiSubError subError) {
-    if (subErrors == null) {
+    if (Objects.isNull(subError)) {
       subErrors = new ArrayList<>();
     }
     subErrors.add(subError);

@@ -5,6 +5,7 @@ import com.kelvn.exception.ConflictException;
 import com.kelvn.exception.NotFoundException;
 import com.kelvn.exception.ServiceUnAvailableException;
 import com.kelvn.exception.UnAuthorizedException;
+import java.util.Objects;
 import javax.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -64,7 +65,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(UnAuthorizedException.class)
   protected ResponseEntity<Object> handleServiceUnavailable(UnAuthorizedException ex) {
-    if (ex.getMessage() == null) {
+    if (Objects.isNull(ex.getMessage())) {
       return buildResponseEntity(HttpStatus.UNAUTHORIZED);
     }
     ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED);
@@ -74,7 +75,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(BadCredentialsException.class)
   protected ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException ex) {
-    if (ex.getMessage() == null) {
+    if (Objects.isNull(ex.getMessage())) {
       return buildResponseEntity(HttpStatus.UNAUTHORIZED);
     }
     ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED);
@@ -84,7 +85,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(AuthenticationException.class)
   protected ResponseEntity<Object> handleBadCredentialsException(AuthenticationException ex) {
-    if (ex.getMessage() == null) {
+    if (Objects.isNull(ex.getMessage())) {
       return buildResponseEntity(HttpStatus.UNAUTHORIZED);
     }
     ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED);

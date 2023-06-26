@@ -7,6 +7,7 @@ import com.kelvn.exception.NotFoundException;
 import com.kelvn.model.Group;
 import com.kelvn.repository.GroupRepository;
 import com.kelvn.utils.MappingUtils;
+import java.util.Objects;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,7 @@ public class GroupService
   @Override
   public ExtGroupResponseDTO getById(UUID id, boolean noException) {
     Group model = repository.findById(id).orElse(null);
-    if (model == null && !noException) {
+    if (Objects.isNull(model) && !noException) {
       throw new NotFoundException(modelClass, "id", id.toString());
     }
     return mappingUtils.mapToDTO(model, ExtGroupResponseDTO.class);
