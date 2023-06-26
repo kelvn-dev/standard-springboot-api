@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.envers.NotAudited;
 
 @Entity
@@ -17,6 +18,7 @@ import org.hibernate.envers.NotAudited;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
+@DynamicUpdate
 // @Audited
 // @SQLDelete(sql = "UPDATE app_group SET is_deleted = TRUE WHERE id = ?")
 // @Where(clause = "is_deleted = false")
