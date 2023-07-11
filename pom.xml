@@ -155,6 +155,12 @@
       <artifactId>spring-data-envers</artifactId>
       <version>${spring-data-envers.version}</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/software.amazon.awssdk/s3 -->
+    <dependency>
+      <groupId>software.amazon.awssdk</groupId>
+      <artifactId>s3</artifactId>
+      <version>2.20.100</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

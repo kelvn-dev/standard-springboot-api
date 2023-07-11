@@ -109,4 +109,10 @@ public class HelperUtils {
     }
     return map;
   }
+
+  public static String getRandomString() {
+    UUID uuid = UUID.randomUUID();
+    long timestamp = System.currentTimeMillis() / 1000;
+    return uuid.toString().replace("-", "").concat(String.valueOf(timestamp));
+  }
 }
