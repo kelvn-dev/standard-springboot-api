@@ -1,7 +1,7 @@
 package com.kelvn.exception.handler;
 
 import com.kelvn.exception.ServiceUnAvailableException;
-import com.kelvn.exception.UnAuthorizedException;
+import com.kelvn.exception.UnauthorizedException;
 import java.io.IOException;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
@@ -28,7 +28,7 @@ public class RestTemplateErrorHandler implements ResponseErrorHandler {
     } else {
       switch (response.getStatusCode()) {
         case UNAUTHORIZED:
-          throw new UnAuthorizedException();
+          throw new UnauthorizedException();
         default:
           throw new RuntimeException(response.getBody().toString());
       }

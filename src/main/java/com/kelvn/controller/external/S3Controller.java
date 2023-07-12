@@ -35,7 +35,7 @@ public class S3Controller implements SecuredRestController {
    */
   @PutMapping
   public ResponseEntity<URL> getPresignedPutUrl(
-      @RequestParam String contentType,
+      @RequestParam String contentType, // TODO: Enum
       @RequestParam ObjectCannedACL acl,
       @RequestBody Map<String, String> params) {
     URL url = s3Service.getPresignedUrl(contentType, acl, params);

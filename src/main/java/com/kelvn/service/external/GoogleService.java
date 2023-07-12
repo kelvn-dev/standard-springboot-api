@@ -2,7 +2,7 @@ package com.kelvn.service.external;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
-import com.kelvn.exception.UnAuthorizedException;
+import com.kelvn.exception.UnauthorizedException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import lombok.RequiredArgsConstructor;
@@ -19,13 +19,13 @@ public class GoogleService {
     try {
       idToken = googleIdTokenVerifier.verify(idTokenString);
     } catch (GeneralSecurityException | IOException | IllegalArgumentException e) {
-      throw new UnAuthorizedException(e.getMessage());
+      throw new UnauthorizedException(e.getMessage());
     }
 
     if (idToken != null) {
       GoogleIdToken.Payload payload = idToken.getPayload();
       return payload;
     }
-    throw new UnAuthorizedException();
+    throw new UnauthorizedException();
   }
 }

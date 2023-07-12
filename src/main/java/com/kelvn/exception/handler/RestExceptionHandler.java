@@ -4,7 +4,7 @@ import com.kelvn.dto.api.ApiError;
 import com.kelvn.exception.ConflictException;
 import com.kelvn.exception.NotFoundException;
 import com.kelvn.exception.ServiceUnAvailableException;
-import com.kelvn.exception.UnAuthorizedException;
+import com.kelvn.exception.UnauthorizedException;
 import java.util.Objects;
 import javax.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
@@ -63,8 +63,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     return buildResponseEntity(apiError);
   }
 
-  @ExceptionHandler(UnAuthorizedException.class)
-  protected ResponseEntity<Object> handleServiceUnavailable(UnAuthorizedException ex) {
+  @ExceptionHandler(UnauthorizedException.class)
+  protected ResponseEntity<Object> handleServiceUnavailable(UnauthorizedException ex) {
     if (Objects.isNull(ex.getMessage())) {
       return buildResponseEntity(HttpStatus.UNAUTHORIZED);
     }
