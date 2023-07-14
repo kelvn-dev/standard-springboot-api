@@ -1,8 +1,9 @@
 package com.kelvn.service.external;
 
+import com.kelvn.dto.external.response.S3PresignedResponseDTO;
 import com.kelvn.enums.ContentDisposition;
 import com.kelvn.utils.HelperUtils;
-import java.net.URL;
+import com.kelvn.utils.MappingUtils;
 import java.time.Duration;
 import java.util.Map;
 import javax.naming.ServiceUnavailableException;
@@ -29,10 +30,11 @@ public class S3Service {
 
   //  private final S3Client s3Client;
   private final S3Presigner s3Presigner;
+  private final MappingUtils mappingUtils;
 
   /** For uploading */
   @SneakyThrows(ServiceUnavailableException.class)
-  public URL getPresignedUrl(
+  public S3PresignedResponseDTO getPresignedUrl(
       String contentType, ObjectCannedACL acl, Map<String, String> metadata) {
     try {
       String key = HelperUtils.getRandomString();
@@ -54,7 +56,12 @@ public class S3Service {
 
       PresignedPutObjectRequest presignedPutObjectRequest =
           s3Presigner.presignPutObject(presignRequest);
-      return presignedPutObjectRequest.url();
+
+      S3PresignedResponseDTO responseDTO =
+          mappingUtils.mapToDTO(presignedPutObjectRequest, S3PresignedResponseDTO.class);
+      responseDTO.setSignedHeaders(
+          HelperUtils.formatS3SignedHeaders(responseDTO.getSignedHeaders()));
+      return responseDTO;
     } catch (S3Exception e) {
       throw new ServiceUnavailableException(e.getMessage());
     }
@@ -62,7 +69,7 @@ public class S3Service {
 
   /** For retrieving */
   @SneakyThrows(ServiceUnavailableException.class)
-  public URL getPresignedUrl(String key, ContentDisposition contentDisposition) {
+  public S3PresignedResponseDTO getPresignedUrl(String key, ContentDisposition contentDisposition) {
     try {
       GetObjectRequest getObjectRequest =
           GetObjectRequest.builder()
@@ -82,7 +89,12 @@ public class S3Service {
 
       PresignedGetObjectRequest presignedGetObjectRequest =
           s3Presigner.presignGetObject(getObjectPresignRequest);
-      return presignedGetObjectRequest.url();
+
+      S3PresignedResponseDTO responseDTO =
+          mappingUtils.mapToDTO(presignedGetObjectRequest, S3PresignedResponseDTO.class);
+      responseDTO.setSignedHeaders(
+          HelperUtils.formatS3SignedHeaders(responseDTO.getSignedHeaders()));
+      return responseDTO;
     } catch (S3Exception e) {
       throw new ServiceUnavailableException(e.getMessage());
     }

@@ -115,4 +115,14 @@ public class HelperUtils {
     long timestamp = System.currentTimeMillis() / 1000;
     return uuid.toString().replace("-", "").concat(String.valueOf(timestamp));
   }
+
+  /**
+   * Remove unnecessary headers which doesn't begin with x-amz- Format value String "[value]" ->
+   * "value"
+   */
+  public static Map<String, String> formatS3SignedHeaders(Map<String, String> signedHeaders) {
+    signedHeaders.entrySet().removeIf(e -> !e.getKey().startsWith("x-amz-"));
+    signedHeaders.replaceAll((k, v) -> v.substring(1, v.length() - 1));
+    return signedHeaders;
+  }
 }

@@ -1,10 +1,10 @@
 package com.kelvn.controller.external;
 
 import com.kelvn.controller.SecuredRestController;
+import com.kelvn.dto.external.response.S3PresignedResponseDTO;
 import com.kelvn.enums.ContentDisposition;
 import com.kelvn.service.external.S3Service;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.net.URL;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,24 +21,24 @@ public class S3Controller implements SecuredRestController {
 
   /**
    * @apiNote postman cannot download, use browser to receive correct behavior
+   * @apiNote to add signedHeaders into header request
    */
   @GetMapping
-  public ResponseEntity<URL> getPresignedGetUrl(
+  public ResponseEntity<S3PresignedResponseDTO> getPresignedGetUrl(
       @RequestParam String key, @RequestParam ContentDisposition contentDisposition) {
-    URL url = s3Service.getPresignedUrl(key, contentDisposition);
-    return ResponseEntity.ok(url);
+    return ResponseEntity.ok(s3Service.getPresignedUrl(key, contentDisposition));
   }
 
   /**
-   * @param params user-defined metadata (to add header request x-amz-meta-${key}: ${value})
+   * @param params user-defined metadata
    * @apiNote select binary tab in Body section to upload file while using with postman
+   * @apiNote to add signedHeaders into header request
    */
   @PutMapping
-  public ResponseEntity<URL> getPresignedPutUrl(
+  public ResponseEntity<S3PresignedResponseDTO> getPresignedPutUrl(
       @RequestParam String contentType, // TODO: Enum
       @RequestParam ObjectCannedACL acl,
       @RequestBody Map<String, String> params) {
-    URL url = s3Service.getPresignedUrl(contentType, acl, params);
-    return ResponseEntity.ok(url);
+    return ResponseEntity.ok(s3Service.getPresignedUrl(contentType, acl, params));
   }
 }

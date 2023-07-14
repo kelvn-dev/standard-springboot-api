@@ -7,7 +7,7 @@ public class AclConverter implements Converter<String, ObjectCannedACL> {
   @Override
   public ObjectCannedACL convert(String source) {
     try {
-      return ObjectCannedACL.valueOf(source.toUpperCase());
+      return ObjectCannedACL.valueOf(source.toUpperCase().replace('-', '_'));
     } catch (IllegalArgumentException e) {
       // TODO: 400
       throw new RuntimeException();
