@@ -1,5 +1,6 @@
 package com.kelvn.converter;
 
+import com.kelvn.exception.BadRequestException;
 import org.springframework.core.convert.converter.Converter;
 import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
 
@@ -9,8 +10,7 @@ public class AclConverter implements Converter<String, ObjectCannedACL> {
     try {
       return ObjectCannedACL.valueOf(source.toUpperCase().replace('-', '_'));
     } catch (IllegalArgumentException e) {
-      // TODO: 400
-      throw new RuntimeException();
+      throw new BadRequestException("Invalid ACL");
     }
   }
 }

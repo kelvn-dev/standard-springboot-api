@@ -1,10 +1,7 @@
 package com.kelvn.exception.handler;
 
 import com.kelvn.dto.api.ApiError;
-import com.kelvn.exception.ConflictException;
-import com.kelvn.exception.NotFoundException;
-import com.kelvn.exception.ServiceUnAvailableException;
-import com.kelvn.exception.UnauthorizedException;
+import com.kelvn.exception.*;
 import java.util.Objects;
 import javax.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +46,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     return buildResponseEntity(apiError);
   }
 
+  @ExceptionHandler(BadRequestException.class)
+  protected ResponseEntity<Object> handleBadRequest(BadRequestException ex) {
+    ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
+    apiError.setMessage(ex.getMessage());
+    return buildResponseEntity(apiError);
+  }
+
   @ExceptionHandler(ConflictException.class)
   protected ResponseEntity<Object> handleConflict(ConflictException ex) {
     ApiError apiError = new ApiError(HttpStatus.CONFLICT);
@@ -56,8 +60,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     return buildResponseEntity(apiError);
   }
 
-  @ExceptionHandler(ServiceUnAvailableException.class)
-  protected ResponseEntity<Object> handleServiceUnavailable(ServiceUnAvailableException ex) {
+  @ExceptionHandler(ServiceUnavailableException.class)
+  protected ResponseEntity<Object> handleServiceUnavailable(ServiceUnavailableException ex) {
     ApiError apiError = new ApiError(HttpStatus.SERVICE_UNAVAILABLE);
     apiError.setMessage(ex.getMessage());
     return buildResponseEntity(apiError);

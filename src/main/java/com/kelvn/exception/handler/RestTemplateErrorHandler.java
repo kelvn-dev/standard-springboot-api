@@ -1,6 +1,6 @@
 package com.kelvn.exception.handler;
 
-import com.kelvn.exception.ServiceUnAvailableException;
+import com.kelvn.exception.ServiceUnavailableException;
 import com.kelvn.exception.UnauthorizedException;
 import java.io.IOException;
 import org.springframework.http.client.ClientHttpResponse;
@@ -21,7 +21,7 @@ public class RestTemplateErrorHandler implements ResponseErrorHandler {
     if (response.getStatusCode().is5xxServerError()) {
       switch (response.getStatusCode()) {
         case SERVICE_UNAVAILABLE:
-          throw new ServiceUnAvailableException(response.getBody().toString());
+          throw new ServiceUnavailableException(response.getBody().toString());
         default:
           throw new RuntimeException(response.getBody().toString());
       }

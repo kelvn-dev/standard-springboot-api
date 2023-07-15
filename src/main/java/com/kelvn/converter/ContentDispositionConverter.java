@@ -1,6 +1,7 @@
 package com.kelvn.converter;
 
 import com.kelvn.enums.ContentDisposition;
+import com.kelvn.exception.BadRequestException;
 import org.springframework.core.convert.converter.Converter;
 
 public class ContentDispositionConverter implements Converter<String, ContentDisposition> {
@@ -10,8 +11,7 @@ public class ContentDispositionConverter implements Converter<String, ContentDis
     try {
       return ContentDisposition.valueOf(source.toUpperCase());
     } catch (IllegalArgumentException e) {
-      // TODO: 400
-      throw new RuntimeException();
+      throw new BadRequestException("Invalid Content-Disposition");
     }
   }
 }

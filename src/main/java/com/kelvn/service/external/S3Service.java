@@ -2,8 +2,12 @@ package com.kelvn.service.external;
 
 import com.kelvn.dto.external.response.S3PresignedResponseDTO;
 import com.kelvn.enums.ContentDisposition;
+import com.kelvn.exception.BadRequestException;
 import com.kelvn.utils.HelperUtils;
 import com.kelvn.utils.MappingUtils;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Map;
 import javax.naming.ServiceUnavailableException;
@@ -33,11 +37,23 @@ public class S3Service {
   private final MappingUtils mappingUtils;
 
   /** For uploading */
-  @SneakyThrows(ServiceUnavailableException.class)
+  @SneakyThrows({IOException.class, ServiceUnavailableException.class})
   public S3PresignedResponseDTO getPresignedUrl(
-      String contentType, ObjectCannedACL acl, Map<String, String> metadata) {
+      String filename, ObjectCannedACL acl, Map<String, String> metadata) {
     try {
-      String key = HelperUtils.getRandomString();
+      String[] parts = filename.split("\\.");
+      if (parts.length != 2) {
+        throw new BadRequestException("Invalid file name");
+      }
+      String contentType = Files.probeContentType(Paths.get(filename));
+      if (contentType == null) {
+        throw new BadRequestException("Invalid file extension");
+      }
+
+      String randomString = HelperUtils.getRandomString();
+      String name = parts[0];
+      String extension = parts[1];
+      String key = String.format("%s_%s.%s", name, randomString, extension);
 
       PutObjectRequest objectRequest =
           PutObjectRequest.builder()

@@ -36,9 +36,9 @@ public class S3Controller implements SecuredRestController {
    */
   @PutMapping
   public ResponseEntity<S3PresignedResponseDTO> getPresignedPutUrl(
-      @RequestParam String contentType, // TODO: Enum
+      @RequestParam String filename,
       @RequestParam ObjectCannedACL acl,
       @RequestBody Map<String, String> params) {
-    return ResponseEntity.ok(s3Service.getPresignedUrl(contentType, acl, params));
+    return ResponseEntity.ok(s3Service.getPresignedUrl(filename, acl, params));
   }
 }
