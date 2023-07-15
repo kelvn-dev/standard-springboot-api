@@ -39,7 +39,7 @@ public class S3Controller implements SecuredRestController {
    */
   @PutMapping
   public ResponseEntity<S3PresignedResponseDTO> getPresignedPutUrl(
-      @Parameter(schema = @Schema(pattern = RegexUtils.simpleFilename)) @RequestParam
+      @Parameter(schema = @Schema(pattern = RegexUtils.SIMPLE_FILENAME)) @RequestParam
           String filename,
       @RequestParam ObjectCannedACL acl,
       @RequestBody Map<String, String> params) {

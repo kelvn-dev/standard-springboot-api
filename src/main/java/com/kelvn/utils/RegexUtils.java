@@ -9,5 +9,5 @@ public class RegexUtils {
    * @note [a-zA-Z]{2,4} matches two to four alphabetic characters.
    * @note $ asserts the end of the string.
    */
-  public static final String simpleFilename = "^[\\w\\s\\-()]+\\.[a-zA-Z]{2,4}$";
+  public static final String SIMPLE_FILENAME = "^[\\w\\s\\-()]+\\.[a-zA-Z]{2,4}$";
 }
