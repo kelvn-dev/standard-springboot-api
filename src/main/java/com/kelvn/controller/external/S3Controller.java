@@ -4,6 +4,9 @@ import com.kelvn.controller.SecuredRestController;
 import com.kelvn.dto.external.response.S3PresignedResponseDTO;
 import com.kelvn.enums.ContentDisposition;
 import com.kelvn.service.external.S3Service;
+import com.kelvn.utils.RegexUtils;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +39,8 @@ public class S3Controller implements SecuredRestController {
    */
   @PutMapping
   public ResponseEntity<S3PresignedResponseDTO> getPresignedPutUrl(
-      @RequestParam String filename,
+      @Parameter(schema = @Schema(pattern = RegexUtils.simpleFilename)) @RequestParam
+          String filename,
       @RequestParam ObjectCannedACL acl,
       @RequestBody Map<String, String> params) {
     return ResponseEntity.ok(s3Service.getPresignedUrl(filename, acl, params));
