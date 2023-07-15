@@ -1,5 +1,6 @@
 package com.kelvn.utils;
 
+import com.kelvn.exception.BadRequestException;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -9,22 +10,22 @@ import lombok.SneakyThrows;
 
 public class HelperUtils {
 
+  private static final Pattern filterPattern = Pattern.compile(RegexUtils.FILTER_REQUEST_PATTERN);
+
   public static List<SearchCriteria> formatSearchCriteria(String[] filter) {
-    List<SearchCriteria> criterias = new ArrayList<>();
-    if (null != filter) {
+    List<SearchCriteria> criteria = new ArrayList<>();
+    if (!Objects.isNull(filter)) {
       Collection<SearchCriteria> collect =
           Arrays.asList(filter).parallelStream()
               .map(HelperUtils::validateFilterPattern)
               .collect(Collectors.toList());
-      criterias.addAll(collect);
+      criteria.addAll(collect);
     }
-    return criterias;
+    return criteria;
   }
 
   public static SearchCriteria validateFilterPattern(String filter) {
-    final Pattern pattern =
-        Pattern.compile("([\\w.]+?)(:|<|>|=|!=|<=|>=|%|\\(\\))([\\w\\s\\(\\):@;,._-]+?)\\|");
-    Matcher m = pattern.matcher(filter + "|");
+    Matcher m = filterPattern.matcher(filter + "|");
     if (m.find()) {
       return SearchCriteria.builder()
           .key(m.group(1))
@@ -32,7 +33,7 @@ public class HelperUtils {
           .value(m.group(3))
           .build();
     } else {
-      throw new RuntimeException("Invalid Filter format");
+      throw new BadRequestException("Invalid Filter format");
     }
   }
 

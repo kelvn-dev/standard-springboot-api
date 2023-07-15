@@ -130,7 +130,6 @@ A modern boilerplate or project structure for **Springboot API** with common too
     ```shell
     git commit -m "${message}" --no-verify
     ```
-> 
   
 
 ## References

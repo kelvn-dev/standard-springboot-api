@@ -75,8 +75,8 @@ public abstract class BaseService<
   }
 
   public ApiPageableResponse getList(String[] filter, Pageable pageable) {
-    List<SearchCriteria> criterias = HelperUtils.formatSearchCriteria(filter);
-    BooleanExpression expression = PredicateUtils.getBooleanExpression(criterias, modelClass);
+    List<SearchCriteria> criteria = HelperUtils.formatSearchCriteria(filter);
+    BooleanExpression expression = PredicateUtils.getBooleanExpression(criteria, modelClass);
     Page<M> pagingModel = repository.findAll(expression, pageable);
     return formatPagingResponse(pagingModel);
   }

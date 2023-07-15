@@ -4,19 +4,19 @@ import com.querydsl.core.types.dsl.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class PredicateUtils {
 
   public static BooleanExpression getBooleanExpression(
-      List<SearchCriteria> criterias, Class<?> classType) {
+      List<SearchCriteria> criteria, Class<?> classType) {
     BooleanExpression exp = Expressions.asBoolean(true).isTrue();
-    for (SearchCriteria criteria : criterias) {
+    for (SearchCriteria cr : criteria) {
       exp =
           exp.and(
-              PredicateUtils.getPredicate(
-                  criteria.getKey(), criteria.getOperator(), criteria.getValue(), classType));
+              PredicateUtils.getPredicate(cr.getKey(), cr.getOperator(), cr.getValue(), classType));
     }
     return exp;
   }
@@ -27,6 +27,8 @@ public class PredicateUtils {
         new PathBuilder<>(classType, HelperUtils.getEntityVariable(classType.getSimpleName()));
     Class<?> propertyType = HelperUtils.getPropertyType(classType, key);
     switch (propertyType.getSimpleName()) {
+      case "UUID":
+        return getUUIDPredicate(key, operator, value, entityPath);
       case "String":
         return getStringPredicate(key, operator, value, entityPath);
       case "Integer":
@@ -48,13 +50,24 @@ public class PredicateUtils {
     switch (operator) {
       case "=":
         return path.equalsIgnoreCase(value);
-      case "%":
+      case "-":
         return path.containsIgnoreCase(value);
+      case "%":
+        return path.startsWithIgnoreCase(value);
       case ":":
         return path.in(Stream.of(value.split(";")).collect(Collectors.toList()));
       default:
         return null;
     }
+  }
+
+  public static BooleanExpression getUUIDPredicate(
+      String key, String operator, String value, PathBuilder<?> entityPath) {
+    ComparablePath<UUID> path = entityPath.getComparable(key, UUID.class);
+    if (operator.equals("=")) {
+      return path.eq(UUID.fromString(value));
+    }
+    return null;
   }
 
   public static BooleanExpression getIntegerPredicate(
