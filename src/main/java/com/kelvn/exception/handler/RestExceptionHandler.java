@@ -32,11 +32,11 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
   private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
-    return new ResponseEntity<Object>(apiError, apiError.getStatus());
+    return new ResponseEntity<>(apiError, apiError.getStatus());
   }
 
   private ResponseEntity<Object> buildResponseEntity(HttpStatus httpStatus) {
-    return new ResponseEntity<Object>(httpStatus);
+    return new ResponseEntity<>(httpStatus);
   }
 
   @ExceptionHandler(NotFoundException.class)

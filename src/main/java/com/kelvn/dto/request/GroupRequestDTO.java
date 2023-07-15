@@ -1,6 +1,7 @@
 package com.kelvn.dto.request;
 
 import com.kelvn.dto.BaseDTO;
+import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +12,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class GroupRequestDTO implements BaseDTO {
-  private String name;
+  @NotBlank private String name;
 
   // @Override
   // public ModelMapper updateModelMapper(ModelMapper mapper, MappingUtils utils)

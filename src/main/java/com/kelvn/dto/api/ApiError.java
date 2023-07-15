@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import javax.validation.ConstraintViolation;
 import lombok.Getter;
@@ -29,9 +28,10 @@ public class ApiError {
 
   private String message;
   private String debugMessage;
-  private List<ApiSubError> subErrors;
+  private List<ApiSubError> errors;
 
   private ApiError() {
+    errors = new ArrayList<>();
     timestamp = LocalDateTime.now();
   }
 
@@ -55,10 +55,7 @@ public class ApiError {
   }
 
   private void addSubError(ApiSubError subError) {
-    if (Objects.isNull(subError)) {
-      subErrors = new ArrayList<>();
-    }
-    subErrors.add(subError);
+    errors.add(subError);
   }
 
   private void addValidationError(String object, String message) {

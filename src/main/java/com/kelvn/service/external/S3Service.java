@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Map;
+import java.util.Objects;
 import javax.naming.ServiceUnavailableException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -46,7 +47,7 @@ public class S3Service {
         throw new BadRequestException("Invalid file name");
       }
       String contentType = Files.probeContentType(Paths.get(filename));
-      if (contentType == null) {
+      if (Objects.isNull(contentType)) {
         throw new BadRequestException("Invalid file extension");
       }
 

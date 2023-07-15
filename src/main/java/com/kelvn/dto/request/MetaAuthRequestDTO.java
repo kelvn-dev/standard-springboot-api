@@ -1,7 +1,7 @@
 package com.kelvn.dto.request;
 
 import com.kelvn.dto.BaseDTO;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,5 +12,5 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class MetaAuthRequestDTO implements BaseDTO {
-  @NotNull private String accessToken;
+  @NotBlank private String accessToken;
 }
