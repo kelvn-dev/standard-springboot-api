@@ -16,7 +16,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "Group")
+@Tag(name = "AppGroup")
 @RestController
 @RequestMapping("/v1/groups")
 @RequiredArgsConstructor
@@ -46,7 +46,7 @@ public class GroupController implements SecuredRestController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteById(@PathVariable UUID id) {
+  public ResponseEntity<Object> deleteById(@PathVariable UUID id) {
     groupService.deleteById(id);
     return ResponseEntity.ok(null);
   }

@@ -47,7 +47,7 @@ public class AccountController implements SecuredRestController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteById(@PathVariable UUID id) throws NotFoundException {
+  public ResponseEntity<?> deleteById(@PathVariable UUID id) throws NotFoundException {
     accountService.deleteById(id);
     return ResponseEntity.ok(null);
   }

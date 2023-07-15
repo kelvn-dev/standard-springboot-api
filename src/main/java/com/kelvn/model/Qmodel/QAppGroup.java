@@ -1,22 +1,21 @@
 package com.kelvn.model.Qmodel;
 
-import static com.querydsl.core.types.PathMetadataFactory.*;
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 
 import com.kelvn.model.Account;
-import com.kelvn.model.Group;
+import com.kelvn.model.AppGroup;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.dsl.*;
-import com.querydsl.core.types.dsl.PathInits;
 import javax.annotation.processing.Generated;
 
-/** QGroup is a Querydsl query type for Group */
+/** QAppGroup is a Querydsl query type for AppGroup */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QGroup extends EntityPathBase<Group> {
+public class QAppGroup extends EntityPathBase<AppGroup> {
 
-  private static final long serialVersionUID = -1506940727L;
+  private static final long serialVersionUID = -1633670572L;
 
-  public static final QGroup group = new QGroup("group1");
+  public static final QAppGroup appGroup = new QAppGroup("appGroup");
 
   public final QBaseModel _super = new QBaseModel(this);
 
@@ -28,6 +27,9 @@ public class QGroup extends EntityPathBase<Group> {
   public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
   // inherited
+  public final StringPath createdBy = _super.createdBy;
+
+  // inherited
   public final ComparablePath<java.util.UUID> id = _super.id;
 
   public final StringPath name = createString("name");
@@ -35,15 +37,18 @@ public class QGroup extends EntityPathBase<Group> {
   // inherited
   public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
-  public QGroup(String variable) {
-    super(Group.class, forVariable(variable));
+  // inherited
+  public final StringPath updatedBy = _super.updatedBy;
+
+  public QAppGroup(String variable) {
+    super(AppGroup.class, forVariable(variable));
   }
 
-  public QGroup(Path<? extends Group> path) {
+  public QAppGroup(Path<? extends AppGroup> path) {
     super(path.getType(), path.getMetadata());
   }
 
-  public QGroup(PathMetadata metadata) {
-    super(Group.class, metadata);
+  public QAppGroup(PathMetadata metadata) {
+    super(AppGroup.class, metadata);
   }
 }

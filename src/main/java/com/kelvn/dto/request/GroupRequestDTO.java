@@ -21,9 +21,9 @@ public class GroupRequestDTO implements BaseDTO {
   // return mapper;
   // }
 
-  // public PropertyMap<GroupRequestDTO, Group> accountMapping(MappingUtils utils)
+  // public PropertyMap<GroupRequestDTO, AppGroup> accountMapping(MappingUtils utils)
   // {
-  // return new PropertyMap<GroupRequestDTO, Group>() {
+  // return new PropertyMap<GroupRequestDTO, AppGroup>() {
   // @Override
   // protected void configure() {
   //

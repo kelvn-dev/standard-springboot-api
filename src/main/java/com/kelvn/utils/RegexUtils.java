@@ -15,8 +15,8 @@ public class RegexUtils {
    * @note "([\\w.]+?)": This part captures a group of word characters (alphanumeric and underscore)
    *     and dots. The +? makes the match non-greedy, meaning it will match the smallest possible
    *     sequence of characters. This group is enclosed in parentheses for capturing.
-   * @note (:|<|>|=|!=|<=|>=|%|\\(\\)): This part matches one of the specified symbols: :, <, >, =,
-   *     !=, <=, >=, %, or (). The symbols are enclosed in parentheses for grouping.
+   * @note (:|<|>|=|!=|<=|>=|%|\\(\\)): This part matches one of the specified symbols: -, :, <, >,
+   *     =, !=, <=, >=, %, or (). The symbols are enclosed in parentheses for grouping.
    * @note ([\\w\\s\\(\\):@;,._-]+?): This part captures a group of word characters, whitespace
    *     characters, and specific symbols like (), :, @, ,, ;, ., _, and -. The +? makes the match
    *     non-greedy. This group is enclosed in parentheses for capturing.
@@ -28,5 +28,5 @@ public class RegexUtils {
    *     is used as a delimiter to separate these components.
    */
   public static final String FILTER_REQUEST_PATTERN =
-      "([\\w.]+?)(:|<|>|=|!=|<=|>=|%|\\(\\))([\\w\\s\\(\\):@;,._-]+?)\\|";
+      "([\\w.]+?)(:|-|<|>|=|!=|<=|>=|%|\\(\\))([\\w\\s\\(\\):@;,._-]+?)\\|";
 }

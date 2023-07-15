@@ -20,14 +20,19 @@ public class QAccount extends EntityPathBase<Account> {
 
   public final QBaseModel _super = new QBaseModel(this);
 
+  public final QAppGroup appGroup;
+
   public final NumberPath<Integer> birthYear = createNumber("birthYear", Integer.class);
 
   // inherited
   public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
+  // inherited
+  public final StringPath createdBy = _super.createdBy;
+
   public final StringPath email = createString("email");
 
-  public final QGroup group;
+  public final QGoogleAccount googleAccount;
 
   public final ComparablePath<java.util.UUID> groupId =
       createComparable("groupId", java.util.UUID.class);
@@ -35,10 +40,15 @@ public class QAccount extends EntityPathBase<Account> {
   // inherited
   public final ComparablePath<java.util.UUID> id = _super.id;
 
+  public final QMetaAccount metaAccount;
+
   public final StringPath password = createString("password");
 
   // inherited
   public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
+
+  // inherited
+  public final StringPath updatedBy = _super.updatedBy;
 
   public final StringPath username = createString("username");
 
@@ -60,6 +70,14 @@ public class QAccount extends EntityPathBase<Account> {
 
   public QAccount(Class<? extends Account> type, PathMetadata metadata, PathInits inits) {
     super(type, metadata, inits);
-    this.group = inits.isInitialized("group") ? new QGroup(forProperty("group")) : null;
+    this.appGroup = inits.isInitialized("appGroup") ? new QAppGroup(forProperty("appGroup")) : null;
+    this.googleAccount =
+        inits.isInitialized("googleAccount")
+            ? new QGoogleAccount(forProperty("googleAccount"), inits.get("googleAccount"))
+            : null;
+    this.metaAccount =
+        inits.isInitialized("metaAccount")
+            ? new QMetaAccount(forProperty("metaAccount"), inits.get("metaAccount"))
+            : null;
   }
 }

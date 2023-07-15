@@ -1,11 +1,14 @@
 package com.kelvn.model.Qmodel;
 
-import static com.querydsl.core.types.PathMetadataFactory.*;
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 
 import com.kelvn.model.BaseModel;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.dsl.*;
+import com.querydsl.core.types.dsl.ComparablePath;
+import com.querydsl.core.types.dsl.DateTimePath;
+import com.querydsl.core.types.dsl.EntityPathBase;
+import com.querydsl.core.types.dsl.StringPath;
 import javax.annotation.processing.Generated;
 
 /** QBaseModel is a Querydsl query type for BaseModel */
@@ -19,10 +22,14 @@ public class QBaseModel extends EntityPathBase<BaseModel> {
   public final DateTimePath<java.time.LocalDateTime> createdAt =
       createDateTime("createdAt", java.time.LocalDateTime.class);
 
+  public final StringPath createdBy = createString("createdBy");
+
   public final ComparablePath<java.util.UUID> id = createComparable("id", java.util.UUID.class);
 
   public final DateTimePath<java.time.LocalDateTime> updatedAt =
       createDateTime("updatedAt", java.time.LocalDateTime.class);
+
+  public final StringPath updatedBy = createString("updatedBy");
 
   public QBaseModel(String variable) {
     super(BaseModel.class, forVariable(variable));

@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 
-public class GroupTest extends BaseTest<GroupRequestDTO, GroupResponseDTO> {
+public class AppGroupTest extends BaseTest<GroupRequestDTO, GroupResponseDTO> {
   final String apiUrl = "/api/v1/groups";
   GroupRequestDTO requestDTO;
   GroupResponseDTO responseDTO;

@@ -22,7 +22,7 @@ import org.hibernate.envers.NotAudited;
 // @Audited
 // @SQLDelete(sql = "UPDATE app_group SET is_deleted = TRUE WHERE id = ?")
 // @Where(clause = "is_deleted = false")
-public class Group extends BaseModel {
+public class AppGroup extends BaseModel {
 
   @Column(name = "name")
   @NotNull private String name;
@@ -31,11 +31,7 @@ public class Group extends BaseModel {
   @OneToMany(
       mappedBy = "group",
       cascade = CascadeType.ALL,
-      fetch = FetchType.EAGER,
+      fetch = FetchType.LAZY,
       orphanRemoval = true)
   private List<Account> accounts;
-
-  public void updateRelations() {
-    accounts.forEach(account -> account.setGroup(this));
-  }
 }
