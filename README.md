@@ -146,6 +146,7 @@ A modern boilerplate or project structure for **Springboot API** with common too
 - Visit [here](https://ultimate.systems/web/blog/how-to-use-modelmapper-with-more-complex-objects-in-spring-boot-java) to learn more about ModelMapper with more complex objects
 - Visit [here](https://medium.com/@mmessell/apply-spotless-formatting-with-git-pre-commit-hook-1c484ea68c34) to learn more about Spotless formatting with Git pre-commit hook
 - Visit [Google](https://developers.google.com/identity/sign-in/web/backend-auth), [Spring blog](https://spring.io/blog/2018/03/06/using-spring-security-5-to-integrate-with-oauth-2-secured-services-such-as-facebook-and-github) to learn more about OAuth 2.0 for Client-side and [OAuth 2.0 Playground](https://developers.google.com/oauthplayground/), [Graph API Explorer](https://developers.facebook.com/tools/explorer) for testing purpose
+- Visit [Official Docs](https://github.com/Cosium/spring-data-jpa-entity-graph), [JPA Buddy](https://jpa-buddy.com/blog/dynamic-entity-graphs-in-spring-data-jpa/) to learn more about Dynamic Entity Graph
 
 ## License
 

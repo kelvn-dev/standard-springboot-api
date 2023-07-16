@@ -9,6 +9,7 @@ import com.kelvn.enums.Source;
 import com.kelvn.exception.ConflictException;
 import com.kelvn.exception.NotFoundException;
 import com.kelvn.model.Account;
+import com.kelvn.model.AccountEntityGraph;
 import com.kelvn.model.MetaAccount;
 import com.kelvn.repository.AccountRepository;
 import com.kelvn.repository.GoogleAccountRepository;
@@ -55,7 +56,7 @@ public class AccountService
 
   @Override
   public ExtAccountResponseDTO getById(UUID id, boolean noException) {
-    Account model = repository.findById(id).orElse(null);
+    Account model = repository.findById(id, AccountEntityGraph.____().group().____.____()).orElse(null);
     if (Objects.isNull(model) && !noException) {
       throw new NotFoundException(modelClass, "id", id.toString());
     }

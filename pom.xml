@@ -24,7 +24,6 @@
     <google-api-client.version>2.2.0</google-api-client.version>
     <jakarta.validation-api.version>2.0.2</jakarta.validation-api.version>
     <!-- version properties for plugins -->
-    <spring-boot-maven-plugin.version>2.7.10</spring-boot-maven-plugin.version>
     <apt-maven-plugin.version>1.1.3</apt-maven-plugin.version>
     <spotless-maven-plugin.version>2.37.0</spotless-maven-plugin.version>
     <maven.compiler.source>11</maven.compiler.source>
@@ -72,11 +71,22 @@
   </dependencyManagement>
 
   <dependencies>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-jpamodelgen</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.cosium.spring.data</groupId>
+      <artifactId>spring-data-jpa-entity-graph-generator</artifactId>
+      <version>${springframework.version}</version>
+      <scope>provided</scope>
+    </dependency>
     <!-- https://mvnrepository.com/artifact/com.cosium.spring.data/spring-data-jpa-entity-graph -->
     <dependency>
       <groupId>com.cosium.spring.data</groupId>
       <artifactId>spring-data-jpa-entity-graph</artifactId>
-      <version>2.7.10</version>
+      <version>${springframework.version}</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310 -->
     <dependency>
@@ -224,6 +234,7 @@
               <sortExecutions>true</sortExecutions>
             </sortPom>
           </pom>
+          <skip>true</skip>
         </configuration>
         <executions>
           <execution>
@@ -254,7 +265,15 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>${spring-boot-maven-plugin.version}</version>
+        <version>${springframework.version}</version>
+<!--      necessary when using spring as parent (set on dependencyManagement)-->
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
         <configuration>
           <excludes>
             <exclude>

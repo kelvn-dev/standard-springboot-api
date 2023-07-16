@@ -5,6 +5,7 @@ import com.kelvn.dto.response.GroupResponseDTO;
 import com.kelvn.dto.response.extend.ExtGroupResponseDTO;
 import com.kelvn.exception.NotFoundException;
 import com.kelvn.model.AppGroup;
+import com.kelvn.model.AppGroupEntityGraph;
 import com.kelvn.repository.GroupRepository;
 import com.kelvn.utils.MappingUtils;
 import java.util.Objects;
@@ -21,7 +22,8 @@ public class GroupService
 
   @Override
   public ExtGroupResponseDTO getById(UUID id, boolean noException) {
-    AppGroup model = repository.findById(id).orElse(null);
+//    AppGroup model = repository.findById(id, DynamicEntityGraph.loading().addPath("accounts").build()).orElse(null);
+    AppGroup model = repository.findById(id, AppGroupEntityGraph.____().accounts().____.____()).orElse(null);
     if (Objects.isNull(model) && !noException) {
       throw new NotFoundException(modelClass, "id", id.toString());
     }
