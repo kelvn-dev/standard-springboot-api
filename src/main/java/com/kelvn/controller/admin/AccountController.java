@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.UUID;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -54,10 +55,10 @@ public class AccountController implements SecuredRestController {
 
   @GetMapping
   public ResponseEntity<ApiPageableResponse> getList(
-      @PageableDefault(
-              sort = {"createdAt"},
-              direction = Sort.Direction.DESC)
-          Pageable pageable,
+    @PageableDefault(
+      sort = {"createdAt"},
+      direction = Sort.Direction.DESC)
+    @ParameterObject Pageable pageable,
       @RequestParam(required = false) String[] filter) {
     return ResponseEntity.ok(accountService.getList(filter, pageable));
   }
