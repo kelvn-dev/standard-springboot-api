@@ -1,6 +1,7 @@
 package com.kelvn.model;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -15,8 +16,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
 @Setter
-@MappedSuperclass // ensure that won't have a separate representation as table of the extending
-// class
+@MappedSuperclass // ensure that won't have a separate representation as table
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseModel implements Serializable {
 
@@ -29,13 +29,19 @@ public abstract class BaseModel implements Serializable {
       nullable = false)
   private UUID id;
 
-  @CreationTimestamp
-  @Column(name = "created_at", updatable = false)
-  private LocalDateTime createdAt;
+//  @CreationTimestamp
+//  @Column(name = "created_at", updatable = false)
+//  private LocalDateTime createdAt;
 
-  @UpdateTimestamp
+//  @UpdateTimestamp
+//  @Column(name = "updated_at")
+//  private LocalDateTime updatedAt;
+
+  @Column(name = "created_at", updatable = false)
+  private long createdAt;
+
   @Column(name = "updated_at")
-  private LocalDateTime updatedAt;
+  private long updatedAt;
 
   @CreatedBy
   @Column(name = "created_by", updatable = false)
@@ -59,5 +65,15 @@ public abstract class BaseModel implements Serializable {
   @Override
   public int hashCode() {
     return Objects.hash(id);
+  }
+
+  @PrePersist
+  protected void onCreate() {
+    createdAt = Instant.now().getEpochSecond();
+  }
+
+  @PreUpdate
+  protected void onUpdate() {
+    updatedAt = Instant.now().getEpochSecond();
   }
 }
