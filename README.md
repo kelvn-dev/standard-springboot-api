@@ -130,6 +130,23 @@ A modern boilerplate or project structure for **Springboot API** with common too
     ```shell
     git commit -m "${message}" --no-verify
     ```
+    
+- **Deployment**
+
+    ```shell
+    sh bin/build-and-push-image.sh -e ${env}
+    ```
+  
+    > **Note**: Bonus
+  - To build project
+    ```shell
+    mvn clean install -DskipTests -P ${env}
+    ```
+    
+  - To execute .jar file
+    ```shell
+    java -jar ${filename}.jar
+    ```
   
 
 ## References

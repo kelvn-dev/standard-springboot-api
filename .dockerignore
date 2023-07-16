@@ -4,5 +4,5 @@
 !src/
 # Include the pom.xml file
 !pom.xml
-# Exclude the target directory and its contents except for standard-api-0.0.1-SNAPSHOT.jar
-!target/standard-api-0.0.1-SNAPSHOT.jar
+# Exclude the target directory and its contents except for *.jar
+!target/*.jar
