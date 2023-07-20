@@ -14,7 +14,6 @@ public class StripeCustomerService extends StripeService {
 
   @SneakyThrows(StripeException.class)
   public Customer create(Map<String, Object> params) {
-    RequestOptions requestOptions = RequestOptions.builder().setMaxNetworkRetries(3).build();
     return Customer.create(params, requestOptions);
   }
 }

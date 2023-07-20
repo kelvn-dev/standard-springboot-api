@@ -4,6 +4,8 @@ import com.kelvn.dto.api.ApiError;
 import com.kelvn.exception.*;
 import java.util.Objects;
 import javax.validation.ConstraintViolationException;
+
+import com.stripe.exception.StripeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -48,6 +50,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(BadRequestException.class)
   protected ResponseEntity<Object> handleBadRequest(BadRequestException ex) {
+    ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
+    apiError.setMessage(ex.getMessage());
+    return buildResponseEntity(apiError);
+  }
+
+  // TODO: https://stripe.com/docs/error-handling?lang=java
+  @ExceptionHandler(StripeException.class)
+  protected ResponseEntity<Object> handleBadRequest(StripeException ex) {
     ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
     apiError.setMessage(ex.getMessage());
     return buildResponseEntity(apiError);
