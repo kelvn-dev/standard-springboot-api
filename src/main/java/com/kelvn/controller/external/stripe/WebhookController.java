@@ -8,9 +8,11 @@ import com.stripe.model.Event;
 import com.stripe.model.EventDataObjectDeserializer;
 import com.stripe.model.StripeObject;
 import com.stripe.net.Webhook;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Stripe Webhook")
 @RestController
 @RequestMapping("/stripe/webhook")
 public class WebhookController {
