@@ -55,10 +55,11 @@ public class AccountController implements SecuredRestController {
 
   @GetMapping
   public ResponseEntity<ApiPageableResponse> getList(
-    @PageableDefault(
-      sort = {"createdAt"},
-      direction = Sort.Direction.DESC)
-    @ParameterObject Pageable pageable,
+      @PageableDefault(
+              sort = {"createdAt"},
+              direction = Sort.Direction.DESC)
+          @ParameterObject
+          Pageable pageable,
       @RequestParam(required = false) String[] filter) {
     return ResponseEntity.ok(accountService.getList(filter, pageable));
   }

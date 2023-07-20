@@ -7,12 +7,10 @@ import com.kelvn.dto.response.GroupResponseDTO;
 import com.kelvn.dto.response.extend.ExtGroupResponseDTO;
 import com.kelvn.exception.NotFoundException;
 import com.kelvn.service.GroupService;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
-import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -59,7 +57,8 @@ public class GroupController implements SecuredRestController {
       @PageableDefault(
               sort = {"createdAt"},
               direction = Sort.Direction.DESC)
-  @ParameterObject Pageable pageable,
+          @ParameterObject
+          Pageable pageable,
       @RequestParam(required = false) String[] filter) {
     return ResponseEntity.ok(groupService.getList(filter, pageable));
   }

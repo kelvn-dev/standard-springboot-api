@@ -21,13 +21,13 @@ public class WebhookController {
   private String webhookSecret;
 
   @PostMapping
-  public void webhook(@RequestHeader(value = "Stripe-Signature", required = true) String sigHeader, @RequestBody String payload) {
+  public void webhook(
+      @RequestHeader(value = "Stripe-Signature", required = true) String sigHeader,
+      @RequestBody String payload) {
     Event event = null;
 
     try {
-      event = Webhook.constructEvent(
-        payload, sigHeader, webhookSecret
-      );
+      event = Webhook.constructEvent(payload, sigHeader, webhookSecret);
     } catch (SignatureVerificationException | JsonSyntaxException e) {
       throw new BadRequestException(e.getMessage());
     }
@@ -38,13 +38,14 @@ public class WebhookController {
       stripeObject = dataObjectDeserializer.getObject().get();
     } else {
       // Deserialization failed, probably due to an API version mismatch.
-      throw new IllegalStateException(String.format("Unable to deserialize event data object for %s", event));
+      throw new IllegalStateException(
+          String.format("Unable to deserialize event data object for %s", event));
     }
     switch (event.getType()) {
       case "customer.created":
         Customer customer = (Customer) stripeObject;
         break;
-      // TODO: handle other event types
+        // TODO: handle other event types
       default:
         throw new BadRequestException("Unexpected event type");
     }

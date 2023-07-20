@@ -20,7 +20,6 @@ import com.kelvn.service.external.SendgridService;
 import com.kelvn.utils.MappingUtils;
 import java.util.Objects;
 import java.util.UUID;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,8 +28,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class AccountService
     extends BaseService<Account, AccountRequestDTO, AccountResponseDTO, AccountRepository> {
 
-//  @Value("${server.uri}")
-//  private String SERVER_URI;
+  //  @Value("${server.uri}")
+  //  private String SERVER_URI;
 
   private final SendgridService sendgridService;
   private final PasswordEncoder passwordEncoder;
@@ -56,7 +55,8 @@ public class AccountService
 
   @Override
   public ExtAccountResponseDTO getById(UUID id, boolean noException) {
-    Account model = repository.findById(id, AccountEntityGraph.____().group().____.____()).orElse(null);
+    Account model =
+        repository.findById(id, AccountEntityGraph.____().group().____.____()).orElse(null);
     if (Objects.isNull(model) && !noException) {
       throw new NotFoundException(modelClass, "id", id.toString());
     }

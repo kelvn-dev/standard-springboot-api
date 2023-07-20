@@ -22,8 +22,10 @@ public class GroupService
 
   @Override
   public ExtGroupResponseDTO getById(UUID id, boolean noException) {
-//    AppGroup model = repository.findById(id, DynamicEntityGraph.loading().addPath("accounts").build()).orElse(null);
-    AppGroup model = repository.findById(id, AppGroupEntityGraph.____().accounts().____.____()).orElse(null);
+    //    AppGroup model = repository.findById(id,
+    // DynamicEntityGraph.loading().addPath("accounts").build()).orElse(null);
+    AppGroup model =
+        repository.findById(id, AppGroupEntityGraph.____().accounts().____.____()).orElse(null);
     if (Objects.isNull(model) && !noException) {
       throw new NotFoundException(modelClass, "id", id.toString());
     }

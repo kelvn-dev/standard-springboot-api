@@ -72,28 +72,17 @@
   </dependencyManagement>
 
   <dependencies>
-    <!-- https://mvnrepository.com/artifact/com.stripe/stripe-java -->
+    <!-- https://mvnrepository.com/artifact/com.cosium.spring.data/spring-data-jpa-entity-graph -->
     <dependency>
-      <groupId>com.stripe</groupId>
-      <artifactId>stripe-java</artifactId>
-      <version>${stripe-java.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-jpamodelgen</artifactId>
-      <scope>provided</scope>
+      <groupId>com.cosium.spring.data</groupId>
+      <artifactId>spring-data-jpa-entity-graph</artifactId>
+      <version>${springframework.version}</version>
     </dependency>
     <dependency>
       <groupId>com.cosium.spring.data</groupId>
       <artifactId>spring-data-jpa-entity-graph-generator</artifactId>
       <version>${springframework.version}</version>
       <scope>provided</scope>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/com.cosium.spring.data/spring-data-jpa-entity-graph -->
-    <dependency>
-      <groupId>com.cosium.spring.data</groupId>
-      <artifactId>spring-data-jpa-entity-graph</artifactId>
-      <version>${springframework.version}</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310 -->
     <dependency>
@@ -128,10 +117,21 @@
       <artifactId>sendgrid-java</artifactId>
       <version>${sendgrid-java.version}</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/com.stripe/stripe-java -->
+    <dependency>
+      <groupId>com.stripe</groupId>
+      <artifactId>stripe-java</artifactId>
+      <version>${stripe-java.version}</version>
+    </dependency>
     <dependency>
       <groupId>jakarta.validation</groupId>
       <artifactId>jakarta.validation-api</artifactId>
       <version>${jakarta.validation-api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-jpamodelgen</artifactId>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.hibernate.validator</groupId>
@@ -206,6 +206,12 @@
     </dependency>
   </dependencies>
   <build>
+    <resources>
+      <resource>
+        <filtering>true</filtering>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>com.diffplug.spotless</groupId>
@@ -241,7 +247,7 @@
               <sortExecutions>true</sortExecutions>
             </sortPom>
           </pom>
-          <skip>true</skip>
+          <!--          <skip>true</skip>-->
         </configuration>
         <executions>
           <execution>
@@ -273,14 +279,6 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <version>${springframework.version}</version>
-<!--      necessary when using spring as parent (set on dependencyManagement)-->
-        <executions>
-          <execution>
-            <goals>
-              <goal>repackage</goal>
-            </goals>
-          </execution>
-        </executions>
         <configuration>
           <excludes>
             <exclude>
@@ -289,14 +287,16 @@
             </exclude>
           </excludes>
         </configuration>
+        <!--      necessary when using spring as parent (set on dependencyManagement)-->
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>true</filtering>
-      </resource>
-    </resources>
   </build>
   <profiles>
     <profile>
