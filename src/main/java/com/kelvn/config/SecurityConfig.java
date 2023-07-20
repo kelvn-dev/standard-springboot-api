@@ -38,13 +38,13 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig {
 
   @Value("${server.security.disabled}")
-  private String IS_SECURITY_DISABLED;
+  private String isSecurityDisabled;
 
   @Value("${public.key.location}")
-  private RSAPublicKey PUBLIC_KEY;
+  private RSAPublicKey publicKey;
 
   @Value("${private.key.location}")
-  private RSAPrivateKey PRIVATE_KEY;
+  private RSAPrivateKey privateKey;
 
   private final AccountRepository accountRepository;
 
@@ -80,7 +80,7 @@ public class SecurityConfig {
 
   @Bean
   public JwtEncoder jwtEncoder() {
-    JWK jwk = new RSAKey.Builder(PUBLIC_KEY).privateKey(PRIVATE_KEY).build();
+    JWK jwk = new RSAKey.Builder(publicKey).privateKey(privateKey).build();
     JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
     return new NimbusJwtEncoder(jwks);
   }
@@ -106,7 +106,7 @@ public class SecurityConfig {
     httpSecurity.cors().and().csrf().disable();
     httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-    if (Boolean.parseBoolean(IS_SECURITY_DISABLED)) {
+    if (Boolean.parseBoolean(isSecurityDisabled)) {
       httpSecurity.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll());
     } else {
       httpSecurity
@@ -156,7 +156,7 @@ public class SecurityConfig {
    */
   @Bean
   public JwtDecoder jwtDecoder() {
-    final NimbusJwtDecoder decoder = NimbusJwtDecoder.withPublicKey(PUBLIC_KEY).build();
+    final NimbusJwtDecoder decoder = NimbusJwtDecoder.withPublicKey(publicKey).build();
     decoder.setJwtValidator(
         tokenValidator()); // hook in DelegatingOAuth2TokenValidator to JwtDecoder
     return decoder;

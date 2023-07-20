@@ -21,17 +21,17 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SendgridService {
   @Value("${spring.sendgrid.email.from}")
-  private String EMAIL_FROM;
+  private String emailFrom;
 
   @Value("${server.uri}")
-  private String SERVER_URI;
+  private String serverURI;
 
   private final SendGrid sendGrid;
 
   @SneakyThrows
   public void send(String emailTo, String templateId, Map<String, String> templateData) {
     // Use Single Sender Verification configured in setting for Email from
-    Email sender = new Email(EMAIL_FROM);
+    Email sender = new Email(emailFrom);
     Email receiver = new Email(emailTo);
     Content content = new Content("text/html", "Empty");
 
@@ -62,7 +62,7 @@ public class SendgridService {
     templateData.put("username", username);
     templateData.put("password", password);
     templateData.put("source", source);
-    templateData.put("verificationUrl", SERVER_URI.concat("/verify?token=").concat(token));
+    templateData.put("verificationUrl", serverURI.concat("/verify?token=").concat(token));
     send(email, SendGridTemplate.SIGNUP_TEMPLATE.getTemplateId(), templateData);
   }
 }

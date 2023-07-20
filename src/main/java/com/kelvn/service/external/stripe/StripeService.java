@@ -14,11 +14,11 @@ import java.util.Map;
 
 public abstract class StripeService {
   @Value("${stripe.api.secret-key}")
-  private String STRIPE_SECRET_KEY;
+  private String stripeSecretKey;
 
   @PostConstruct
   public void init() {
-    Stripe.apiKey = STRIPE_SECRET_KEY;
+    Stripe.apiKey = stripeSecretKey;
   }
 
 }

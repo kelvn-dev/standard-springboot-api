@@ -29,8 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class AccountService
     extends BaseService<Account, AccountRequestDTO, AccountResponseDTO, AccountRepository> {
 
-  @Value("${server.uri}")
-  private String SERVER_URI;
+//  @Value("${server.uri}")
+//  private String SERVER_URI;
 
   private final SendgridService sendgridService;
   private final PasswordEncoder passwordEncoder;

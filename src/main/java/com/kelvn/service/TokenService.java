@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TokenService {
   @Value("${jwt.validity.hours}")
-  private String JWT_VALIDITY_HOUR;
+  private String jwtValidityHours;
 
   private final JwtEncoder jwtEncoder;
 
@@ -32,7 +32,7 @@ public class TokenService {
         JwtClaimsSet.builder()
             .issuer("http://foobar.com")
             .issuedAt(now)
-            .expiresAt(now.plus(Long.parseLong(JWT_VALIDITY_HOUR), ChronoUnit.HOURS))
+            .expiresAt(now.plus(Long.parseLong(jwtValidityHours), ChronoUnit.HOURS))
             .subject(account.getId().toString())
             .claim("email", account.getEmail())
             .claim("scope", scope)

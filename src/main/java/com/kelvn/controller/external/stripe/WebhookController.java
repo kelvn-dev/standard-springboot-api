@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class WebhookController {
 
   @Value("${stripe.webhook.signinng-secret}")
-  private String WEBHOOK_SECRET;
+  private String webhookSecret;
 
   @PostMapping
   public void webhook(@RequestHeader(value = "Stripe-Signature", required = true) String sigHeader, @RequestBody String payload) {
@@ -26,7 +26,7 @@ public class WebhookController {
 
     try {
       event = Webhook.constructEvent(
-        payload, sigHeader, WEBHOOK_SECRET
+        payload, sigHeader, webhookSecret
       );
     } catch (SignatureVerificationException | JsonSyntaxException e) {
       throw new BadRequestException(e.getMessage());
