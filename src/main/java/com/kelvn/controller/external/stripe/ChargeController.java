@@ -19,6 +19,9 @@ public class ChargeController {
 
   private final StripeChargeSerivce stripeChargeSerivce;
 
+  /**
+   * @apiNote FE send credit details to Stripe and receive a token, BE will use that token to charge credit card
+   */
   @PostMapping()
   public ResponseEntity<String> create(@Valid @RequestBody StripeChargeRequestDTO requestDTO) {
     return ResponseEntity.ok(stripeChargeSerivce.create(requestDTO).toJson());
