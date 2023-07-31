@@ -35,22 +35,7 @@ public class MappingUtils {
   }
 
   public <DTO extends BaseDTO> ModelMapper getMapper(Class<DTO> target) {
-    ModelMapper modelMapper = new ModelMapper();
-    modelMapper
-        .getConfiguration()
-        .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE)
-        .setFieldMatchingEnabled(true)
-        .setMatchingStrategy(MatchingStrategies.STRICT)
-        .setSkipNullEnabled(true)
-        .setPropertyCondition(
-            context -> !(context.getSource() instanceof PersistentCollection) // exclude
-            // properties of
-            // type
-            // PersistentCollection
-            // (List,
-            // Set,..) (@OnetoMany)
-            );
-
+    ModelMapper modelMapper = getSimpleMapper();
     return updateMapping(modelMapper, target);
   }
 
