@@ -1,12 +1,12 @@
-version: '3.8'
-
+version: "3.8"
+name: "standard-springboot-api"
 services:
   # https://geshan.com.np/blog/2022/02/mysql-docker-compose/
   db:
     image: mysql:8.0
     container_name: mysql
     ports:
-      - 3307:3306
+      - "3307:3306"
     volumes:
       - ./volumes/mysql_db:/var/lib/mysql
     # hide some not useful error messages
@@ -19,3 +19,12 @@ services:
       # Create additional superuser (optional)
       MYSQL_USER: kelvin
       MYSQL_PASSWORD: kelvin
+  cache:
+    image: redis:6.2-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    # User default
+    command: redis-server --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes:
+      - ./volumes/cache:/data

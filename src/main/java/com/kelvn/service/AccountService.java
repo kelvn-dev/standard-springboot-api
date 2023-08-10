@@ -20,11 +20,14 @@ import com.kelvn.service.external.SendgridService;
 import com.kelvn.utils.MappingUtils;
 import java.util.Objects;
 import java.util.UUID;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@CacheConfig(cacheNames = "account", keyGenerator = "redisKeyGenerator")
 public class AccountService
     extends BaseService<Account, AccountRequestDTO, AccountResponseDTO, AccountRepository> {
 
@@ -54,6 +57,7 @@ public class AccountService
   }
 
   @Override
+  @Cacheable
   public ExtAccountResponseDTO getById(UUID id, boolean noException) {
     Account model =
         repository.findById(id, AccountEntityGraph.____().group().____.____()).orElse(null);
