@@ -4,6 +4,7 @@ import com.kelvn.dto.BaseDTO;
 import com.kelvn.dto.api.ApiPageableResponse;
 import com.kelvn.exception.NotFoundException;
 import com.kelvn.model.BaseModel;
+import com.kelvn.repository.BaseRepository;
 import com.kelvn.utils.HelperUtils;
 import com.kelvn.utils.MappingUtils;
 import com.kelvn.utils.PredicateUtils;
@@ -17,8 +18,6 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,7 +26,7 @@ public abstract class BaseService<
     M extends BaseModel,
     REQ extends BaseDTO,
     RES extends BaseDTO,
-    R extends JpaRepository<M, UUID> & QuerydslPredicateExecutor<M>> {
+    R extends BaseRepository<M, UUID>> {
 
   protected final Class<M> modelClass =
       (Class<M>)
