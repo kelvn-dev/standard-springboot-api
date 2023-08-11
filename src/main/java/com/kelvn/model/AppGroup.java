@@ -30,14 +30,14 @@ public class AppGroup extends BaseModel {
   @NotAudited
   @OneToMany(
       mappedBy = "group",
-    cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH },
+      cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH},
       fetch = FetchType.LAZY
-//    orphanRemoval = true)
-  )
+      //    orphanRemoval = true)
+      )
   private List<Account> accounts;
 
   @PreRemove
   private void preRemove() {
-    accounts.forEach( account -> account.setGroupId(null));
+    accounts.forEach(account -> account.setGroupId(null));
   }
 }
