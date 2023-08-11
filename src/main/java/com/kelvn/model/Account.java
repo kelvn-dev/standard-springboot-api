@@ -43,7 +43,7 @@ public class Account extends BaseModel implements UserDetails {
   @Column(name = "group_id", columnDefinition = "BINARY(16)")
   private UUID groupId;
 
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "group_id", insertable = false, updatable = false)
   @JsonIgnoreProperties("accounts")
   private AppGroup group;
