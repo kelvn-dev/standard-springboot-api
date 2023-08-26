@@ -49,14 +49,16 @@ public class SendgridService {
       request.setEndpoint("mail/send");
       request.setBody(mail.build());
       response = sendGrid.api(request);
-      System.out.println(response.getStatusCode());
-      System.out.println(response.getBody());
+      if (response.getStatusCode() >= 200 && response.getStatusCode() < 300) {
+        return;
+      }
+      throw new ServiceUnavailableException(response.getBody());
     } catch (IOException e) {
       throw new ServiceUnavailableException(e.getMessage());
     }
   }
 
-  public void sendEmailVerification(
+  public void sendRegistrationConfirmation(
       String email, String username, String password, String source, String token) {
     Map<String, String> templateData = new HashMap<>();
     templateData.put("username", username);

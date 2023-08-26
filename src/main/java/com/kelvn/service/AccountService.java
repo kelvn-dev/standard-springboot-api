@@ -34,26 +34,24 @@ public class AccountService
   //  @Value("${server.uri}")
   //  private String SERVER_URI;
 
-  private final SendgridService sendgridService;
   private final PasswordEncoder passwordEncoder;
-  private final MetaAccountRepository metaAccountRepository;
-  private final GoogleAccountRepository googleAccountRepository;
-  private final GoogleService googleService;
+//  private final MetaAccountRepository metaAccountRepository;
+//  private final GoogleAccountRepository googleAccountRepository;
+//  private final GoogleService googleService;
 
   public AccountService(
       AccountRepository repository,
       MappingUtils mappingUtils,
-      SendgridService sendgridService,
       PasswordEncoder passwordEncoder,
-      MetaAccountRepository metaAccountRepository,
-      GoogleService googleService,
-      GoogleAccountRepository googleAccountRepository) {
+//      MetaAccountRepository metaAccountRepository,
+//      GoogleService googleService,
+//      GoogleAccountRepository googleAccountRepository
+  ) {
     super(repository, mappingUtils);
-    this.sendgridService = sendgridService;
     this.passwordEncoder = passwordEncoder;
-    this.metaAccountRepository = metaAccountRepository;
-    this.googleAccountRepository = googleAccountRepository;
-    this.googleService = googleService;
+//    this.metaAccountRepository = metaAccountRepository;
+//    this.googleAccountRepository = googleAccountRepository;
+//    this.googleService = googleService;
   }
 
   @Override
@@ -77,49 +75,40 @@ public class AccountService
   }
 
   public AccountResponseDTO signup(AccountRequestDTO requestDTO) {
-    AccountResponseDTO responseDTO = this.create(requestDTO);
-
-    // String token = UUID.randomUUID().toString(); // Need alternative approach
-    // String link =
-    // SERVER_URI.concat("/api/v1/webapp/verify?token=").concat(token);
-    // sendgridService.sendRegistrationEmail(requestDTO.getEmail(),
-    // requestDTO.getUsername(),
-    // link);
-
-    return responseDTO;
+    return this.create(requestDTO);
   }
 
-  @Transactional
-  public AccountResponseDTO signupWithMeta(MetaAuthRequestDTO requestDTO) {
-    MetaService metaService = new MetaService(requestDTO.getAccessToken());
-    MetaAccountResponseDTO metaAccountResponseDTO = metaService.getProfile();
-
-    MetaAccount metaAccount =
-        metaAccountRepository.findByMetaAccountId(metaAccountResponseDTO.getId()).orElse(null);
-    if (metaAccount != null) {
-      throw new ConflictException(MetaAccount.class, "email", metaAccount.getEmail());
-    }
-    metaAccount = mappingUtils.mapFromDTO(metaAccountResponseDTO, MetaAccount.class);
-
-    Account account = repository.findByEmail(metaAccount.getEmail()).orElse(null);
-    if (Objects.isNull(account)) {
-      account = new Account();
-      account.setEmail(metaAccount.getEmail());
-      account.setUsername(metaAccount.getFirst_name().concat(metaAccount.getLast_name()));
-      account.setPassword(passwordEncoder.encode(metaAccount.getMetaAccountId()));
-      account.setMetaAccount(metaAccount);
-      String token = UUID.randomUUID().toString(); // Need alternative approach
-      sendgridService.sendEmailVerification(
-          account.getEmail(),
-          account.getUsername(),
-          metaAccount.getMetaAccountId(),
-          Source.META.getLabel(),
-          token);
-      return super.create(account);
-    }
-    account.setMetaAccount(metaAccount);
-    return mappingUtils.mapToDTO(account, AccountResponseDTO.class);
-  }
+//  @Transactional
+//  public AccountResponseDTO signupWithMeta(MetaAuthRequestDTO requestDTO) {
+//    MetaService metaService = new MetaService(requestDTO.getAccessToken());
+//    MetaAccountResponseDTO metaAccountResponseDTO = metaService.getProfile();
+//
+//    MetaAccount metaAccount =
+//        metaAccountRepository.findByMetaAccountId(metaAccountResponseDTO.getId()).orElse(null);
+//    if (metaAccount != null) {
+//      throw new ConflictException(MetaAccount.class, "email", metaAccount.getEmail());
+//    }
+//    metaAccount = mappingUtils.mapFromDTO(metaAccountResponseDTO, MetaAccount.class);
+//
+//    Account account = repository.findByEmail(metaAccount.getEmail()).orElse(null);
+//    if (Objects.isNull(account)) {
+//      account = new Account();
+//      account.setEmail(metaAccount.getEmail());
+//      account.setUsername(metaAccount.getFirst_name().concat(metaAccount.getLast_name()));
+//      account.setPassword(passwordEncoder.encode(metaAccount.getMetaAccountId()));
+//      account.setMetaAccount(metaAccount);
+//      String token = UUID.randomUUID().toString(); // Need alternative approach
+//      sendgridService.sendRegistrationConfirmation(
+//          account.getEmail(),
+//          account.getUsername(),
+//          metaAccount.getMetaAccountId(),
+//          Source.META.getLabel(),
+//          token);
+//      return super.create(account);
+//    }
+//    account.setMetaAccount(metaAccount);
+//    return mappingUtils.mapToDTO(account, AccountResponseDTO.class);
+//  }
 
   // @Transactional
   // public AccountResponseDTO signupWithGoogle(GoogleAuthRequestDTO requestDTO) {
