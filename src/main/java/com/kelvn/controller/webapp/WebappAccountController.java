@@ -6,6 +6,7 @@ import com.kelvn.service.AccountService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,11 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class WebappAccountController {
 
   private final AccountService accountService;
+  private final RabbitTemplate rabbitTemplate;
 
   @PostMapping("/signup")
   public ResponseEntity<AccountResponseDTO> signup(
       @RequestBody @Valid AccountRequestDTO requestDTO) {
     AccountResponseDTO responseDTO = accountService.signup(requestDTO);
+    rabbitTemplate.convertAndSend("x.account-registration", "", requestDTO);
     return ResponseEntity.ok(responseDTO);
   }
 
